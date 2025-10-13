@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Projets</title>
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<h1>Gestion des Projets</h1>
+<a href="/admin/projects/add">Ajouter un projet</a> | <a href="/admin/logout">Se déconnecter</a>
+<table>
+<thead>
+<tr>
+<th>Titre</th>
+<th>Date</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<% projects.forEach(project => { %>
+<tr>
+<td><%= project.title %></td>
+<td><%= project.date.toLocaleDateString('fr-FR') %></td>
+<td>
+<a href="/admin/projects/edit/<%= project._id %>">Modifier</a>
+<form action="/admin/projects/delete/<%= project._id %>" method="post" style="display:inline">
+<button type="submit" onclick="return confirm('Supprimer ce projet ?')">Supprimer</button>
+</form>
+</td>
+</tr>
+<% }) %>
+</tbody>
+</table>
+</body>
+</html>
