@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= meta.title %></title>
+<meta name="description" content="<%= meta.description %>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+<h1>Andrea Layton - Architecte</h1>
+<nav>
+<a href="/">Accueil</a>
+<a href="/projets">Projets</a>
+<a href="/a-propos">À propos</a>
+<a href="/contact">Contact</a>
+</nav>
+</header>
+<main>
+<h2>Derniers projets</h2>
+<div class="projects">
+<% projects.forEach(project => { %>
+<div class="project-card">
+<a href="/projets/<%= project.slug %>">
+<img src="<%= project.image_url %>" alt="<%= project.title %>">
+<h3><%= project.title %></h3>
+</a>
+</div>
+<% }) %>
+</div>
+</main>
+<footer>
+<p>&copy; <%= new Date().getFullYear() %> Andrea Layton</p>
+</footer>
+</body>
+</html>

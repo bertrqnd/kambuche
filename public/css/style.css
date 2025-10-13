@@ -1,0 +1,45 @@
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+line-height: 1.6;
+background-color: #fff;
+color: #333;
+}
+header {
+background-color: #f8f8f8;
+padding: 20px;
+text-align: center;
+}
+header nav a {
+margin: 0 10px;
+text-decoration: none;
+color: #333;
+font-weight: bold;
+}
+.projects {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+padding: 20px;
+justify-content: center;
+}
+.project-card {
+border: 1px solid #ddd;
+padding: 10px;
+width: 250px;
+text-align: center;
+transition: transform 0.2s;
+}
+.project-card:hover {
+transform: scale(1.05);
+}
+.project-card img {
+max-width: 100%;
+height: auto;
+}
+footer {
+background-color: #f8f8f8;
+text-align: center;
+padding: 10px;
+}
