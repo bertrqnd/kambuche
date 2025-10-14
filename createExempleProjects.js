@@ -1,60 +1,68 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Project = require('./models/Project');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const Project = require('./models/Project');
 
 const uploadDir = path.join(__dirname, 'public', 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
+const projectsData = [
+  "Maison Moderne", "Appartement Minimaliste", "Villa Méditerranéenne", "Maison Écologique",
+  "Studio Urbain", "Loft Industriel", "Maison Familiale", "Cabane en Bois",
+  "Penthouse Luxe", "Maison Contemporaine", "Villa Bord de Mer", "Maison de Campagne",
+  "Résidence Étudiante", "Maison Passive", "Cabinet Médical", "Maison à Patio",
+  "Appartement Design", "Villa Jardin", "Maison en Pierre", "Loft Moderne"
+];
+
 async function downloadImage(filename, id) {
-    try {
-        const url = `https://picsum.photos/800/600?random=${id}`;
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-        fs.writeFileSync(path.join(uploadDir, filename), response.data);
-        console.log(`Image téléchargée : ${filename}`);
-        return '/uploads/' + filename;
-    } catch (err) {
-        console.error(`Erreur téléchargement ${filename}:`, err.message);
-        return '';
-    }
+  const url = `https://picsum.photos/800/600?random=${id}`;
+  const response = await axios.get(url, { responseType: 'arraybuffer' });
+  fs.writeFileSync(path.join(uploadDir, filename), response.data);
+  return `/uploads/${filename}`;
 }
 
-async function seedProjects() {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('Connecté à MongoDB');
+async function seed() {
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log('🟢 Connecté à MongoDB');
 
-    // Vider la collection
-    await Project.deleteMany({});
-    console.log('Collection Project vidée');
+  await Project.deleteMany({});
+  console.log('🗑️ Base de données vidée');
 
-    const projects = [];
+  const projects = [];
 
-    for (let i = 1; i <= 20; i++) {
-        const title = `Projet Exemple ${i}`;
-        const slug = `projet-exemple-${i}`;
-        const description = `Description du projet Exemple ${i}. Un projet fictif pour le site.`;
+  for (let i = 0; i < projectsData.length; i++) {
+    const title = projectsData[i];
+    const slug = title.toLowerCase().replace(/\s+/g, '-');
 
-        // Image de couverture
-        const cover_image_url = await downloadImage(`cover-${i}.jpg`, i);
+    // Couverture
+    const coverFilename = `cover-${slug}.jpg`;
+    const coverImage = await downloadImage(coverFilename, i + 1);
 
-        // Galerie d'images (3 à 5 images aléatoires)
-        const imagesCount = 3 + Math.floor(Math.random() * 3);
-        const images_url = [];
-        for (let j = 1; j <= imagesCount; j++) {
-            const imgUrl = await downloadImage(`gallery-${i}-${j}.jpg`, i*10 + j);
-            images_url.push(imgUrl);
-        }
-
-        projects.push({ title, description, slug, cover_image_url, images_url, date: new Date() });
+    // 5 images supplémentaires
+    const gallery = [];
+    for (let j = 0; j < 5; j++) {
+      const galleryFilename = `gallery-${slug}-${j + 1}.jpg`;
+      const imgUrl = await downloadImage(galleryFilename, i * 10 + j);
+      gallery.push(imgUrl);
     }
 
-    await Project.insertMany(projects);
-    console.log('20 projets exemples ajoutés avec couverture + galerie');
+    projects.push({
+      title,
+      description: `Description du projet ${title}. Exemple généré automatiquement.`,
+      slug,
+      cover_image_url: coverImage,
+      images_url: gallery,
+      date: new Date()
+    });
+  }
 
-    await mongoose.disconnect();
-    console.log('Déconnecté de MongoDB');
+  await Project.insertMany(projects);
+  console.log('✅ 20 projets ajoutés avec leurs images !');
+
+  mongoose.disconnect();
+  console.log('🔴 Déconnecté de MongoDB');
 }
 
-seedProjects();
+seed().catch(err => console.error(err));
