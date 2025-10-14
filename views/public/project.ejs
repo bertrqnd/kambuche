@@ -20,7 +20,21 @@
 <main>
 <article>
 <h2><%= project.title %></h2>
-<img src="<%= project.image_url %>" alt="<%= project.title %>">
+
+<!-- Image de couverture -->
+<% if(project.cover_image_url) { %>
+    <img src="<%= project.cover_image_url %>" alt="<%= project.title %> - couverture" style="max-width:100%;">
+<% } %>
+
+<!-- Galerie d'images -->
+<% if(project.images_url && project.images_url.length > 0) { %>
+    <div class="gallery">
+        <% project.images_url.forEach(img => { %>
+            <img src="<%= img %>" alt="<%= project.title %>" style="max-width:200px; margin:5px;">
+        <% }) %>
+    </div>
+<% } %>
+
 <p><%= project.description %></p>
 <p><em>Publié le <%= project.date.toLocaleDateString('fr-FR') %></em></p>
 </article>

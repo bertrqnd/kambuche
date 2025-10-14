@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const projectSchema = new mongoose.Schema({
 title: { type: String, required: true },
 description: { type: String, required: true },
-image_url: { type: String },
+cover_image_url: { type: String },
+images_url: { type: [String], default: [] },
 slug: { type: String, required: true, unique: true },
 date: { type: Date, default: Date.now }
 });

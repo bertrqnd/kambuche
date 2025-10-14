@@ -9,22 +9,32 @@
 <body>
 <h1>Modifier le projet</h1>
 <form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
-<label for="title">Titre :</label>
-<input type="text" id="title" name="title" value="<%= project.title %>" required>
+  <label for="title">Titre :</label>
+  <input type="text" id="title" name="title" value="<%= project.title %>" required>
 
+  <label for="slug">Slug (URL) :</label>
+  <input type="text" id="slug" name="slug" value="<%= project.slug %>" required>
 
-<label for="description">Description :</label>
-<textarea id="description" name="description" required><%= project.description %></textarea>
+  <label for="description">Description :</label>
+  <textarea id="description" name="description" required><%= project.description %></textarea>
 
+  <label for="cover_image">Image de couverture :</label>
+  <input type="file" id="cover_image" name="cover_image" accept="image/*">
+  <% if(project.cover_image_url) { %>
+    <img src="<%= project.cover_image_url %>" alt="Couverture actuelle" style="max-width:200px;">
+  <% } %>
 
-<label for="image">Image :</label>
-<% if(project.image_url) { %>
-<img src="<%= project.image_url %>" alt="<%= project.title %>" width="150">
-<% } %>
-<input type="file" id="image" name="image">
+  <label for="images">Images supplémentaires :</label>
+  <input type="file" id="images" name="images" accept="image/*" multiple>
+  <% if(project.images_url && project.images_url.length > 0) { %>
+    <div>
+      <% project.images_url.forEach(img => { %>
+        <img src="<%= img %>" alt="Image projet" style="max-width:150px;">
+      <% }) %>
+    </div>
+  <% } %>
 
-
-<button type="submit">Enregistrer</button>
+  <button type="submit">Modifier</button>
 </form>
 <a href="/admin/projects">Retour aux projets</a>
 </body>

@@ -9,19 +9,22 @@
 <body>
 <h1>Ajouter un projet</h1>
 <form action="/admin/projects/add" method="post" enctype="multipart/form-data">
-<label for="title">Titre :</label>
-<input type="text" id="title" name="title" required>
+  <label for="title">Titre :</label>
+  <input type="text" id="title" name="title" required>
 
+  <label for="slug">Slug (URL) :</label>
+  <input type="text" id="slug" name="slug" required>
 
-<label for="description">Description :</label>
-<textarea id="description" name="description" required></textarea>
+  <label for="description">Description :</label>
+  <textarea id="description" name="description" required></textarea>
 
+  <label for="cover_image">Image de couverture :</label>
+  <input type="file" id="cover_image" name="cover_image" accept="image/*" required>
 
-<label for="image">Image :</label>
-<input type="file" id="image" name="image">
+  <label for="images">Images supplémentaires :</label>
+  <input type="file" id="images" name="images" accept="image/*" multiple>
 
-
-<button type="submit">Ajouter</button>
+  <button type="submit">Ajouter</button>
 </form>
 <a href="/admin/projects">Retour aux projets</a>
 </body>
