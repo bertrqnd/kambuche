@@ -8,23 +8,20 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Andrea Layton - Architecte</h1>
-    <nav>
-      <a href="/projets">Projets</a>
-      <a href="/contact">Contact</a>
-    </nav>
-  </header>
+  <!-- Navbar superposée -->
+<header class="navbar">
+  <span class="nav-left">Andrea Layton</span>
+  <a href="/contact" class="nav-right">Contact</a>
+</header>
 
   <main>
-    <!-- Données du carrousel (passées au JS via data-attribute) -->
+    <!-- Données pour le carousel -->
     <div id="carousel-data" data-projects='<%- JSON.stringify(projects) %>'></div>
 
-    <!-- Inclusion du carrousel -->
+    <!-- Carousel -->
     <%- include('partials/carousel') %>
   </main>
 
-  <!-- Script externe autorisé par CSP -->
   <script src="/js/carousel.js"></script>
 </body>
 </html>
