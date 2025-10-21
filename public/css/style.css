@@ -1,45 +1,114 @@
-body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 0;
-line-height: 1.6;
-background-color: #fff;
-color: #333;
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap');
+
+/* === CAROUSEL FULL SCREEN === */
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
-header {
-background-color: #f8f8f8;
-padding: 20px;
-text-align: center;
+
+.carousel__image {
+  width: 100%;
+  height: 100%;
 }
-header nav a {
-margin: 0 10px;
-text-decoration: none;
-color: #333;
-font-weight: bold;
+
+.carousel__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* évite la déformation */
+  display: block;
 }
-.projects {
-display: flex;
-flex-wrap: wrap;
-gap: 20px;
-padding: 20px;
-justify-content: center;
+
+/* --- Overlay texte --- */
+.carousel__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 25%, rgba(0, 0, 0, 0));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #fff;
 }
-.project-card {
-border: 1px solid #ddd;
-padding: 10px;
-width: 250px;
-text-align: center;
-transition: transform 0.2s;
+
+.carousel__text {
+  max-width: 800px;
+  animation: fadeIn 0.8s ease-in-out;
 }
-.project-card:hover {
-transform: scale(1.05);
+
+.carousel__text h3 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5em;
+  font-weight: 600;
 }
-.project-card img {
-max-width: 100%;
-height: auto;
+
+.carousel__text p {
+  font-size: 1.1rem;
+  color: #ddd;
+  margin-bottom: 1.2em;
 }
-footer {
-background-color: #f8f8f8;
-text-align: center;
-padding: 10px;
+
+.carousel__link {
+  display: inline-block;
+  background-color: #f5c518;
+  color: #000;
+  text-decoration: none;
+  padding: 0.8em 1.6em;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.carousel__link:hover {
+  background-color: #fff;
+  transform: scale(1.05);
+}
+
+/* --- Boutons navigation --- */
+.carousel__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 3rem;
+  cursor: pointer;
+  padding: 0 0.4em;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  z-index: 10;
+}
+
+.carousel__btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.carousel__btn--prev { left: 20px; }
+.carousel__btn--next { right: 20px; }
+
+/* --- Animation FadeIn --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .carousel__text h3 {
+    font-size: 1.8rem;
+  }
+
+  .carousel__text p {
+    font-size: 1rem;
+  }
+
+  .carousel__overlay {
+    padding: 40px 15px;
+  }
 }

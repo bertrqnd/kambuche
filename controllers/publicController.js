@@ -1,20 +1,11 @@
 const Project = require('../models/Project');
 
-// Page d'accueil
-exports.getHome = async (req, res) => {
-    const projects = await Project.find().sort({ date: -1 }).limit(5);
-    res.render('public/home', { 
-        projects, 
-        meta: { 
-            title: 'Andrea Layton - Architecte', 
-            description: "Découvrez les projets architecturaux d'Andrea Layton" 
-        } 
-    });
-}
 
 // Liste de tous les projets
 exports.getProjects = async (req, res) => {
     const projects = await Project.find().sort({ date: -1 });
+    console.log('Projets récupérés :', projects);
+
     res.render('public/projects', { 
         projects, 
         meta: { 
@@ -38,15 +29,6 @@ exports.getProject = async (req, res) => {
     });
 }
 
-// Page à propos
-exports.getAbout = (req, res) => {
-    res.render('public/about', { 
-        meta: { 
-            title: 'À propos - Andrea Layton', 
-            description: "En savoir plus sur l'architecte Andrea Layton" 
-        } 
-    });
-}
 
 // Page contact
 exports.getContact = (req, res) => {

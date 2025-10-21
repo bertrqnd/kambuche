@@ -1,45 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Projets</title>
-<link rel="stylesheet" href="/css/admin.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<h1>Gestion des Projets</h1>
-<a href="/admin/projects/add">Ajouter un projet</a> | <a href="/admin/logout">Se déconnecter</a>
+  <header class="header">
+    <h1>Andrea Layton - Architecte</h1>
+    <nav>
+      <a href="/projets">Projets</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
 
-<table>
-<thead>
-<tr>
-<th>Couverture</th>
-<th>Titre</th>
-<th>Date</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody>
-<% projects.forEach(project => { %>
-<tr>
-<td>
-  <% if(project.cover_image_url) { %>
-    <img src="<%= project.cover_image_url %>" alt="Couverture" style="max-width:100px;">
-  <% } else { %>
-    -
-  <% } %>
-</td>
-<td><%= project.title %></td>
-<td><%= project.date.toLocaleDateString('fr-FR') %></td>
-<td>
-  <a href="/admin/projects/edit/<%= project._id %>">Modifier</a>
-  <form action="/admin/projects/delete/<%= project._id %>" method="post" style="display:inline">
-    <button type="submit" onclick="return confirm('Supprimer ce projet ?')">Supprimer</button>
-  </form>
-</td>
-</tr>
-<% }) %>
-</tbody>
-</table>
+  <main>
+    <!-- Données JSON passées au JS via un attribut data- -->
+    <div id="carousel-data" data-projects='<%- JSON.stringify(projects) %>'></div>
+
+    <!-- Inclusion du carrousel -->
+    <%- include('partials/carousel') %>
+  </main>
+  <script src="/js/carousel.js"></script>
 </body>
 </html>
