@@ -8,20 +8,39 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <!-- Navbar superposée -->
+  <!-- === NAVBAR === -->
 <header class="navbar">
-  <span class="nav-left">Andrea Layton</span>
-  <a href="/contact" class="nav-right">Contact</a>
+  <span class="nav-left">
+    <span class="first-name">Andrea</span><span class="last-name">Layton</span>
+  </span>
+
+  <div class="nav-links">
+  <a href="/a-propos" class="nav-item">À propos</a>
+  <a href="/contact" class="nav-item">Contact</a>
+
+    <div class="dropdown">
+      <button class="nav-item dropdown-btn">Projets ▾</button>
+      <ul class="dropdown-menu">
+        <% projects.forEach(project => { %>
+          <li><a href="/projets/<%= project.slug %>"><%= project.title %></a></li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
 </header>
 
-  <main>
-    <!-- Données pour le carousel -->
-    <div id="carousel-data" data-projects='<%- JSON.stringify(projects) %>'></div>
 
-    <!-- Carousel -->
-    <%- include('partials/carousel') %>
-  </main>
+<main>
+  <!-- Données pour le carousel -->
+<div id="carousel-data" data-projects='<%= JSON.stringify(carouselProjects) %>'></div>
 
-  <script src="/js/carousel.js"></script>
+
+
+
+  <!-- Carousel -->
+  <%- include('partials/carousel') %>
+</main>
+
+<script src="/js/carousel.js"></script>
 </body>
 </html>

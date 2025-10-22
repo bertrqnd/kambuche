@@ -1,52 +1,121 @@
-/* === IMPORT POLICE ROBOTO FLEX === */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap');
 
-/* === RESET & BASE === */
+/* === RESET === */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html, body {
   height: 100%;
-  font-family: 'Roboto Flex', sans-serif;
-  font-weight: 300; /* Roboto Flex plus fine */
-  line-height: 1.6;
+  overflow: hidden;
   background-color: #000;
   color: #fff;
-  overflow: hidden; /* bloque le scroll */
+  font-family: "Roboto Flex", sans-serif;
+  font-weight: 300;
 }
 
-/* === NAVBAR FIXE === */
+/* === NAVBAR === */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
-  background-color: rgba(0,0,0,0.8);
-  z-index: 20;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 100;
 }
 
+/* Andrea Layton */
 .nav-left {
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+}
+
+.nav-left .first-name {
   font-weight: 300;
-  font-size: 1.2rem;
+  color: #bbb;
+}
+
+.nav-left .last-name {
+  font-weight: 600;
   color: #fff;
 }
 
-.nav-right {
-  font-weight: 300;
-  font-size: 1.2rem;
+/* Liens à droite (Contact + Projets) */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-item {
   color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+  color: #f5c518;
+}
+
+/* Dropdown Projets */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
   text-decoration: none;
 }
 
-/* === CAROUSEL FULL SCREEN === */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  list-style: none;
+  padding: 10px 0;
+  min-width: 200px;
+  z-index: 200;
+}
+
+.dropdown-menu li {
+  text-align: right;
+}
+
+.dropdown-menu a {
+  display: block;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* === CAROUSEL === */
 .carousel {
   position: relative;
   width: 100%;
@@ -62,24 +131,23 @@ html, body {
 .carousel__image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* garde les proportions de l'image */
+  object-fit: cover;
   display: block;
 }
 
-/* === OVERLAY TEXTE === */
+/* Overlay texte */
 .carousel__overlay {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 100px 20px 60px 20px; /* espace pour navbar */
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 20%, rgba(0,0,0,0));
+  padding: 120px 20px 120px;
   text-align: center;
   color: #fff;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0));
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .carousel__text {
@@ -90,88 +158,112 @@ html, body {
 .carousel__text h3 {
   font-size: 2.5rem;
   margin-bottom: 0.5em;
-  font-weight: 300; /* plus léger */
+  font-weight: 400;
 }
 
 .carousel__text p {
   font-size: 1.1rem;
   color: #ddd;
-  margin-bottom: 1.2em;
+  margin-bottom: 1.5em;
 }
 
+/* Bouton */
 .carousel__link {
   display: inline-block;
-  background-color: #f5c518;
-  color: #000;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
   text-decoration: none;
-  padding: 0.8em 1.6em;
-  border-radius: 30px;
-  font-weight: 700;
-  transition: background 0.3s ease, transform 0.3s ease;
+  padding: 0.7em 1.6em;
+  border-radius: 50px;
+  font-weight: 300;
+  transition: all 0.3s ease;
 }
 
 .carousel__link:hover {
-  background-color: #fff;
-  transform: scale(1.05);
+  background: #fff;
+  color: #000;
 }
 
-/* === BOUTONS TRIANGULAIRES POINTUS ET TRANSPARENTS === */
-.carousel__btn {
-  background: transparent;
-  border: none;
-  padding: 0;
-  width: 30px;   /* réduit la largeur */
-  height: 30px;  /* réduit la hauteur */
+/* === Indicateurs === */
+.carousel__indicators {
+  position: absolute;
+  bottom: 20px;          /* visible au bas du carousel */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 8px;               /* réduit pour indicateurs plus petits */
+  z-index: 10;
+}
+
+.carousel__indicator {
+  width: 8px;             /* réduit */
+  height: 8px;            /* réduit */
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  transition: background 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+}
+
+.carousel__indicator.active {
+  background: #f5c5188d;
+  transform: scale(1.3);
+}
+
+/* === Chevrons === */
+.carousel__btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 15;
-  opacity: 0.5; /* plus transparent par défaut */
-  transition: opacity 0.3s ease;
+  width: 50px;
+  height: 50px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.4;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Triangle gauche */
-.carousel__btn--prev {
-  left: 20px;
-  width: 0;
-  height: 0;
-  border-top: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  border-right: 20px solid #fff; /* couleur flèche */
+.carousel__btn:hover {
+  opacity: 0.9;
+  transform: translateY(-50%) scale(1.1);
 }
 
-/* Triangle droit */
-.carousel__btn--next {
-  right: 20px;
-  width: 0;
-  height: 0;
-  border-top: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  border-left: 20px solid #fff; /* couleur flèche */
+.carousel__btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid #ddd;
+  border-right: 2px solid #ddd;
+  transform-origin: center;
 }
 
-/* Hover : augmente légèrement l'opacité */
-.carousel__btn--prev:hover,
-.carousel__btn--next:hover {
-  opacity: 0.8;
+.carousel__btn--prev::before {
+  transform: translate(-50%, -50%) rotate(-135deg);
 }
 
-/* === ANIMATION FADEIN === */
+.carousel__btn--next::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.carousel__btn--prev { left: 40px; }
+.carousel__btn--next { right: 40px; }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* === RESPONSIVE === */
+/* === Responsive === */
 @media (max-width: 768px) {
   .carousel__text h3 { font-size: 1.8rem; }
   .carousel__text p { font-size: 1rem; }
-  .carousel__overlay { padding: 80px 15px 40px 15px; }
-  .navbar { height: 50px; padding: 0 20px; font-size: 1rem; }
-}
-
-@media (max-width: 480px) {
-  .carousel__text h3 { font-size: 1.5rem; }
-  .carousel__text p { font-size: 0.9rem; }
+  .carousel__overlay { padding: 80px 15px 60px; }
+  .nav-left { font-size: 1.2rem; }
+  .nav-links { gap: 10px; }
 }

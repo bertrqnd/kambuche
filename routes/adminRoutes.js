@@ -6,10 +6,27 @@ const path = require('path');
 
 // Multer pour upload images
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'public/uploads/'),
-    filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/'); // dossier de destination
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // nom unique
+    }
 });
-const upload = multer({ storage });
+
+// Filtrage éventuel des fichiers
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif/;
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedTypes.test(ext)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Seules les images sont autorisées'));
+    }
+};
+
+// Création de l’upload Multer
+const upload = multer({ storage, fileFilter });
 
 // Routes login/logout
 router.get('/login', adminController.getLogin);
@@ -23,7 +40,7 @@ router.use(adminController.isAuthenticated);
 router.get('/projects', adminController.getProjects);
 router.get('/projects/add', adminController.getAddProject);
 
-// Upload couverture + galerie
+// Upload couverture + galerie (noms corrigés pour correspondre au formulaire)
 router.post(
   '/projects/add', 
   upload.fields([
@@ -43,6 +60,10 @@ router.post(
   adminController.postEditProject
 );
 
+// Supprimer projet entier
 router.post('/projects/delete/:id', adminController.deleteProject);
+
+// Supprimer une image individuelle
+router.post('/projects/delete-image', adminController.deleteProjectImage);
 
 module.exports = router;

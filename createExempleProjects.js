@@ -16,8 +16,9 @@ const projectsData = [
   "Appartement Design", "Villa Jardin", "Maison en Pierre", "Loft Moderne"
 ];
 
+// Fonction pour télécharger une image depuis unsplash.it
 async function downloadImage(filename, id) {
-  const url = `https://picsum.photos/800/600?random=${id}`;
+  const url = `https://picsum.photos/800/600?random=${id}`; // picsum stable pour petites quantités
   const response = await axios.get(url, { responseType: 'arraybuffer' });
   fs.writeFileSync(path.join(uploadDir, filename), response.data);
   return `/uploads/${filename}`;
@@ -27,6 +28,7 @@ async function seed() {
   await mongoose.connect(process.env.MONGO_URI);
   console.log('🟢 Connecté à MongoDB');
 
+  // Vider la collection
   await Project.deleteMany({});
   console.log('🗑️ Base de données vidée');
 
@@ -36,32 +38,39 @@ async function seed() {
     const title = projectsData[i];
     const slug = title.toLowerCase().replace(/\s+/g, '-');
 
-    // Couverture
-    const coverFilename = `cover-${slug}.jpg`;
-    const coverImage = await downloadImage(coverFilename, i + 1);
+    try {
+      // Couverture
+      const coverFilename = `cover-${slug}.jpg`;
+      const coverImage = await downloadImage(coverFilename, i + 1);
 
-    // 5 images supplémentaires
-    const gallery = [];
-    for (let j = 0; j < 5; j++) {
-      const galleryFilename = `gallery-${slug}-${j + 1}.jpg`;
-      const imgUrl = await downloadImage(galleryFilename, i * 10 + j);
-      gallery.push(imgUrl);
+      // 5 images supplémentaires
+      const gallery = [];
+      for (let j = 0; j < 5; j++) {
+        const galleryFilename = `gallery-${slug}-${j + 1}.jpg`;
+        const imgUrl = await downloadImage(galleryFilename, i * 10 + j);
+        gallery.push(imgUrl);
+      }
+
+      projects.push({
+        title,
+        description: `Description du projet ${title}. Exemple généré automatiquement.`,
+        slug,
+        cover_image_url: coverImage,
+        images_url: gallery,
+        date: new Date()
+      });
+
+      console.log(`✅ Projet "${title}" ajouté`);
+
+    } catch (err) {
+      console.error(`❌ Erreur pour le projet "${title}" :`, err.message);
     }
-
-    projects.push({
-      title,
-      description: `Description du projet ${title}. Exemple généré automatiquement.`,
-      slug,
-      cover_image_url: coverImage,
-      images_url: gallery,
-      date: new Date()
-    });
   }
 
   await Project.insertMany(projects);
-  console.log('✅ 20 projets ajoutés avec leurs images !');
+  console.log(`✅ ${projects.length} projets ajoutés avec leurs images !`);
 
-  mongoose.disconnect();
+  await mongoose.disconnect();
   console.log('🔴 Déconnecté de MongoDB');
 }
 

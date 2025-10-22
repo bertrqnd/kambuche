@@ -3,13 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="node_modules\tinymce\tinymce.js"referrerpolicy="origin" crossorigin="anonymous"></script>
 <title>Admin - Ajouter Projet</title>
 <link rel="stylesheet" href="/css/admin.css">
+
+<!-- TinyMCE -->
+<script src="/node_modules/tinymce/tinymce.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    tinymce.init({
+      selector: '#description',
+      height: 300,
+      menubar: false,
+      plugins: 'link image code lists',
+      toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
+      skin: 'oxide-dark',
+      content_css: 'dark'
+    });
+  });
+</script>
 </head>
 <body>
 <h1>Ajouter un projet</h1>
+
 <form action="/admin/projects/add" method="post" enctype="multipart/form-data">
   <label for="title">Titre :</label>
   <input type="text" id="title" name="title" required>
@@ -28,6 +43,7 @@
 
   <button type="submit">Ajouter</button>
 </form>
+
 <a href="/admin/projects">Retour aux projets</a>
 </body>
 </html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/contact.css">
+</head>
+<body>
+
+  <!-- === NAVBAR === -->
+  <header class="navbar">
+    <span class="nav-left">
+      <a href="/" class="andrea-link">
+        <span class="first-name">Andrea</span><span class="last-name">Layton</span>
+      </a>
+    </span>
+
+    <div class="nav-links">
+      <a href="/" class="nav-item">Retour</a>
+    </div>
+  </header>
+
+  <!-- === MAIN CONTACT === -->
+  <main class="contact-page">
+    <div class="contact-container">
+
+
+
+      <div class="contact-item">
+        <span class="contact-value">andrea.layton.arch@ik.me</span>
+        <!-- <button class="copy-btn" data-copy="andrea.layton.arch@ik.me">Copier</button> -->
+      </div>
+
+      <div class="contact-item">
+        <span class="contact-value">+33 7 68 85 92 65</span>
+        <!-- <button class="copy-btn" data-copy="+33768859265">Copier</button> -->
+      </div>
+
+          <div class="contact-back">
+  <a href="/" class="back-btn">Retour</a>
+    </div>
+
+    </div>
+
+
+  </main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const textToCopy = btn.getAttribute('data-copy');
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          btn.textContent = 'Copié !';
+          setTimeout(() => btn.textContent = 'Copier', 2000);
+        });
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          btn.textContent = 'Copié !';
+          setTimeout(() => btn.textContent = 'Copier', 2000);
+        } catch (err) {
+          alert('Impossible de copier : ' + err);
+        }
+        document.body.removeChild(textarea);
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
