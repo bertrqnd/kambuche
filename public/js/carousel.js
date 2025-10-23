@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     imageElement.src = project.image || '/images/default.jpg';
     imageElement.alt = project.title;
     titleElement.textContent = project.title;
-    descElement.textContent = project.description || '';
+    // descElement.textContent = project.description || '';
     linkElement.href = `/projets/${project.slug}`;
 
     // Animation fade-in
@@ -60,4 +60,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Affichage initial
   updateCarousel(currentIndex);
+});
+
+// === MENU BURGER ===
+const burger = document.querySelector('.burger');
+const navLinks = document.querySelector('.nav-links');
+
+if (burger && navLinks) {
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('active');
+    navLinks.classList.toggle('mobile-active');
+  });
+}
+
+// === Swipe pour le carrousel ===
+const carousel = document.querySelector('.carousel');
+let startX = 0;
+let endX = 0;
+
+carousel.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+});
+
+carousel.addEventListener('touchmove', (e) => {
+  endX = e.touches[0].clientX;
+});
+
+carousel.addEventListener('touchend', () => {
+  const diffX = endX - startX;
+  const threshold = 50; // distance minimale du swipe
+
+  if (Math.abs(diffX) > threshold) {
+    if (diffX > 0) {
+      // Swipe vers la droite → image précédente
+      document.querySelector('.carousel__btn--prev').click();
+    } else {
+      // Swipe vers la gauche → image suivante
+      document.querySelector('.carousel__btn--next').click();
+    }
+  }
 });

@@ -19,7 +19,7 @@
   <a href="/contact" class="nav-item">Contact</a>
 
     <div class="dropdown">
-      <button class="nav-item dropdown-btn">Projets ▾</button>
+      <a href="#" class="nav-item dropdown-btn">Projets</a>
       <ul class="dropdown-menu">
         <% projects.forEach(project => { %>
           <li><a href="/projets/<%= project.slug %>"><%= project.title %></a></li>
@@ -27,6 +27,14 @@
       </ul>
     </div>
   </div>
+
+  <!-- menu burger -->
+  <div class="burger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
 </header>
 
 
