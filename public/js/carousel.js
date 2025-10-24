@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       overlayClone.innerHTML = `
         <div class="carousel__text">
           <h3>${project.title}</h3>
-          <p>${project.description || ''}</p>
+
           <a href="/projets/${project.slug}" class="carousel__link">Voir le projet</a>
         </div>
       `;
