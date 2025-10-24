@@ -193,13 +193,16 @@ html, body {
   padding: 50px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .project-text h2 {
   font-size: 2.2rem;
   font-weight: 400;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .project-text p {
@@ -213,6 +216,24 @@ html, body {
 .project-text em {
   font-style: italic;
   color: #bbb;
+}
+
+/* Scrollbar personnalisée */
+.project-text::-webkit-scrollbar {
+  width: 8px;
+}
+
+.project-text::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.project-text::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.project-text::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* === LIGHTBOX AMÉLIORÉE === */
@@ -348,7 +369,52 @@ html, body {
   .project-text p { font-size: 1rem; }
 }
 
-@media (max-width: 768px) {
+/* Tablette et téléphone horizontal */
+@media (max-width: 768px) and (orientation: landscape) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+  
+  .project-container {
+    flex-direction: row;
+    height: calc(100vh - 60px);
+  }
+  
+  .project-carousel {
+    width: 66.6666%;
+    height: 100%;
+  }
+  
+  .project-text {
+    width: 33.3333%;
+    height: 100%;
+    padding: 30px 25px;
+    overflow-y: auto;
+  }
+  
+  .project-text h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .project-text p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  /* Indicateurs plus petits en horizontal */
+  .carousel__indicator {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* Scrollbar plus petite */
+  .project-text::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+
+/* Téléphone vertical uniquement */
+@media (max-width: 768px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
   
@@ -359,13 +425,13 @@ html, body {
   
   .project-carousel {
     width: 100%;
-    height: 65%;
+    height: 60%;
   }
   
   .project-text {
     width: 100%;
-    height: 35%;
-    padding: 20px;
+    height: 40%;
+    padding: 15px 20px;
     overflow-y: auto;
   }
   
@@ -377,6 +443,21 @@ html, body {
   .project-text p {
     font-size: 0.95rem;
     margin-bottom: 10px;
+  }
+  
+  /* Indicateurs plus petits sur téléphone vertical */
+  .carousel__indicator {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .carousel__indicator.active {
+    transform: scale(1.4);
+  }
+  
+  /* Scrollbar plus petite */
+  .project-text::-webkit-scrollbar {
+    width: 5px;
   }
   
   /* Lightbox mobile */
@@ -404,3 +485,4 @@ html, body {
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
 }
+

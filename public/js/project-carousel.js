@@ -39,7 +39,7 @@ if (carousel && slides.length > 0 && prevBtn && nextBtn && indicatorsContainer) 
     showSlide((currentIndex + 1) % slides.length);
   });
 
-  // Swipe carousel
+  // Swipe carousel uniquement
   let startX = 0;
   carousel.addEventListener('touchstart', e => {
     startX = e.touches[0].clientX;
@@ -67,7 +67,7 @@ if (carousel && slides.length > 0 && prevBtn && nextBtn && indicatorsContainer) 
   showSlide(currentIndex);
 }
 
-// === LIGHTBOX AMÉLIORÉE ===
+// === LIGHTBOX SANS SWIPE ===
 const lightbox = document.getElementById('lightbox');
 const lightboxClose = document.getElementById('lightbox-close');
 const lightboxPrev = document.getElementById('lightbox-prev');
@@ -132,24 +132,7 @@ if (lightbox && lightboxClose && lightboxPrev && lightboxNext && slides.length >
   const backdrop = lightbox.querySelector('.lightbox-backdrop');
   backdrop.addEventListener('click', closeLightbox);
 
-  // Swipe tactile lightbox
-  let lightboxStartX = 0;
-  lightbox.addEventListener('touchstart', e => {
-    lightboxStartX = e.touches[0].clientX;
-  });
-  lightbox.addEventListener('touchend', e => {
-    const diff = e.changedTouches[0].clientX - lightboxStartX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        lightboxIndex = (lightboxIndex - 1 + slides.length) % slides.length;
-      } else {
-        lightboxIndex = (lightboxIndex + 1) % slides.length;
-      }
-      updateLightbox();
-    }
-  });
-
-  // Navigation clavier dans lightbox
+  // Navigation clavier dans lightbox (sans swipe)
   document.addEventListener('keydown', e => {
     if (lightbox.style.display === 'block') {
       if (e.key === 'ArrowLeft') {
