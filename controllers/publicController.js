@@ -18,7 +18,7 @@ exports.getProjects = async (req, res) => {
     carouselProjects,  // pour le carousel
     meta: { 
       title: 'Projets - Andrea Layton', 
-      description: "Tous les projets architecturaux réalisés par Andrea Layton" 
+      description: "Maître d'oeuvre, diplômée d'architecture, je dessine et réalise vos projets de construction et rénovation." 
     } 
   });
 };
@@ -61,7 +61,7 @@ exports.getAbout = async (req, res) => {
     projects,
     meta: { 
       title: 'À propos - Andrea Layton', 
-      description: "Découvrez le parcours et la philosophie d’Andrea Layton, architecte." 
+      description: "A propos d'Andrea Layton, maître d'oeuvre, diplomée d'architecture." 
     } 
   });
 };
