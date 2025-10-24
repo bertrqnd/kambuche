@@ -16,3 +16,6 @@ public/uploads/
 .DS_Store
 .vscode/
 .idea/
+
+createAdmin.js
+createExempleProjetcts.js
