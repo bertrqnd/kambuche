@@ -1,3 +1,19 @@
+/* === RESET et base === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  font-family: "Roboto Flex", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
 /* === NAVBAR === */
 .navbar {
   position: fixed;
@@ -5,7 +21,7 @@
   left: 0;
   width: 100%;
   height: 70px;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0,0,0,0.7);
   backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
@@ -18,6 +34,8 @@
 .nav-left {
   font-size: 1.4rem;
   letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
 }
 
 .nav-left .first-name {
@@ -31,76 +49,67 @@
   transition: color 0.3s ease;
 }
 
-/* Lien sans soulignement ni couleur par défaut */
 .nav-left a.andrea-link {
   text-decoration: none;
   color: inherit;
 }
 
-.nav-left a.andrea-link:visited {
-  color: inherit;
-}
-
-/* Hover : seule la partie "Layton" devient jaune */
 .nav-left a.andrea-link:hover .last-name {
   color: #f5c518;
 }
 
-/* Supprime la coloration bleue/rose typique des liens */
-a.andrea-link,
-a.andrea-link:visited,
-a.andrea-link:active {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* === PAGE À PROPOS === */
-.about-page {
+/* Liens Contact / À propos / Projets */
+.nav-links {
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin-top: 70px;
-  background: #000;
+  gap: 20px;
+}
+
+.nav-links .nav-item {
+  display: flex;
+  align-items: center;
   color: #fff;
-  text-align: center;
-  font-family: "Roboto Flex", sans-serif;
-}
-
-.about-container {
-  max-width: 700px;
-  padding: 20px;
-}
-
-.about-container h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.about-container p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #ddd;
-  margin-bottom: 30px;
-}
-
-/* === BOUTON RETOUR === */
-.about-back {
-  margin-top: 20px;
-}
-
-.back-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #ddd;
-  color: #000;
   text-decoration: none;
-  font-weight: 600;
-  border-radius: 5px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-links .nav-item:hover {
+  color: #f5c518;
+}
+
+/* Dropdown Projets */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 70px; /* juste sous la navbar */
+  left: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.1);
+  list-style: none;
+  padding: 10px 0;
+  min-width: 200px;
+  z-index: 200;
+}
+
+.dropdown-menu li {
+  text-align: left;
+}
+
+.dropdown-menu a {
+  display: block;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: 300;
   transition: background 0.3s ease;
 }
 
-.back-btn:hover {
-  background-color: #f5c518;
-}
+.dropdown-menu a:hover {
+  background: rgba(2
