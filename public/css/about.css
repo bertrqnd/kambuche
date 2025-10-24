@@ -1,15 +1,21 @@
-/* === RESET et base === */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap');
+
+/* === RESET === */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  min-height: 100vh;
+html, body {
+  height: 100%;
   background-color: #000;
   color: #fff;
   font-family: "Roboto Flex", sans-serif;
+  font-weight: 300;
+}
+
+body {
   display: flex;
   flex-direction: column;
 }
@@ -20,22 +26,23 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
-  background: rgba(0,0,0,0.7);
+  height: 60px;
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 25px;
   z-index: 100;
 }
 
-/* Nom "Andrea Layton" */
+/* Andrea Layton - IDENTIQUE À L'ACCUEIL */
 .nav-left {
   font-size: 1.4rem;
   letter-spacing: -0.5px;
   display: flex;
   align-items: center;
+  margin-left: -10px;
 }
 
 .nav-left .first-name {
@@ -46,31 +53,33 @@ body {
 .nav-left .last-name {
   font-weight: 600;
   color: #fff;
-  transition: color 0.3s ease;
 }
 
 .nav-left a.andrea-link {
   text-decoration: none;
   color: inherit;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
 }
 
 .nav-left a.andrea-link:hover .last-name {
   color: #f5c518;
 }
 
-/* Liens Contact / À propos / Projets */
+/* Liens à droite */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 20px;
+  height: 100%;
 }
 
 .nav-links .nav-item {
-  display: flex;
-  align-items: center;
+  font-size: 1rem;
+  font-weight: 300;
   color: #fff;
   text-decoration: none;
-  font-weight: 300;
   cursor: pointer;
   transition: color 0.3s ease;
 }
@@ -79,37 +88,59 @@ body {
   color: #f5c518;
 }
 
-/* Dropdown Projets */
-.dropdown {
-  position: relative;
+/* === MAIN À PROPOS === */
+.about-page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  padding: 40px 20px;
 }
 
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 70px; /* juste sous la navbar */
-  left: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.1);
-  list-style: none;
-  padding: 10px 0;
-  min-width: 200px;
-  z-index: 200;
+.about-container {
+  max-width: 800px;
+  width: 100%;
 }
 
-.dropdown-menu li {
-  text-align: left;
-}
-
-.dropdown-menu a {
-  display: block;
+.about-container h1 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 30px;
   color: #fff;
-  padding: 10px 20px;
-  text-decoration: none;
-  font-weight: 300;
-  transition: background 0.3s ease;
 }
 
-.dropdown-menu a:hover {
-  background: rgba(2
+.about-container p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+  .about-container h1 { font-size: 2rem; }
+  .about-container p { font-size: 1.1rem; }
+}
+
+@media (max-width: 768px) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+
+  .about-page {
+    padding: 20px 15px;
+  }
+
+  .about-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .about-container p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}

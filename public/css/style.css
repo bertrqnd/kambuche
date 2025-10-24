@@ -138,6 +138,18 @@ html, body {
   color: #f5c518;
 }
 
+.nav-item-mobile-contact-propos {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  font-weight: 300;
+  font-size: 1rem;
+  color: #f5c518;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
 /* === MENU BURGER === */
 .burger {
   display: none;
@@ -167,7 +179,7 @@ html, body {
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
-  .navbar { height: 55px; padding: 0 20px; }
+  .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
   
   /* Cacher navigation desktop */
@@ -332,4 +344,3 @@ html, body {
   .carousel__text p { font-size: 0.9rem; }
   .carousel__overlay { padding: 80px 15px 80px; }
 }
-
