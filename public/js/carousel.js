@@ -1,102 +1,162 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // === CAROUSEL ===
   const dataElement = document.getElementById('carousel-data');
-  const projectsData = JSON.parse(dataElement.dataset.projects || '[]');
+  const projectsData = JSON.parse(dataElement?.dataset.projects || '[]');
   let currentIndex = 0;
+  let autoplayInterval = null;
 
-  const imageElement = document.querySelector('.carousel__image img');
-  const titleElement = document.querySelector('.carousel__text h3');
-  const descElement = document.querySelector('.carousel__text p');
-  const linkElement = document.querySelector('.carousel__link');
+  const carousel = document.querySelector('.carousel');
   const btnNext = document.querySelector('.carousel__btn--next');
   const btnPrev = document.querySelector('.carousel__btn--prev');
   const indicatorsContainer = document.querySelector('.carousel__indicators');
 
-  if (!imageElement || !titleElement || !descElement || !linkElement || !indicatorsContainer) return;
+  if (carousel && btnNext && btnPrev && indicatorsContainer && projectsData.length > 0) {
+    const slidesWrapper = document.createElement('div');
+    slidesWrapper.classList.add('slides-wrapper');
+    carousel.insertBefore(slidesWrapper, indicatorsContainer);
 
-  // === Création des indicateurs ===
-  projectsData.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.classList.add('carousel__indicator');
-    if (i === 0) dot.classList.add('active');
-    dot.addEventListener('click', () => {
-      currentIndex = i;
-      updateCarousel(currentIndex);
+    // Créer les slides
+    projectsData.forEach((project, i) => {
+      const slide = document.createElement('div');
+      slide.classList.add('carousel-slide');
+      
+      const img = document.createElement('img');
+      img.src = project.image || '/images/default.jpg';
+      img.alt = project.title;
+      
+      const overlayClone = document.createElement('div');
+      overlayClone.classList.add('carousel__overlay');
+      overlayClone.innerHTML = `
+        <div class="carousel__text">
+          <h3>${project.title}</h3>
+          <p>${project.description || ''}</p>
+          <a href="/projets/${project.slug}" class="carousel__link">Voir le projet</a>
+        </div>
+      `;
+      
+      slide.appendChild(img);
+      slide.appendChild(overlayClone);
+      slidesWrapper.appendChild(slide);
+
+      // Créer les indicateurs
+      const dot = document.createElement('div');
+      dot.classList.add('carousel__indicator');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => {
+        showSlide(i);
+        resetAutoplay();
+      });
+      indicatorsContainer.appendChild(dot);
     });
-    indicatorsContainer.appendChild(dot);
-  });
 
-  // === Fonction pour mettre à jour le carousel ET les indicateurs ===
-  const updateCarousel = (index) => {
-    if (projectsData.length === 0) return;
+    const indicators = document.querySelectorAll('.carousel__indicator');
 
-    const project = projectsData[index];
-    imageElement.src = project.image || '/images/default.jpg';
-    imageElement.alt = project.title;
-    titleElement.textContent = project.title;
-    // descElement.textContent = project.description || '';
-    linkElement.href = `/projets/${project.slug}`;
-
-    // Animation fade-in
-    imageElement.classList.remove('fadeIn');
-    void imageElement.offsetWidth; // force reflow
-    imageElement.classList.add('fadeIn');
-
-    // Mise à jour des indicateurs
-    document.querySelectorAll('.carousel__indicator').forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-  };
-
-  // === Listeners des boutons ===
-  btnNext?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % projectsData.length;
-    updateCarousel(currentIndex);
-  });
-
-  btnPrev?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + projectsData.length) % projectsData.length;
-    updateCarousel(currentIndex);
-  });
-
-  // Affichage initial
-  updateCarousel(currentIndex);
-});
-
-// === MENU BURGER ===
-const burger = document.querySelector('.burger');
-const navLinks = document.querySelector('.nav-links');
-
-if (burger && navLinks) {
-  burger.addEventListener('click', () => {
-    burger.classList.toggle('active');
-    navLinks.classList.toggle('mobile-active');
-  });
-}
-
-// === Swipe pour le carrousel ===
-const carousel = document.querySelector('.carousel');
-let startX = 0;
-let endX = 0;
-
-carousel.addEventListener('touchstart', (e) => {
-  startX = e.touches[0].clientX;
-});
-
-carousel.addEventListener('touchmove', (e) => {
-  endX = e.touches[0].clientX;
-});
-
-carousel.addEventListener('touchend', () => {
-  const diffX = endX - startX;
-  const threshold = 50; // distance minimale du swipe
-
-  if (Math.abs(diffX) > threshold) {
-    if (diffX > 0) {
-      // Swipe vers la droite → image précédente
-      document.querySelector('.carousel__btn--prev').click();
-    } else {
-      // Swipe vers la gauche → image suivante
-      document.querySelector('.carousel__btn--next').click();
+    function showSlide(index) {
+      slidesWrapper.style.transform = `translateX(-${index * 100}%)`;
+      indicators.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      currentIndex = index;
     }
+
+    function nextSlide() {
+      showSlide((currentIndex + 1) % projectsData.length);
+    }
+
+    function prevSlide() {
+      showSlide((currentIndex - 1 + projectsData.length) % projectsData.length);
+    }
+
+    // Autoplay
+    function startAutoplay() {
+      autoplayInterval = setInterval(nextSlide, 5000);
+    }
+
+    function stopAutoplay() {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+      }
+    }
+
+    function resetAutoplay() {
+      stopAutoplay();
+      startAutoplay();
+    }
+
+    // Boutons navigation
+    btnNext.addEventListener('click', () => {
+      nextSlide();
+      resetAutoplay();
+    });
+
+    btnPrev.addEventListener('click', () => {
+      prevSlide();
+      resetAutoplay();
+    });
+
+    // Navigation tactile
+    let startX = 0, endX = 0;
+    slidesWrapper.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      stopAutoplay();
+    });
+    slidesWrapper.addEventListener('touchmove', e => {
+      endX = e.touches[0].clientX;
+    });
+    slidesWrapper.addEventListener('touchend', () => {
+      const diffX = endX - startX;
+      if (Math.abs(diffX) > 50) {
+        diffX > 0 ? prevSlide() : nextSlide();
+      }
+      startAutoplay();
+    });
+
+    // Navigation clavier
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+        resetAutoplay();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+        resetAutoplay();
+      }
+    });
+
+    // Pause autoplay au survol
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+
+    // Démarrer
+    showSlide(currentIndex);
+    startAutoplay();
+  }
+
+  // === MENU BURGER ===
+  const burger = document.querySelector('.burger');
+  const navLinksMobile = document.querySelector('.nav-links-mobile');
+
+  if (burger && navLinksMobile) {
+    // Toggle menu mobile
+    burger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      burger.classList.toggle('active');
+      navLinksMobile.classList.toggle('mobile-active');
+    });
+
+    // Fermer le menu en cliquant sur un lien
+    const navItemsMobile = navLinksMobile.querySelectorAll('.nav-item-mobile');
+    navItemsMobile.forEach(item => {
+      item.addEventListener('click', () => {
+        burger.classList.remove('active');
+        navLinksMobile.classList.remove('mobile-active');
+      });
+    });
+
+    // Fermer le menu en cliquant ailleurs
+    document.addEventListener('click', (e) => {
+      if (!navLinksMobile.contains(e.target) && !burger.contains(e.target)) {
+        burger.classList.remove('active');
+        navLinksMobile.classList.remove('mobile-active');
+      }
+    });
   }
 });

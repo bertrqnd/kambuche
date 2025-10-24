@@ -22,20 +22,23 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: 60px;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 25px;
   z-index: 100;
 }
 
-/* Andrea Layton */
+/* Andrea Layton - IDENTIQUE À L'ACCUEIL */
 .nav-left {
   font-size: 1.4rem;
   letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  margin-left: -10px;
 }
 
 .nav-left .first-name {
@@ -49,20 +52,30 @@ html, body {
 }
 
 .nav-left a.andrea-link {
-  text-decoration: none; /* supprime le soulignement */
-  color: inherit;        /* garde la couleur définie */
-  transition: color 0.3s ease; /* même transition que le bouton retour */
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
 }
 
 .nav-left a.andrea-link:hover .last-name {
-  color: #f5c518; /* jaune au survol */
+  color: #f5c518;
 }
 
 /* Liens à droite */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+
 .nav-links .nav-item {
+  font-size: 1rem;
+  font-weight: 300;
   color: #fff;
   text-decoration: none;
-  font-weight: 600;
   cursor: pointer;
   transition: color 0.3s ease;
 }
@@ -74,8 +87,8 @@ html, body {
 /* === PROJECT CONTAINER === */
 .project-container {
   display: flex;
-  height: calc(100vh - 70px);
-  margin-top: 70px;
+  height: calc(100vh - 60px);
+  margin-top: 60px;
 }
 
 /* Carousel 2/3 gauche */
@@ -85,10 +98,17 @@ html, body {
   overflow: hidden;
 }
 
+/* Wrapper pour glissement */
+.slides-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
 /* Slides */
 .carousel-slide {
-  display: none;
-  width: 100%;
+  min-width: 100%;
   height: 100%;
 }
 
@@ -97,12 +117,14 @@ html, body {
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: pointer;
 }
 
 /* Chevrons */
 .carousel__btn {
   position: absolute;
   top: 50%;
+  transform: translateY(-50%);
   width: 50px;
   height: 50px;
   background: none;
@@ -165,7 +187,7 @@ html, body {
   transform: scale(1.3);
 }
 
-/* Texte projet 1/3 droite */
+/* Texte projet 1/3 droite - POLICE IDENTIQUE ACCUEIL */
 .project-text {
   width: 33.3333%;
   padding: 50px;
@@ -175,23 +197,210 @@ html, body {
 }
 
 .project-text h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
+  font-weight: 400;
   margin-bottom: 20px;
 }
 
 .project-text p {
   font-size: 1.1rem;
-  line-height: 1.5;
+  font-weight: 300;
+  line-height: 1.6;
   margin-bottom: 15px;
+  color: #ddd;
 }
 
-/* Responsive */
+.project-text em {
+  font-style: italic;
+  color: #bbb;
+}
+
+/* === LIGHTBOX AMÉLIORÉE === */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}
+
+/* Fond sombre */
+.lightbox-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 2001;
+}
+
+/* Contenu lightbox */
+.lightbox-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2002;
+}
+
+/* Wrapper slides lightbox */
+.lightbox-slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.lightbox-slide {
+  min-width: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  flex-shrink: 0;
+}
+
+.lightbox-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Bouton fermer */
+.lightbox-close {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2100;
+  transition: color 0.3s ease;
+  line-height: 1;
+}
+
+.lightbox-close:hover {
+  color: #f5c518;
+}
+
+/* Boutons navigation lightbox */
+.lightbox-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2050;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox-btn:hover {
+  opacity: 1;
+}
+
+.lightbox-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  border-top: 3px solid #fff;
+  border-right: 3px solid #fff;
+  transform-origin: center;
+}
+
+.lightbox-prev::before {
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.lightbox-next::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.lightbox-prev { left: 30px; }
+.lightbox-next { right: 30px; }
+
+/* === RESPONSIVE === */
 @media (max-width: 1024px) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+  .project-text h2 { font-size: 1.8rem; }
+  .project-text p { font-size: 1rem; }
+}
+
+@media (max-width: 768px) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+  
   .project-container {
     flex-direction: column;
+    height: calc(100vh - 60px);
   }
-  .project-carousel, .project-text {
+  
+  .project-carousel {
     width: 100%;
-    height: 50vh;
+    height: 65%;
   }
+  
+  .project-text {
+    width: 100%;
+    height: 35%;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .project-text h2 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  
+  .project-text p {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  
+  /* Lightbox mobile */
+  .lightbox-slide {
+    padding: 20px;
+  }
+  
+  .lightbox-close {
+    top: 10px;
+    right: 15px;
+    font-size: 2.5rem;
+  }
+  
+  .lightbox-btn {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .lightbox-btn::before {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+  }
+  
+  .lightbox-prev { left: 10px; }
+  .lightbox-next { right: 10px; }
 }

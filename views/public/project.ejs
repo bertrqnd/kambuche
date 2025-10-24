@@ -9,17 +9,16 @@
 </head>
 <body>
   <!-- === NAVBAR === -->
-<header class="navbar">
-  <span class="nav-left">
-    <a href="/" class="andrea-link">
-      <span class="first-name">Andrea</span><span class="last-name">Layton</span>
-    </a>
-  </span>
-
-  <div class="nav-links">
-    <a href="/" class="nav-item">Retour</a>
-  </div>
-</header>
+  <header class="navbar">
+    <span class="nav-left">
+      <a href="/" class="andrea-link">
+        <span class="first-name">Andrea</span><span class="last-name">Layton</span>
+      </a>
+    </span>
+    <div class="nav-links">
+      <a href="/" class="nav-item">Retour</a>
+    </div>
+  </header>
 
   <main>
     <div class="project-container">
@@ -46,6 +45,20 @@
       </div>
     </div>
   </main>
+
+  <!-- === LIGHTBOX === -->
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-content">
+      <!-- Wrapper lightbox (rempli par JS) -->
+      <div class="lightbox-slides"></div>
+      <!-- Chevrons navigation -->
+      <button id="lightbox-prev" class="lightbox-btn lightbox-prev"></button>
+      <button id="lightbox-next" class="lightbox-btn lightbox-next"></button>
+      <!-- Bouton fermer -->
+      <span id="lightbox-close" class="lightbox-close">&times;</span>
+    </div>
+  </div>
 
   <script src="/js/project-carousel.js"></script>
 </body>

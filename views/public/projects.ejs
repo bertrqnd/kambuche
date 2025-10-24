@@ -9,46 +9,59 @@
 </head>
 <body>
   <!-- === NAVBAR === -->
-<header class="navbar">
-  <span class="nav-left">
-    <span class="first-name">Andrea</span><span class="last-name">Layton</span>
-  </span>
+  <header class="navbar">
+    <span class="nav-left">
+      <span class="first-name">Andrea</span><span class="last-name">Layton</span>
+    </span>
+    
+    <!-- Navigation desktop -->
+    <nav class="nav-links">
+      <a href="/a-propos" class="nav-item">À propos</a>
+      <a href="/contact" class="nav-item">Contact</a>
+      <!-- Dropdown Projets (desktop uniquement) -->
+      <div class="dropdown">
+        <button class="dropdown-btn nav-item">Projets</button>
+        <ul class="dropdown-menu">
+          <% projects.forEach(project => { %>
+            <li><a href="/projets/<%= project.slug %>"><%= project.title %></a></li>
+          <% }) %>
+        </ul>
+      </div>
+    </nav>
 
-  <div class="nav-links">
-  <a href="/a-propos" class="nav-item">À propos</a>
-  <a href="/contact" class="nav-item">Contact</a>
+    <!-- Navigation mobile -->
+    <nav class="nav-links-mobile">
+      <% projects.forEach(project => { %>
+        <a href="/projets/<%= project.slug %>" class="nav-item-mobile"><%= project.title %></a>
+      <% }) %>
+      <a href="/contact" class="nav-item-mobile">Contact</a>
+      <a href="/a-propos" class="nav-item-mobile">À propos</a>
+    </nav>
 
-    <div class="dropdown">
-      <a href="#" class="nav-item dropdown-btn">Projets</a>
-      <ul class="dropdown-menu">
-        <% projects.forEach(project => { %>
-          <li><a href="/projets/<%= project.slug %>"><%= project.title %></a></li>
-        <% }) %>
-      </ul>
-    </div>
-  </div>
+    <!-- Menu burger -->
+    <button class="burger" aria-label="Menu">
+      <span></span>
+      <span></span>
+    </button>
+  </header>
 
-  <!-- menu burger -->
-  <div class="burger">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
+  <main>
+    <!-- Données pour le carousel -->
+    <div id="carousel-data" data-projects='<%= JSON.stringify(carouselProjects) %>'></div>
+    
+    <!-- Carousel -->
+    <section class="carousel">
+      <!-- Les slides seront générées par JavaScript -->
+      
+      <!-- Boutons navigation -->
+      <button class="carousel__btn carousel__btn--prev" aria-label="Slide précédent"></button>
+      <button class="carousel__btn carousel__btn--next" aria-label="Slide suivant"></button>
+      
+      <!-- Indicateurs -->
+      <div class="carousel__indicators"></div>
+    </section>
+  </main>
 
-</header>
-
-
-<main>
-  <!-- Données pour le carousel -->
-<div id="carousel-data" data-projects='<%= JSON.stringify(carouselProjects) %>'></div>
-
-
-
-
-  <!-- Carousel -->
-  <%- include('partials/carousel') %>
-</main>
-
-<script src="/js/carousel.js"></script>
+  <script src="/js/carousel.js"></script>
 </body>
 </html>
