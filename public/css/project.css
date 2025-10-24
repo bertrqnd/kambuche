@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap');
 
 /* === RESET === */
@@ -212,11 +213,6 @@ html, body {
   line-height: 1.6;
   margin-bottom: 15px;
   color: #ddd;
-}
-
-.project-text em {
-  font-style: italic;
-  color: #bbb;
 }
 
 /* Scrollbar personnalisée */
@@ -448,6 +444,14 @@ html, body {
   .project-text p {
     font-size: 0.95rem;
     margin-bottom: 10px;
+  }
+  
+  /* Espace noir en bas pour la barre d'adresse */
+  .project-text::after {
+    content: '';
+    display: block;
+    height: 80px;
+    flex-shrink: 0;
   }
   
   /* Indicateurs plus petits sur téléphone vertical */
