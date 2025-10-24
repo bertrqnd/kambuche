@@ -38,6 +38,7 @@ html, body {
 }
 .nav-left .first-name { font-weight: 300; color: #bbb; }
 .nav-left .last-name { font-weight: 600; color: #fff; }
+.nav-left .last-name:hover { font-weight: 600; color: #f5c518; cursor:pointer; }
 
 /* === Liens à droite (desktop) === */
 .nav-links {
