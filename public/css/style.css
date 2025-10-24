@@ -96,7 +96,7 @@ html, body {
   width: 240px;
   flex-direction: column;
   align-items: flex-start;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 8px;
@@ -109,23 +109,12 @@ html, body {
   transition: transform 0.3s ease, opacity 0.3s ease;
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
 
-  /* ✅ Ajout pour scroll vertical */
+  /* Ajout pour scroll vertical */
   max-height: 80vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* ✅ Optionnel : effet dégradé en bas du menu mobile */
-.nav-links-mobile::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
-  pointer-events: none;
-}
 
 .nav-links-mobile.mobile-active {
   display: flex;
