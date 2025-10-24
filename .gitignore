@@ -10,7 +10,6 @@ yarn-error.log*
 .env
 
 # Dossier uploads (images)
-public/uploads/
 
 # IDE et système
 .DS_Store
