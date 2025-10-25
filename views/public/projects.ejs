@@ -18,7 +18,7 @@
     <nav class="nav-links">
       <a href="/a-propos" class="nav-item">À propos</a>
       <a href="/contact" class="nav-item">Contact</a>
-      <!-- Dropdown Projets (desktop uniquement) -->
+      <!-- Dropdown Projets -->
       <div class="dropdown">
         <button class="dropdown-btn nav-item">Projets</button>
         <ul class="dropdown-menu">
@@ -34,8 +34,8 @@
       <% projects.forEach(project => { %>
         <a href="/projets/<%= project.slug %>" class="nav-item-mobile"><%= project.title %></a>
       <% }) %>
-      <a href="/contact" class="nav-item-mobile-contact-propos">Contact</a>
-      <a href="/a-propos" class="nav-item-mobile-contact-propos">À propos</a>
+      <a href="/contact" class="nav-item-mobile">Contact</a>
+      <a href="/a-propos" class="nav-item-mobile">À propos</a>
     </nav>
 
     <!-- Menu burger -->
@@ -49,16 +49,31 @@
     <!-- Données pour le carousel -->
     <div id="carousel-data" data-projects='<%= JSON.stringify(carouselProjects) %>'></div>
     
-    <!-- Carousel -->
-    <section class="carousel">
-      <!-- Les slides seront générées par JavaScript -->
-      
-      <!-- Boutons navigation -->
-      <button class="carousel__btn carousel__btn--prev" aria-label="Slide précédent"></button>
-      <button class="carousel__btn carousel__btn--next" aria-label="Slide suivant"></button>
-      
-      <!-- Indicateurs -->
-      <div class="carousel__indicators"></div>
+    <!-- Carousel Desktop/Tablette -->
+    <section class="carousel-desktop">
+      <div class="carousel">
+        <!-- Les slides seront générées par JavaScript -->
+        <button class="carousel__btn carousel__btn--prev" aria-label="Slide précédent"></button>
+        <button class="carousel__btn carousel__btn--next" aria-label="Slide suivant"></button>
+        <div class="carousel__indicators"></div>
+      </div>
+    </section>
+
+    <!-- Liste mobile vertical -->
+    <section class="projects-mobile">
+      <% carouselProjects.forEach(project => { %>
+        <article class="project-card">
+          <a href="/projets/<%= project.slug %>" class="project-card__link">
+            <div class="project-card__image">
+              <img src="<%= project.image %>" alt="<%= project.title %>">
+            </div>
+            <div class="project-card__content">
+              <h3 class="project-card__title"><%= project.title %></h3>
+              <p class="project-card__description"><%= project.description %></p>
+            </div>
+          </a>
+        </article>
+      <% }) %>
     </section>
   </main>
 
