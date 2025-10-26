@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   // === CAROUSEL (desktop et landscape uniquement) ===
   const dataElement = document.getElementById('carousel-data');
@@ -158,5 +159,33 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinksMobile.classList.remove('mobile-active');
       }
     });
+  }
+
+  // === SCROLL TO TOP (mobile) ===
+  const navLeft = document.querySelector('.nav-left');
+  if (navLeft) {
+    navLeft.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // === SAUVEGARDER POSITION SCROLL ===
+  const projectLinks = document.querySelectorAll('.project-card__link');
+  projectLinks.forEach((link, index) => {
+    link.addEventListener('click', () => {
+      sessionStorage.setItem('scrollToProject', index);
+    });
+  });
+
+  // === RESTAURER POSITION SCROLL ===
+  const scrollToProject = sessionStorage.getItem('scrollToProject');
+  if (scrollToProject !== null) {
+    sessionStorage.removeItem('scrollToProject');
+    setTimeout(() => {
+      const projectCard = document.getElementById(`project-${scrollToProject}`);
+      if (projectCard) {
+        projectCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   }
 });

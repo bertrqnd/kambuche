@@ -34,9 +34,20 @@ html, body {
   display: flex;
   align-items: center;
   margin-left: -10px;
+  cursor: pointer;
 }
 .nav-left .first-name { font-weight: 300; color: #bbb; }
-.nav-left .last-name { font-weight: 600; color: #fff; }
+.nav-left .last-name { 
+  font-weight: 600; 
+  color: #fff;
+  transition: color 0.3s ease;
+}
+.nav-left:hover .last-name {
+  color: #f5c518;
+}
+.nav-left:active .last-name {
+  color: #f5c518;
+}
 
 /* === Liens à droite (desktop) === */
 .nav-links {
@@ -72,7 +83,23 @@ html, body {
   list-style: none;
   padding: 10px 0;
   min-width: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
   z-index: 200;
+}
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-menu::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 .dropdown-menu li { text-align: left; }
 .dropdown-menu a {
@@ -139,6 +166,11 @@ html, body {
 .nav-item-mobile:hover {
   background: rgba(255,255,255,0.1);
   color: #f5c518;
+}
+
+.nav-item-mobile--highlight {
+  color: #f5c518;
+  font-weight: 400;
 }
 
 /* === MENU BURGER === */
@@ -369,7 +401,7 @@ html, body {
     width: 100%;
     height: 50vh;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
   }
 
   .project-card__image img {
