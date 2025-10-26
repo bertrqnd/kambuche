@@ -57,6 +57,10 @@ html, body {
   height: 100%;
 }
 
+.dropdown-btn {
+  margin-top: -1.5px;
+}
+
 .nav-item, .dropdown-btn {
   font-size: 1rem;
   font-weight: 300;
