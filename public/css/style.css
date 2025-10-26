@@ -198,7 +198,7 @@ html, body {
   transition: all 0.3s ease;
 }
 .burger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(4px, 4px);
+  transform: rotate(45deg) translate(4.5px, 4.5px);
 }
 .burger.active span:nth-child(2) {
   transform: rotate(-45deg) translate(4px, -4px);
@@ -265,6 +265,7 @@ html, body {
 }
 
 .carousel__link {
+  font-size: 80%;
   display: inline-block;
   background: transparent;
   color: #fff;
