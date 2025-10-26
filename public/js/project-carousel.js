@@ -1,3 +1,4 @@
+
 // === CAROUSEL ===
 const carousel = document.querySelector('.project-carousel');
 const slides = Array.from(document.querySelectorAll('.carousel-slide'));
