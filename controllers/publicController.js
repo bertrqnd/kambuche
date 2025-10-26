@@ -32,7 +32,7 @@ exports.getProject = async (req, res) => {
   res.render('public/project', { 
     project, 
     meta: { 
-      title: `${project.title} - Andrea Layton`, 
+      title: `${project.title} par Andrea Layton, Diplômée d\'architecture`, 
       description: project.description 
     } 
   });
@@ -46,8 +46,8 @@ exports.getContact = async (req, res) => {
   res.render('public/contact', { 
     projects,
     meta: { 
-      title: 'Contact - Andrea Layton', 
-      description: "Contactez Andrea Layton, maître d'œuvre diplômée d’architecture." 
+      title: 'Contact - Andrea Layton - Diplômée d\'architecture', 
+      description: "Contactez-moi." 
     } 
   });
 };
@@ -60,8 +60,8 @@ exports.getAbout = async (req, res) => {
   res.render('public/about', { 
     projects,
     meta: { 
-      title: 'À propos - Andrea Layton', 
-      description: "A propos d'Andrea Layton, maître d'oeuvre, diplomée d'architecture." 
+      title: 'À propos - Andrea Layton - Diplômée d\'architecture', 
+      description: "En savoir plus sur moi." 
     } 
   });
 };
