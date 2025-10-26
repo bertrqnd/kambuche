@@ -433,6 +433,7 @@ html, body {
     width: 100%;
     min-height: 40%;
     padding: 15px 20px;
+    margin-left: -5px;
     flex-grow: 1;
   }
   
