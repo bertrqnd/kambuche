@@ -11,7 +11,12 @@
         "src": "/android-chrome-512x512.png",
         "sizes": "512x512",
         "type": "image/png"
-        }
+        },
+        {
+          "src": "favico.ico",
+            "sizes": "64x64 32x32 24x24 16x16", 
+            "type": "image/x-icon"
+         }
     ],
     "theme_color": "#FFFFFF",
     "background_color": "#FFFFFF",
