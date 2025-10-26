@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="carousel__text">
           <h3>${project.title}</h3>
           <p>${project.description || ''}</p>
-          <a href="/projets/${project.slug}" class="carousel__link">Voir le projet</a>
+          <a href="/projets/${project.slug}" class="carousel__link" data-slide-index="${i}">Voir le projet</a>
         </div>
       `;
       
@@ -125,8 +125,25 @@ document.addEventListener('DOMContentLoaded', () => {
     carousel.addEventListener('mouseenter', stopAutoplay);
     carousel.addEventListener('mouseleave', startAutoplay);
 
-    // Démarrer
-    showSlide(currentIndex);
+    // Sauvegarder l'index du slide au clic sur "Voir le projet"
+    carousel.addEventListener('click', (e) => {
+      if (e.target.classList.contains('carousel__link')) {
+        const slideIndex = e.target.getAttribute('data-slide-index');
+        sessionStorage.setItem('carouselSlideIndex', slideIndex);
+      }
+    });
+
+    // Restaurer l'index du slide au chargement
+    const savedSlideIndex = sessionStorage.getItem('carouselSlideIndex');
+    if (savedSlideIndex !== null) {
+      sessionStorage.removeItem('carouselSlideIndex');
+      currentIndex = parseInt(savedSlideIndex, 10);
+      showSlide(currentIndex);
+    } else {
+      showSlide(currentIndex);
+    }
+
+    // Démarrer autoplay
     startAutoplay();
   }
 
