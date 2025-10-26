@@ -18,7 +18,7 @@ exports.getProjects = async (req, res) => {
     carouselProjects,  // pour le carousel
     meta: { 
       title: 'Andrea Layton - Maître d\'œuvre',
-      description: "Je réalise vos projets de construction, rénovation et aménagement." 
+      description: "Diplômée d'architecture. Je réalise vos projets de construction, rénovation et aménagement." 
     } 
   });
 };
