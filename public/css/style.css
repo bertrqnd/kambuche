@@ -421,25 +421,14 @@ html, body {
   }
 
   .project-card__title {
-    font-size: 1.5rem;
-    font-weight: 400;
+    font-size: 1.2rem;
+    font-weight: 230;
     margin-bottom: 10px;
     margin-left: -6px;
     color: #fff;
   }
 
-  .project-card__description {
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.5;
-    margin-left: -6px;
-    margin-top: -6px;
-    color: #ddd;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+
 }
 
 /* Mobile horizontal : garder le carousel */
