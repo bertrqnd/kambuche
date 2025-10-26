@@ -17,8 +17,8 @@ exports.getProjects = async (req, res) => {
     projects,          // pour le menu dropdown
     carouselProjects,  // pour le carousel
     meta: { 
-      title: 'Projets - Andrea Layton', 
-      description: "Maître d'oeuvre, diplômée d'architecture, je dessine et réalise vos projets de construction et rénovation." 
+      title: 'Andrea Layton - Diplômée d\'architecture', 
+      description: "Je réalise vos projets de construction, rénovation et aménagement." 
     } 
   });
 };
