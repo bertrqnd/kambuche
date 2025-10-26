@@ -17,7 +17,7 @@ exports.getProjects = async (req, res) => {
     projects,          // pour le menu dropdown
     carouselProjects,  // pour le carousel
     meta: { 
-      title: 'Andrea Layton - Diplômée d\'architecture', 
+      title: 'Andrea Layton - Maître d\'œuvre',
       description: "Je réalise vos projets de construction, rénovation et aménagement." 
     } 
   });
@@ -32,7 +32,7 @@ exports.getProject = async (req, res) => {
   res.render('public/project', { 
     project, 
     meta: { 
-      title: `${project.title} par Andrea Layton, Diplômée d\'architecture`, 
+      title: `${project.title} par Andrea Layton, Maître d\'œuvre`, 
       description: project.description 
     } 
   });
@@ -46,7 +46,7 @@ exports.getContact = async (req, res) => {
   res.render('public/contact', { 
     projects,
     meta: { 
-      title: 'Contact - Andrea Layton - Diplômée d\'architecture', 
+      title: 'Contact - Andrea Layton - Maître d\'œuvre', 
       description: "Contactez-moi." 
     } 
   });
@@ -60,7 +60,7 @@ exports.getAbout = async (req, res) => {
   res.render('public/about', { 
     projects,
     meta: { 
-      title: 'À propos - Andrea Layton - Diplômée d\'architecture', 
+      title: 'À propos - Andrea Layton - Maître d\'œuvre', 
       description: "En savoir plus sur moi." 
     } 
   });
