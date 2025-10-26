@@ -15,8 +15,6 @@
     
     <!-- Navigation desktop -->
     <nav class="nav-links">
-      <a href="/a-propos" class="nav-item">À propos</a>
-      <a href="/contact" class="nav-item">Contact</a>
       <!-- Dropdown Projets -->
       <div class="dropdown">
         <button class="dropdown-btn nav-item">Projets</button>
@@ -26,15 +24,17 @@
           <% }) %>
         </ul>
       </div>
+      <a href="/a-propos" class="nav-item">À propos</a>
+      <a href="/contact" class="nav-item">Contact</a>
     </nav>
 
     <!-- Navigation mobile -->
     <nav class="nav-links-mobile">
-      <a href="/a-propos" class="nav-item-mobile nav-item-mobile--highlight">À propos</a>
-      <a href="/contact" class="nav-item-mobile nav-item-mobile--highlight">Contact</a>
       <% projects.forEach(project => { %>
         <a href="/projets/<%= project.slug %>" class="nav-item-mobile"><%= project.title %></a>
       <% }) %>
+      <a href="/a-propos" class="nav-item-mobile nav-item-mobile--highlight">À propos</a>
+      <a href="/contact" class="nav-item-mobile nav-item-mobile--highlight">Contact</a>
     </nav>
 
     <!-- Menu burger -->
