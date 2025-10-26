@@ -1,82 +1,45 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= meta.title %></title>
-  <meta name="description" content="<%= meta.description %>">
-  <link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Projets</title>
+<link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-  <!-- === NAVBAR === -->
-  <header class="navbar">
-    <span class="nav-left">
-      <span class="first-name">Andrea</span><span class="last-name">Layton</span>
-    </span>
-    
-    <!-- Navigation desktop -->
-    <nav class="nav-links">
-      <a href="/a-propos" class="nav-item">À propos</a>
-      <a href="/contact" class="nav-item">Contact</a>
-      <!-- Dropdown Projets -->
-      <div class="dropdown">
-        <button class="dropdown-btn nav-item">Projets</button>
-        <ul class="dropdown-menu">
-          <% projects.forEach(project => { %>
-            <li><a href="/projets/<%= project.slug %>"><%= project.title %></a></li>
-          <% }) %>
-        </ul>
-      </div>
-    </nav>
 
-    <!-- Navigation mobile -->
-    <nav class="nav-links-mobile">
-      <a href="/a-propos" class="nav-item-mobile nav-item-mobile--highlight">À propos</a>
-      <a href="/contact" class="nav-item-mobile nav-item-mobile--highlight">Contact</a>
-      <% projects.forEach(project => { %>
-        <a href="/projets/<%= project.slug %>" class="nav-item-mobile"><%= project.title %></a>
-      <% }) %>
-    </nav>
+<h1>Gestion des projets</h1>
 
-    <!-- Menu burger -->
-    <button class="burger" aria-label="Menu">
-      <span></span>
-      <span></span>
-    </button>
-  </header>
+<a href="/admin/projects/add" class="add-btn">Ajouter un projet</a>
 
-  <main>
-    <!-- Données pour le carousel -->
-    <div id="carousel-data" data-projects='<%= JSON.stringify(carouselProjects) %>'></div>
-    
-    <!-- Carousel Desktop/Tablette -->
-    <section class="carousel-desktop">
-      <div class="carousel">
-        <!-- Les slides seront générées par JavaScript -->
-        <button class="carousel__btn carousel__btn--prev" aria-label="Slide précédent"></button>
-        <button class="carousel__btn carousel__btn--next" aria-label="Slide suivant"></button>
-        <div class="carousel__indicators"></div>
-      </div>
-    </section>
-
-    <!-- Liste mobile vertical -->
-    <section class="projects-mobile">
-      <% carouselProjects.forEach((project, index) => { %>
-        <article class="project-card" id="project-<%= index %>">
-          <a href="/projets/<%= project.slug %>" class="project-card__link">
-            <div class="project-card__image">
-              <img src="<%= project.image %>" alt="<%= project.title %>">
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title"><%= project.title %></h3>
-              <p class="project-card__description"><%= project.description %></p>
-            </div>
-          </a>
-        </article>
-      <% }) %>
-    </section>
-  </main>
-
-  <script src="/js/carousel.js"></script>
-</body>
-</html>
+<table>
+  <thead>
+    <tr>
+      <th>Couverture</th>
+      <th>Titre</th>
+      <th>Slug</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% projects.forEach(project => { %>
+      <tr>
+        <td>
+          <% if(project.cover_image_url) { %>
+            <img src="<%= project.cover_image_url %>" alt="<%= project.title %>">
+          <% } %>
+        </td>
+        <td><%= project.title %></td>
+        <td><%= project.slug %></td>
+        <td><%= project.date.toLocaleDateString('fr-FR') %></td>
+        <td>
+          <a href="/admin/projects/edit/<%= project._id %>"><button class="edit-btn">Modifier</button></a>
+          <form action="/admin/projects/delete/<%= project._id %>" method="post" style="display:inline-block" onsubmit="return confirm('Voulez-vous vraiment supprimer ce projet ?');">
+            <button type="submit" class="delete-btn">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
