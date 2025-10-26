@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   // === CAROUSEL (desktop et landscape uniquement) ===
   const dataElement = document.getElementById('carousel-data');

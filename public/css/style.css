@@ -384,11 +384,11 @@ html, body {
   /* Afficher liste */
   .projects-mobile {
     display: block;
-    padding: 80px 20px 40px;
+    padding: 80px 0 40px;
   }
 
   .project-card {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 
   .project-card__link {
@@ -401,7 +401,7 @@ html, body {
     width: 100%;
     height: 50vh;
     overflow: hidden;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 
   .project-card__image img {
@@ -417,13 +417,13 @@ html, body {
   }
 
   .project-card__content {
-    padding: 0 5px;
+    padding: 0 20px;
   }
 
   .project-card__title {
     font-size: 1.5rem;
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #fff;
   }
 
