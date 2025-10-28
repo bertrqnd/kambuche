@@ -13,8 +13,18 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'andrea-layton-portfolio', // Dossier dans Cloudinary
+    folder: 'andrea-layton-portfolio',
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-    transformation: [{ width: 2000, height: 2000, crop: 'limit' }] // Limite taille max
+    transformation: [{ width: 2000, height: 2000, crop: 'limit' }]
   }
 });
+
+// Configuration Multer
+const upload = multer({ 
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB max
+  }
+});
+
+module.exports = { cloudinary, upload };
