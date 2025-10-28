@@ -2,8 +2,7 @@ const User = require('../models/User');
 const Project = require('../models/Project');
 const bcrypt = require('bcrypt');
 const slugify = require('slugify');
-const fs = require('fs');
-const path = require('path');
+const { cloudinary } = require('../config/cloudinary');
 
 // Afficher le formulaire de login
 exports.getLogin = (req, res) => {
@@ -46,18 +45,18 @@ exports.getAddProject = (req, res) => {
     res.render('admin/addProject');
 }
 
-// Ajouter projet
+// Ajouter projet (AVEC CLOUDINARY)
 exports.postAddProject = async (req, res) => {
     try {
         const { title, description } = req.body;
 
-        // Image de couverture
+        // Image de couverture (URL Cloudinary)
         const cover_image_url = req.files.cover_image ? 
-            '/uploads/' + req.files.cover_image[0].filename : '';
+            req.files.cover_image[0].path : ''; // .path contient l'URL Cloudinary
 
-        // Images multiples (upload une par une)
+        // Images multiples (URLs Cloudinary)
         const images_url = req.files.images ? 
-            req.files.images.map(file => '/uploads/' + file.filename) : [];
+            req.files.images.map(file => file.path) : [];
 
         // Générer slug automatiquement
         const slug = slugify(title, { lower: true, strict: true });
@@ -83,7 +82,7 @@ exports.getEditProject = async (req, res) => {
     res.render('admin/editProject', { project });
 }
 
-// Modifier projet (CORRIGÉ)
+// Modifier projet (AVEC CLOUDINARY)
 exports.postEditProject = async (req, res) => {
     try {
         const { title, description } = req.body;
@@ -100,19 +99,19 @@ exports.postEditProject = async (req, res) => {
 
         // Remplacer l'image de couverture si nouvelle image uploadée
         if (req.files.cover_image && req.files.cover_image.length > 0) {
-            // Supprimer l'ancienne image de couverture
+            // Supprimer l'ancienne image de Cloudinary
             if (project.cover_image_url) {
-                const oldCoverPath = path.join(__dirname, '..', 'public', project.cover_image_url);
-                if (fs.existsSync(oldCoverPath)) {
-                    fs.unlinkSync(oldCoverPath);
+                const publicId = extractPublicId(project.cover_image_url);
+                if (publicId) {
+                    await cloudinary.uploader.destroy(publicId);
                 }
             }
-            project.cover_image_url = '/uploads/' + req.files.cover_image[0].filename;
+            project.cover_image_url = req.files.cover_image[0].path;
         }
 
         // Ajouter nouvelles images à la galerie
         if (req.files.new_images && req.files.new_images.length > 0) {
-            const newImages = req.files.new_images.map(file => '/uploads/' + file.filename);
+            const newImages = req.files.new_images.map(file => file.path);
             project.images_url = [...project.images_url, ...newImages];
         }
 
@@ -125,24 +124,28 @@ exports.postEditProject = async (req, res) => {
     }
 }
 
-// Supprimer projet entier avec suppression des fichiers
+// Supprimer projet entier avec suppression des fichiers Cloudinary
 exports.deleteProject = async (req, res) => {
     try {
         const project = await Project.findById(req.params.id);
         if (!project) return res.redirect('/admin/projects');
 
-        // Supprimer l'image de couverture
+        // Supprimer l'image de couverture de Cloudinary
         if (project.cover_image_url) {
-            const coverPath = path.join(__dirname, '..', 'public', project.cover_image_url);
-            if (fs.existsSync(coverPath)) fs.unlinkSync(coverPath);
+            const publicId = extractPublicId(project.cover_image_url);
+            if (publicId) {
+                await cloudinary.uploader.destroy(publicId);
+            }
         }
 
-        // Supprimer les images de la galerie
+        // Supprimer les images de la galerie de Cloudinary
         if (project.images_url && project.images_url.length > 0) {
-            project.images_url.forEach(img => {
-                const imgPath = path.join(__dirname, '..', 'public', img);
-                if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
-            });
+            for (const imgUrl of project.images_url) {
+                const publicId = extractPublicId(imgUrl);
+                if (publicId) {
+                    await cloudinary.uploader.destroy(publicId);
+                }
+            }
         }
 
         await Project.findByIdAndDelete(req.params.id);
@@ -162,9 +165,11 @@ exports.deleteProjectImage = async (req, res) => {
         const project = await Project.findById(projectId);
         if (!project) return res.status(404).send('Projet non trouvé');
 
-        // Supprime le fichier du dossier public/uploads
-        const filePath = path.join(__dirname, '..', 'public', imageUrl);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        // Supprimer de Cloudinary
+        const publicId = extractPublicId(imageUrl);
+        if (publicId) {
+            await cloudinary.uploader.destroy(publicId);
+        }
 
         if (type === 'cover') {
             project.cover_image_url = '';
@@ -178,5 +183,19 @@ exports.deleteProjectImage = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.redirect('/admin/projects');
+    }
+}
+
+// Fonction utilitaire pour extraire le public_id de l'URL Cloudinary
+function extractPublicId(url) {
+    try {
+        // URL Cloudinary format: https://res.cloudinary.com/{cloud_name}/image/upload/v{version}/{public_id}.{format}
+        const parts = url.split('/');
+        const filename = parts[parts.length - 1];
+        const publicId = parts.slice(parts.indexOf('upload') + 2).join('/').split('.')[0];
+        return publicId;
+    } catch (err) {
+        console.error('Erreur extraction public_id:', err);
+        return null;
     }
 }
