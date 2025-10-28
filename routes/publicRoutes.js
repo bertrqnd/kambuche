@@ -7,6 +7,9 @@ router.get('/', publicController.getProjects);
 
 // Route pour les projets individuels
 router.get('/projets/:slug', publicController.getProject);
+router.get('/projets', (req, res) => {
+  res.redirect('/');
+});
 
 // Autres pages
 router.get('/contact', publicController.getContact);

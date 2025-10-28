@@ -1,49 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Ajouter Projet</title>
-<link rel="stylesheet" href="/css/admin.css">
-
-<!-- TinyMCE -->
-<script src="/node_modules/tinymce/tinymce.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    tinymce.init({
-      selector: '#description',
-      height: 300,
-      menubar: false,
-      plugins: 'link image code lists',
-      toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
-      skin: 'oxide-dark',
-      content_css: 'dark'
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Ajouter Projet</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <!-- TinyMCE -->
+  <script src="/node_modules/tinymce/tinymce.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      tinymce.init({
+        selector: '#description',
+        height: 500,
+        menubar: false,
+        plugins: 'link image code lists',
+        toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
+        skin: 'oxide-dark',
+        content_css: 'dark'
+      });
     });
-  });
-</script>
+  </script>
 </head>
 <body>
-<h1>Ajouter un projet</h1>
+  <h1>Ajouter un projet</h1>
+  <form action="/admin/projects/add" method="post" enctype="multipart/form-data">
+    <label for="title">Titre :</label>
+    <input type="text" id="title" name="title" required>
+    
+    <label for="description">Description :</label>
+    <textarea id="description" name="description" required></textarea>
+    
+    <label for="cover_image">Image de couverture :</label>
+    <input type="file" id="cover_image" name="cover_image" accept="image/*" required>
+    
+    <label for="images">Images supplémentaires (une par une) :</label>
+    <div id="images-container">
+      <div class="image-upload-item">
+        <input type="file" name="images" accept="image/*" class="image-input">
+      </div>
+    </div>
+    <button type="button" onclick="addImageInput()" class="add-image-btn">+ Ajouter une image</button>
+    
+    <button type="submit">Ajouter le projet</button>
+  </form>
+  
+  <a href="/admin/projects" class="back-link">Retour aux projets</a>
 
-<form action="/admin/projects/add" method="post" enctype="multipart/form-data">
-  <label for="title">Titre :</label>
-  <input type="text" id="title" name="title" required>
+  <script>
+    function addImageInput() {
+      const container = document.getElementById('images-container');
+      const newItem = document.createElement('div');
+      newItem.className = 'image-upload-item';
+      newItem.innerHTML = `
+        <input type="file" name="images" accept="image/*" class="image-input">
+        <button type="button" onclick="removeImageInput(this)" class="remove-image-btn">✕</button>
+      `;
+      container.appendChild(newItem);
+    }
 
-  <label for="slug">Slug (URL) :</label>
-  <input type="text" id="slug" name="slug" required>
-
-  <label for="description">Description :</label>
-  <textarea id="description" name="description" required></textarea>
-
-  <label for="cover_image">Image de couverture :</label>
-  <input type="file" id="cover_image" name="cover_image" accept="image/*" required>
-
-  <label for="images">Images supplémentaires :</label>
-  <input type="file" id="images" name="images" accept="image/*" multiple>
-
-  <button type="submit">Ajouter</button>
-</form>
-
-<a href="/admin/projects">Retour aux projets</a>
+    function removeImageInput(btn) {
+      btn.parentElement.remove();
+    }
+  </script>
 </body>
 </html>

@@ -1,77 +1,104 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Modifier Projet</title>
-<link rel="stylesheet" href="/css/editProject.css">
-
-
-<script src="/node_modules/tinymce/tinymce.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    tinymce.init({
-      selector: '#description',
-      height: 300,
-      menubar: false,
-      plugins: 'link image code lists',
-      toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
-      skin: 'oxide-dark',
-      content_css: 'dark'
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Modifier Projet</title>
+  <link rel="stylesheet" href="/css/editProject.css">
+  <script src="/node_modules/tinymce/tinymce.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      tinymce.init({
+        selector: '#description',
+        height: 500,
+        menubar: false,
+        plugins: 'link image code lists',
+        toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
+        skin: 'oxide-dark',
+        content_css: 'dark'
+      });
     });
-  });
-</script>
+  </script>
 </head>
 <body>
-<h1>Modifier le projet</h1>
-
-<form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
-  <label for="title">Titre :</label>
-  <input type="text" id="title" name="title" value="<%= project.title %>" required>
-
-  <label for="slug">Slug (URL) :</label>
-  <input type="text" id="slug" name="slug" value="<%= project.slug %>" required>
-
-  <label for="description">Description :</label>
-  <textarea id="description" name="description" required><%= project.description %></textarea>
-
-  <label for="cover_image">Image de couverture :</label>
-  <input type="file" id="cover_image" name="cover_image" accept="image/*">
-
-  <% if(project.cover_image_url) { %>
-    <div class="cover-container">
-      <img src="<%= project.cover_image_url %>" alt="Couverture actuelle">
-      <form action="/admin/projects/delete-image" method="post" class="delete-image-form">
-        <input type="hidden" name="projectId" value="<%= project._id %>">
-        <input type="hidden" name="imageUrl" value="<%= project.cover_image_url %>">
-        <input type="hidden" name="type" value="cover">
-        <button type="submit" class="delete-image-btn">Supprimer</button>
-      </form>
+  <h1>Modifier le projet</h1>
+  
+  <form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
+    <label for="title">Titre :</label>
+    <input type="text" id="title" name="title" value="<%= project.title %>" required>
+    
+    <label for="description">Description :</label>
+    <textarea id="description" name="description" required><%= project.description %></textarea>
+    
+    <!-- Image de couverture actuelle -->
+    <label>Image de couverture actuelle :</label>
+    <% if(project.cover_image_url) { %>
+      <div class="cover-container">
+        <img src="<%= project.cover_image_url %>" alt="Couverture actuelle">
+        <form action="/admin/projects/delete-image" method="post" class="delete-image-form" onsubmit="return confirm('Supprimer cette image ?');">
+          <input type="hidden" name="projectId" value="<%= project._id %>">
+          <input type="hidden" name="imageUrl" value="<%= project.cover_image_url %>">
+          <input type="hidden" name="type" value="cover">
+          <button type="submit" class="delete-image-btn">✕</button>
+        </form>
+      </div>
+    <% } else { %>
+      <p style="color: #888; font-style: italic;">Aucune image de couverture</p>
+    <% } %>
+    
+    <!-- Remplacer image de couverture -->
+    <label for="cover_image">Remplacer l'image de couverture :</label>
+    <input type="file" id="cover_image" name="cover_image" accept="image/*">
+    
+    <!-- Images galerie actuelles -->
+    <label>Images de la galerie actuelles :</label>
+    <% if(project.images_url && project.images_url.length > 0) { %>
+      <div class="gallery-container">
+        <% project.images_url.forEach(img => { %>
+          <div class="image-container">
+            <img src="<%= img %>" alt="Image projet">
+            <form action="/admin/projects/delete-image" method="post" class="delete-image-form" onsubmit="return confirm('Supprimer cette image ?');">
+              <input type="hidden" name="projectId" value="<%= project._id %>">
+              <input type="hidden" name="imageUrl" value="<%= img %>">
+              <input type="hidden" name="type" value="gallery">
+              <button type="submit" class="delete-image-btn">✕</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p style="color: #888; font-style: italic;">Aucune image dans la galerie</p>
+    <% } %>
+    
+    <!-- Ajouter nouvelles images -->
+    <label for="new_images">Ajouter de nouvelles images (une par une) :</label>
+    <div id="images-container">
+      <div class="image-upload-item">
+        <input type="file" name="new_images" accept="image/*" class="image-input">
+      </div>
     </div>
-  <% } %>
+    <button type="button" onclick="addImageInput()" class="add-image-btn">+ Ajouter une image</button>
+    
+    <button type="submit">Sauvegarder les modifications</button>
+  </form>
+  
+  <a href="/admin/projects" class="back-link">Retour aux projets</a>
 
-  <label for="images">Images supplémentaires :</label>
-  <input type="file" id="images" name="images" accept="image/*" multiple>
+  <script>
+    function addImageInput() {
+      const container = document.getElementById('images-container');
+      const newItem = document.createElement('div');
+      newItem.className = 'image-upload-item';
+      newItem.innerHTML = `
+        <input type="file" name="new_images" accept="image/*" class="image-input">
+        <button type="button" onclick="removeImageInput(this)" class="remove-image-btn">✕</button>
+      `;
+      container.appendChild(newItem);
+    }
 
-  <% if(project.images_url && project.images_url.length > 0) { %>
-    <div class="gallery-container">
-      <% project.images_url.forEach(img => { %>
-        <div class="image-container">
-          <img src="<%= img %>" alt="Image projet">
-          <form action="/admin/projects/delete-image" method="post" class="delete-image-form">
-            <input type="hidden" name="projectId" value="<%= project._id %>">
-            <input type="hidden" name="imageUrl" value="<%= img %>">
-            <input type="hidden" name="type" value="gallery">
-            <button type="submit" class="delete-image-btn">X</button>
-          </form>
-        </div>
-      <% }) %>
-    </div>
-  <% } %>
-
-  <button type="submit">Modifier</button>
-</form>
-
-<a href="/admin/projects">Retour aux projets</a>
+    function removeImageInput(btn) {
+      btn.parentElement.remove();
+    }
+  </script>
 </body>
 </html>

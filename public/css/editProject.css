@@ -5,17 +5,19 @@ body {
   background-color: #000;
   padding: 20px;
   color: #fff;
+  min-height: 100vh;
 }
 
 h1 {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 form {
-  max-width: 600px;
+  max-width: 900px;
   margin: 20px auto;
-  padding: 20px;
-  background-color: #111; 
+  padding: 30px;
+  background-color: #111;
   border: 1px solid #333;
   border-radius: 8px;
   color: #fff;
@@ -23,100 +25,199 @@ form {
 
 label {
   display: block;
-  margin-top: 10px;
+  margin-top: 25px;
+  margin-bottom: 8px;
+  font-weight: 400;
+  color: #ddd;
+  font-size: 1.05rem;
 }
 
-input[type="text"], input[type="password"], input[type="file"], textarea {
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin-top: 5px;
   border: 1px solid #555;
   border-radius: 6px;
   background-color: #222;
   color: #fff;
+  font-family: "Roboto Flex", sans-serif;
   transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #f5c518;
+  background-color: #2a2a2a;
 }
 
 textarea {
   min-height: 120px;
+  resize: vertical;
 }
 
 button {
   font-family: "Roboto Flex", sans-serif;
-  margin-top: 15px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 6px;
   cursor: pointer;
   line-height: 1;
-  transition: all 0.4s ease;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
 }
 
-/* Boutons Ajouter/Modifier/Supprimer */
-.add-btn, .edit-btn {
+/* Bouton principal */
+button[type="submit"] {
+  width: 100%;
+  margin-top: 30px;
   background-color: #f5c518;
   color: #000;
-  border: none;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  transition: all 0.4s ease;
+  font-size: 1.1rem;
 }
 
-.add-btn:hover, .edit-btn:hover {
-  transform: scale(1.05);
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 197, 24, 0.3);
 }
 
-.delete-btn {
+/* Upload d'images une par une */
+#images-container {
+  margin-top: 10px;
+}
+
+.image-upload-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.image-input {
+  flex: 1;
+}
+
+.add-image-btn {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  width: auto;
+}
+
+.add-image-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.remove-image-btn {
   background-color: #e74c3c;
-  color: #000;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 50%;
   border: none;
-  font-weight: 500;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.4s ease;
+  font-size: 1rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s ease;
 }
 
-.delete-btn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+.remove-image-btn:hover {
+  background-color: #c0392b;
+  transform: scale(1.1);
 }
 
-/* Images et boutons de suppression dans l'édition */
-.cover-container, .image-container {
+/* Images actuelles */
+.cover-container,
+.image-container {
   display: inline-block;
   position: relative;
-  margin-right: 5px;
-  margin-top: 5px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .cover-container img {
-  max-width: 150px;
-  max-height: 100px;
+  max-width: 200px;
+  max-height: 150px;
   border-radius: 5px;
+  border: 2px solid #333;
+}
+
+.gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .image-container img {
-  max-width: 120px;
-  max-height: 80px;
+  max-width: 150px;
+  max-height: 100px;
   border-radius: 5px;
+  border: 2px solid #333;
 }
 
+/* Bouton supprimer image */
 .delete-image-btn {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 5px;
+  right: 5px;
   background-color: #e74c3c;
-  color: #fff;       /* blanc sur rouge */
+  color: #fff;
   border: none;
-  padding: 2px 6px;
-  border-radius: 50%; /* rond */
+  padding: 6px 10px;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .delete-image-btn:hover {
-  opacity: 0.8;
-  transform: scale(1.1);
+  background-color: #c0392b;
+  transform: scale(1.15);
+}
+
+.delete-image-form {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Lien retour */
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 30px;
+  color: #f5c518;
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: #fff;
+}
+
+.error {
+  color: #e74c3c;
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 5px;
 }

@@ -1,45 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Projets</title>
-<link rel="stylesheet" href="/css/admin.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Projets</title>
+  <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-
-<h1>Gestion des projets</h1>
-
-<a href="/admin/projects/add" class="add-btn">Ajouter un projet</a>
-
-<table>
-  <thead>
-    <tr>
-      <th>Couverture</th>
-      <th>Titre</th>
-      <th>Slug</th>
-      <th>Date</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% projects.forEach(project => { %>
+  <h1>Gestion des projets</h1>
+  
+  <div style="text-align: center; margin: 20px 0;">
+    <a href="/admin/projects/add" class="add-btn">+ Ajouter un projet</a>
+    <a href="/admin/logout" class="logout-btn">Déconnexion</a>
+  </div>
+  
+  <table>
+    <thead>
       <tr>
-        <td>
-          <% if(project.cover_image_url) { %>
-            <img src="<%= project.cover_image_url %>" alt="<%= project.title %>">
-          <% } %>
-        </td>
-        <td><%= project.title %></td>
-        <td><%= project.slug %></td>
-        <td><%= project.date.toLocaleDateString('fr-FR') %></td>
-        <td>
-          <a href="/admin/projects/edit/<%= project._id %>"><button class="edit-btn">Modifier</button></a>
-          <form action="/admin/projects/delete/<%= project._id %>" method="post" style="display:inline-block" onsubmit="return confirm('Voulez-vous vraiment supprimer ce projet ?');">
-            <button type="submit" class="delete-btn">Supprimer</button>
-          </form>
-        </td>
+        <th>Couverture</th>
+        <th>Titre</th>
+        <th>Slug</th>
+        <th>Date</th>
+        <th>Actions</th>
       </tr>
-    <% }) %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% projects.forEach(project => { %>
+        <tr>
+          <td>
+            <% if(project.cover_image_url) { %>
+              <img src="<%= project.cover_image_url %>" alt="<%= project.title %>">
+            <% } else { %>
+              <span style="color: #888;">Pas d'image</span>
+            <% } %>
+          </td>
+          <td><%= project.title %></td>
+          <td><%= project.slug %></td>
+          <td><%= project.date.toLocaleDateString('fr-FR') %></td>
+          <td>
+            <a href="/admin/projects/edit/<%= project._id %>">
+              <button class="edit-btn">Modifier</button>
+            </a>
+            <form action="/admin/projects/delete/<%= project._id %>" method="post" style="display:inline-block; margin: 0;" onsubmit="return confirm('Voulez-vous vraiment supprimer ce projet ?');">
+              <button type="submit" class="delete-btn">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>

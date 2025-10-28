@@ -48,16 +48,33 @@ exports.getAddProject = (req, res) => {
 
 // Ajouter projet
 exports.postAddProject = async (req, res) => {
-    const { title, description } = req.body;
+    try {
+        const { title, description } = req.body;
 
-    // Noms corrigés pour correspondre aux inputs du formulaire
-    const cover_image_url = req.files.cover_image ? '/uploads/' + req.files.cover_image[0].filename : '';
-    const images_url = req.files.images ? req.files.images.map(file => '/uploads/' + file.filename) : [];
+        // Image de couverture
+        const cover_image_url = req.files.cover_image ? 
+            '/uploads/' + req.files.cover_image[0].filename : '';
 
-    const slug = slugify(title, { lower: true, strict: true });
+        // Images multiples (upload une par une)
+        const images_url = req.files.images ? 
+            req.files.images.map(file => '/uploads/' + file.filename) : [];
 
-    await Project.create({ title, description, cover_image_url, images_url, slug });
-    res.redirect('/admin/projects');
+        // Générer slug automatiquement
+        const slug = slugify(title, { lower: true, strict: true });
+
+        await Project.create({ 
+            title, 
+            description, 
+            cover_image_url, 
+            images_url, 
+            slug 
+        });
+
+        res.redirect('/admin/projects');
+    } catch (err) {
+        console.error(err);
+        res.redirect('/admin/projects');
+    }
 }
 
 // Formulaire modifier projet
@@ -66,21 +83,46 @@ exports.getEditProject = async (req, res) => {
     res.render('admin/editProject', { project });
 }
 
-// Modifier projet
+// Modifier projet (CORRIGÉ)
 exports.postEditProject = async (req, res) => {
-    const { title, description } = req.body;
+    try {
+        const { title, description } = req.body;
+        const project = await Project.findById(req.params.id);
 
-    const cover_image_url = req.files.cover_image ? '/uploads/' + req.files.cover_image[0].filename : undefined;
-    const images_url = req.files.images ? req.files.images.map(file => '/uploads/' + file.filename) : undefined;
+        if (!project) {
+            return res.redirect('/admin/projects');
+        }
 
-    const slug = slugify(title, { lower: true, strict: true });
+        // Mettre à jour titre et description
+        project.title = title;
+        project.description = description;
+        project.slug = slugify(title, { lower: true, strict: true });
 
-    const update = { title, description, slug };
-    if (cover_image_url) update.cover_image_url = cover_image_url;
-    if (images_url) update.images_url = images_url;
+        // Remplacer l'image de couverture si nouvelle image uploadée
+        if (req.files.cover_image && req.files.cover_image.length > 0) {
+            // Supprimer l'ancienne image de couverture
+            if (project.cover_image_url) {
+                const oldCoverPath = path.join(__dirname, '..', 'public', project.cover_image_url);
+                if (fs.existsSync(oldCoverPath)) {
+                    fs.unlinkSync(oldCoverPath);
+                }
+            }
+            project.cover_image_url = '/uploads/' + req.files.cover_image[0].filename;
+        }
 
-    await Project.findByIdAndUpdate(req.params.id, update);
-    res.redirect('/admin/projects/edit/' + req.params.id);
+        // Ajouter nouvelles images à la galerie
+        if (req.files.new_images && req.files.new_images.length > 0) {
+            const newImages = req.files.new_images.map(file => '/uploads/' + file.filename);
+            project.images_url = [...project.images_url, ...newImages];
+        }
+
+        await project.save();
+        res.redirect('/admin/projects/edit/' + req.params.id);
+
+    } catch (err) {
+        console.error(err);
+        res.redirect('/admin/projects');
+    }
 }
 
 // Supprimer projet entier avec suppression des fichiers
@@ -135,6 +177,8 @@ exports.deleteProjectImage = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.redirect('/admin/projects');
+        res.redirect('/admin/projects/edit/' + req.body.projectId);
     }
 }
+
+module.exports = exports;
