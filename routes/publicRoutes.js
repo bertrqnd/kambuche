@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const publicController = require('../controllers/publicController'); // ✅ pas d’erreur ici
 
-router.get('/', (req, res) => res.redirect('/projets'));
-router.get('/projets', publicController.getProjects);
+// La page d'accueil rend directement projects.ejs
+router.get('/', publicController.getProjects);
+
+// Route pour les projets individuels
 router.get('/projets/:slug', publicController.getProject);
+
+// Autres pages
 router.get('/contact', publicController.getContact);
 router.get('/a-propos', publicController.getAbout);
-
 
 module.exports = router;
