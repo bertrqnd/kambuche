@@ -69,36 +69,3 @@
     <% } else { %>
       <p style="color: #888; font-style: italic;">Aucune image dans la galerie</p>
     <% } %>
-    
-    <!-- Ajouter nouvelles images -->
-    <label for="new_images">Ajouter de nouvelles images (une par une) :</label>
-    <div id="images-container">
-      <div class="image-upload-item">
-        <input type="file" name="new_images" accept="image/*" class="image-input">
-      </div>
-    </div>
-    <button type="button" onclick="addImageInput()" class="add-image-btn">+ Ajouter une image</button>
-    
-    <button type="submit">Sauvegarder les modifications</button>
-  </form>
-  
-  <a href="/admin/projects" class="back-link">Retour aux projets</a>
-
-  <script>
-    function addImageInput() {
-      const container = document.getElementById('images-container');
-      const newItem = document.createElement('div');
-      newItem.className = 'image-upload-item';
-      newItem.innerHTML = `
-        <input type="file" name="new_images" accept="image/*" class="image-input">
-        <button type="button" onclick="removeImageInput(this)" class="remove-image-btn">✕</button>
-      `;
-      container.appendChild(newItem);
-    }
-
-    function removeImageInput(btn) {
-      btn.parentElement.remove();
-    }
-  </script>
-</body>
-</html>

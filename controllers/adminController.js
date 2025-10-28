@@ -73,7 +73,7 @@ exports.postAddProject = async (req, res) => {
         res.redirect('/admin/projects');
     } catch (err) {
         console.error(err);
-        res.redirect('/admin/projects');
+        res.redirect('/admin/projects/add');
     }
 }
 
@@ -177,8 +177,6 @@ exports.deleteProjectImage = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.redirect('/admin/projects/edit/' + req.body.projectId);
+        res.redirect('/admin/projects');
     }
 }
-
-module.exports = exports;
