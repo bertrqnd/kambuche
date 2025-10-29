@@ -1,5 +1,5 @@
-// TinyMCE
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialisation TinyMCE depuis le CDN
   if (document.querySelector('#description')) {
     tinymce.init({
       selector: '#description',
