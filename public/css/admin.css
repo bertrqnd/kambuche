@@ -32,9 +32,8 @@ label {
 }
 
 input[type="text"],
-input[type="password"],
-input[type="file"],
-textarea {
+textarea,
+input[type="file"] {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -47,8 +46,8 @@ textarea {
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus,
-textarea:focus {
+textarea:focus,
+input[type="file"]:focus {
   outline: none;
   border-color: #f5c518;
   background-color: #2a2a2a;
@@ -71,7 +70,6 @@ button {
   border: none;
 }
 
-/* Bouton principal (Ajouter/Modifier) */
 button[type="submit"] {
   width: 100%;
   background-color: #f5c518;
@@ -82,127 +80,6 @@ button[type="submit"] {
 button[type="submit"]:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(245, 197, 24, 0.3);
-}
-
-/* Bouton Ajouter projet */
-.add-btn {
-  display: inline-block;
-  background-color: #f5c518;
-  color: #000;
-  border: none;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  margin-right: 10px;
-}
-
-.add-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 197, 24, 0.3);
-}
-
-/* Bouton Déconnexion */
-.logout-btn {
-  display: inline-block;
-  background-color: #555;
-  color: #fff;
-  border: none;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: #666;
-  transform: translateY(-2px);
-}
-
-/* Boutons Modifier et Supprimer (dans le tableau) */
-.edit-btn,
-.delete-btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-}
-
-.edit-btn {
-  background-color: #f5c518;
-  color: #000;
-  margin-right: 5px;
-}
-
-.edit-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(245, 197, 24, 0.3);
-}
-
-.delete-btn {
-  background-color: #e74c3c;
-  color: #fff;
-}
-
-.delete-btn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-/* Upload d'images une par une */
-#images-container {
-  margin-top: 10px;
-}
-
-.image-upload-item {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.image-input {
-  flex: 1;
-}
-
-.add-image-btn {
-  background-color: #4CAF50;
-  color: #fff;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  width: auto;
-}
-
-.add-image-btn:hover {
-  background-color: #45a049;
-}
-
-.remove-image-btn {
-  background-color: #e74c3c;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  width: 32px;
-  height: 32px;
-  transition: all 0.3s ease;
-}
-
-.remove-image-btn:hover {
-  background-color: #c0392b;
-  transform: scale(1.1);
 }
 
 /* Lien retour */
@@ -217,46 +94,6 @@ button[type="submit"]:hover {
 
 .back-link:hover {
   color: #fff;
-}
-
-/* Tableau */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #111;
-}
-
-table,
-th,
-td {
-  border: 1px solid #333;
-}
-
-th,
-td {
-  padding: 12px;
-  text-align: left;
-  color: #fff;
-}
-
-th {
-  background-color: #1a1a1a;
-  font-weight: 500;
-}
-
-table img {
-  max-width: 100px;
-  max-height: 70px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-td form {
-  display: inline;
-  margin: 0;
-  padding: 0;
-  border: none;
 }
 
 .error {

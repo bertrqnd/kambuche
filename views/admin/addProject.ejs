@@ -5,21 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Ajouter Projet</title>
   <link rel="stylesheet" href="/css/admin.css">
+  <script src="/js/adminProject.js" defer></script>
   <!-- TinyMCE -->
-  <script src="/node_modules/tinymce/tinymce.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      tinymce.init({
-        selector: '#description',
-        height: 500,
-        menubar: false,
-        plugins: 'link image code lists',
-        toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
-        skin: 'oxide-dark',
-        content_css: 'dark'
-      });
-    });
-  </script>
+  <script src="/node_modules/tinymce/tinymce.js" defer></script>
 </head>
 <body>
   <h1>Ajouter un projet</h1>
@@ -32,35 +20,13 @@
     
     <label for="cover_image">Image de couverture :</label>
     <input type="file" id="cover_image" name="cover_image" accept="image/*" required>
-    
-    <label for="images">Images supplémentaires (une par une) :</label>
-    <div id="images-container">
-      <div class="image-upload-item">
-        <input type="file" name="images" accept="image/*" class="image-input">
-      </div>
-    </div>
-    <button type="button" onclick="addImageInput()" class="add-image-btn">+ Ajouter une image</button>
-    
+
+    <label for="images">Images supplémentaires :</label>
+    <input type="file" id="images" name="images" accept="image/*" multiple>
+
     <button type="submit">Ajouter le projet</button>
   </form>
   
   <a href="/admin/projects" class="back-link">Retour aux projets</a>
-
-  <script>
-    function addImageInput() {
-      const container = document.getElementById('images-container');
-      const newItem = document.createElement('div');
-      newItem.className = 'image-upload-item';
-      newItem.innerHTML = `
-        <input type="file" name="images" accept="image/*" class="image-input">
-        <button type="button" onclick="removeImageInput(this)" class="remove-image-btn">✕</button>
-      `;
-      container.appendChild(newItem);
-    }
-
-    function removeImageInput(btn) {
-      btn.parentElement.remove();
-    }
-  </script>
 </body>
 </html>

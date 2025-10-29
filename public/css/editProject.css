@@ -33,7 +33,6 @@ label {
 }
 
 input[type="text"],
-input[type="password"],
 input[type="file"],
 textarea {
   width: 100%;
@@ -48,8 +47,8 @@ textarea {
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus,
-textarea:focus {
+textarea:focus,
+input[type="file"]:focus {
   outline: none;
   border-color: #f5c518;
   background-color: #2a2a2a;
@@ -60,81 +59,27 @@ textarea {
   resize: vertical;
 }
 
-button {
-  font-family: "Roboto Flex", sans-serif;
-  padding: 12px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  line-height: 1;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-/* Bouton principal */
+/* Boutons submit */
 button[type="submit"] {
   width: 100%;
   margin-top: 30px;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
   background-color: #f5c518;
   color: #000;
-  font-size: 1.1rem;
+  transition: all 0.3s ease;
 }
 
 button[type="submit"]:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 197, 24, 0.3);
+  box-shadow: 0 4px 12px rgba(245,197,24,0.3);
 }
 
-/* Upload d'images une par une */
-#images-container {
-  margin-top: 10px;
-}
-
-.image-upload-item {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.image-input {
-  flex: 1;
-}
-
-.add-image-btn {
-  background-color: #4CAF50;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  margin-top: 10px;
-  width: auto;
-}
-
-.add-image-btn:hover {
-  background-color: #45a049;
-  transform: translateY(-2px);
-}
-
-.remove-image-btn {
-  background-color: #e74c3c;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  width: 32px;
-  height: 32px;
-  transition: all 0.3s ease;
-}
-
-.remove-image-btn:hover {
-  background-color: #c0392b;
-  transform: scale(1.1);
-}
-
-/* Images actuelles */
+/* Conteneurs images */
 .cover-container,
 .image-container {
   display: inline-block;
@@ -144,7 +89,8 @@ button[type="submit"]:hover {
   margin-bottom: 10px;
 }
 
-.cover-container img {
+.cover-container img,
+.image-container img {
   max-width: 200px;
   max-height: 150px;
   border-radius: 5px;
@@ -156,13 +102,6 @@ button[type="submit"]:hover {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
-}
-
-.image-container img {
-  max-width: 150px;
-  max-height: 100px;
-  border-radius: 5px;
-  border: 2px solid #333;
 }
 
 /* Bouton supprimer image */
@@ -184,7 +123,7 @@ button[type="submit"]:hover {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .delete-image-btn:hover {
@@ -198,7 +137,6 @@ button[type="submit"]:hover {
   padding: 0;
 }
 
-/* Lien retour */
 .back-link {
   display: block;
   text-align: center;
@@ -211,13 +149,4 @@ button[type="submit"]:hover {
 
 .back-link:hover {
   color: #fff;
-}
-
-.error {
-  color: #e74c3c;
-  text-align: center;
-  margin: 20px 0;
-  padding: 10px;
-  background-color: rgba(231, 76, 60, 0.1);
-  border-radius: 5px;
 }
