@@ -13,16 +13,17 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// Helmet avec CSP configurée pour autoriser Cloudinary
+// Helmet avec CSP configurée pour autoriser Cloudinary et TinyMCE
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"], // utile pour EJS/CSS inline
-      connectSrc: ["'self'", "https://res.cloudinary.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tiny.cloud"], // TinyMCE CDN
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tiny.cloud"], // TinyMCE styles
+      connectSrc: ["'self'", "https://res.cloudinary.com", "https://cdn.tiny.cloud"], // TinyMCE API
       frameAncestors: ["'self'"],
+      fontSrc: ["'self'", "data:", "https://cdn.tiny.cloud"], // TinyMCE fonts
     },
   })
 );
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
 // View engine
 app.set('views', path.join(__dirname, 'views'));

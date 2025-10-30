@@ -43,4 +43,9 @@ router.post('/projects/delete/:id', adminController.deleteProject);
 // Supprimer image individuelle
 router.post('/projects/delete-image', adminController.deleteProjectImage);
 
+// Routes pour éditer les pages (À propos et Contact)
+router.get('/pages', adminController.getPages);
+router.get('/pages/edit/:slug', adminController.getEditPage);
+router.post('/pages/edit/:slug', adminController.postEditPage);
+
 module.exports = router;

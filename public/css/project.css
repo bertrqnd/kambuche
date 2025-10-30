@@ -200,19 +200,180 @@ html, body {
   flex-shrink: 0;
 }
 
-.project-text h2 {
-  font-size: 2.2rem;
-  font-weight: 400;
-  margin-bottom: 20px;
+/* Titre principal - Plus grand mais moins gras */
+.project-title {
+  font-size: 2.5rem;
+  font-weight: 200;
+  margin-bottom: 0.6em;
+  line-height: 1.2;
   flex-shrink: 0;
+  color: #fff;
+  letter-spacing: -0.5px;
 }
 
-.project-text p {
+/* Description courte */
+.project-short-desc {
   font-size: 1.1rem;
   font-weight: 300;
   line-height: 1.6;
-  margin-bottom: 15px;
+  margin-bottom: 2em;
+  color: #ccc;
+  font-style: italic;
+}
+
+/* Section métadonnées */
+.project-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  margin-bottom: 2.5em;
+}
+
+.metadata-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+  margin: 0;
+}
+
+.metadata-label {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #999;
+  text-transform: none;
+  letter-spacing: 0.3px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.metadata-value {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+/* Description complète - Support TinyMCE */
+.project-description,
+.tinymce-content {
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.7;
   color: #ddd;
+}
+
+.project-description p,
+.tinymce-content p {
+  margin-bottom: 1.2em;
+}
+
+.project-description h1,
+.project-description h2,
+.project-description h3,
+.project-description h4,
+.tinymce-content h1,
+.tinymce-content h2,
+.tinymce-content h3,
+.tinymce-content h4 {
+  color: #fff;
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  font-weight: 400;
+}
+
+.project-description h1,
+.tinymce-content h1 { font-size: 1.8rem; }
+.project-description h2,
+.tinymce-content h2 { font-size: 1.5rem; }
+.project-description h3,
+.tinymce-content h3 { font-size: 1.2rem; }
+.project-description h4,
+.tinymce-content h4 { font-size: 1.1rem; }
+
+.project-description ul,
+.project-description ol,
+.tinymce-content ul,
+.tinymce-content ol {
+  margin-left: 1.5em;
+  margin-bottom: 1.2em;
+}
+
+.project-description li,
+.tinymce-content li {
+  margin-bottom: 0.5em;
+}
+
+.project-description strong,
+.project-description b,
+.tinymce-content strong,
+.tinymce-content b {
+  font-weight: 500;
+  color: #fff;
+}
+
+.project-description em,
+.project-description i,
+.tinymce-content em,
+.tinymce-content i {
+  font-style: italic;
+  color: #e0e0e0;
+}
+
+.project-description u,
+.tinymce-content u {
+  text-decoration: underline;
+}
+
+.project-description a,
+.tinymce-content a {
+  color: #f5c518;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.project-description a:hover,
+.tinymce-content a:hover {
+  color: #fff;
+}
+
+.project-description blockquote,
+.tinymce-content blockquote {
+  border-left: 3px solid #f5c518;
+  padding-left: 1.5em;
+  margin: 1.5em 0;
+  color: #bbb;
+  font-style: italic;
+}
+
+.project-description table,
+.tinymce-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+
+.project-description table th,
+.project-description table td,
+.tinymce-content table th,
+.tinymce-content table td {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.8em;
+  text-align: left;
+}
+
+.project-description table th,
+.tinymce-content table th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 500;
+  color: #fff;
+}
+
+.project-description img,
+.tinymce-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em 0;
+  border-radius: 4px;
 }
 
 /* Scrollbar personnalisée */
@@ -362,8 +523,9 @@ html, body {
 @media (max-width: 1024px) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
-  .project-text h2 { font-size: 1.8rem; }
-  .project-text p { font-size: 1rem; }
+  .project-title { font-size: 1.8rem; }
+  .project-short-desc { font-size: 1.05rem; }
+  .project-description { font-size: 1rem; }
 }
 
 /* Tablette et téléphone horizontal */
@@ -387,15 +549,28 @@ html, body {
     padding: 30px 25px;
     overflow-y: auto;
   }
-  
-  .project-text h2 {
+
+  .project-title {
     font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin-bottom: 0.6em;
   }
-  
-  .project-text p {
+
+  .project-short-desc {
+    font-size: 1rem;
+    margin-bottom: 1.5em;
+  }
+
+  .metadata-label {
+    font-size: 0.85rem;
+    min-width: 90px;
+  }
+
+  .metadata-value {
     font-size: 0.9rem;
-    margin-bottom: 10px;
+  }
+
+  .project-description {
+    font-size: 0.9rem;
   }
   
   /* Indicateurs plus petits en horizontal */
@@ -436,15 +611,33 @@ html, body {
     margin-left: -5px;
     flex-grow: 1;
   }
-  
-  .project-text h2 {
+
+  .project-title {
     font-size: 1.5rem;
-    margin-bottom: 12px;
+    margin-bottom: 0.6em;
   }
-  
-  .project-text p {
+
+  .project-short-desc {
     font-size: 0.95rem;
-    margin-bottom: 10px;
+    margin-bottom: 1.5em;
+  }
+
+  .project-metadata {
+    margin-bottom: 2em;
+    padding-bottom: 1.5em;
+  }
+
+  .metadata-label {
+    font-size: 0.8rem;
+    min-width: 85px;
+  }
+
+  .metadata-value {
+    font-size: 0.85rem;
+  }
+
+  .project-description {
+    font-size: 0.95rem;
   }
   
   /* Espace noir en bas pour la barre d'adresse */

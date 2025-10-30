@@ -1,4 +1,5 @@
 const Project = require('../models/Project');
+const Page = require('../models/Page');
 
 // === Liste de tous les projets ===
 exports.getProjects = async (req, res) => {
@@ -8,7 +9,7 @@ exports.getProjects = async (req, res) => {
   // Préparer les données pour le carousel
   const carouselProjects = projects.map(p => ({
     title: p.title,
-    description: p.description,
+    short_description: p.short_description,
     slug: p.slug,
     image: p.cover_image_url || (p.images_url && p.images_url[0]) || '/images/default.jpg'
   }));
@@ -42,13 +43,23 @@ exports.getProject = async (req, res) => {
 // === Page contact ===
 exports.getContact = async (req, res) => {
   const projects = await Project.find().sort({ date: -1 });
+  let page = await Page.findOne({ slug: 'contact' });
 
-  res.render('public/contact', { 
+  // Si la page n'existe pas, créer un contenu par défaut
+  if (!page) {
+    page = {
+      title: 'Contact',
+      content: '<p>Contenu de la page Contact...</p>'
+    };
+  }
+
+  res.render('public/contact', {
     projects,
-    meta: { 
-      title: 'Contact - Andrea Layton - Maître d\'œuvre', 
-      description: "Contactez-moi." 
-    } 
+    page,
+    meta: {
+      title: `${page.title} - Andrea Layton - Maître d\'œuvre`,
+      description: "Contactez-moi."
+    }
   });
 };
 
@@ -56,12 +67,22 @@ exports.getContact = async (req, res) => {
 // === Page à propos ===
 exports.getAbout = async (req, res) => {
   const projects = await Project.find().sort({ date: -1 });
+  let page = await Page.findOne({ slug: 'about' });
 
-  res.render('public/about', { 
+  // Si la page n'existe pas, créer un contenu par défaut
+  if (!page) {
+    page = {
+      title: 'À propos',
+      content: '<p>Contenu de la page À propos...</p>'
+    };
+  }
+
+  res.render('public/about', {
     projects,
-    meta: { 
-      title: 'À propos - Andrea Layton - Maître d\'œuvre', 
-      description: "En savoir plus sur moi." 
-    } 
+    page,
+    meta: {
+      title: `${page.title} - Andrea Layton - Maître d\'œuvre`,
+      description: "En savoir plus sur moi."
+    }
   });
 };

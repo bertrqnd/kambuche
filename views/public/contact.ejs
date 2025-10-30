@@ -25,13 +25,20 @@
   <!-- === MAIN CONTACT === -->
   <main class="contact-page">
     <div class="contact-container">
-      <div class="contact-item">
-        <span class="contact-value">andrea.layton.arch@ik.me</span>
-        <button class="copy-btn" data-copy="andrea.layton.arch@ik.me">Copier</button>
-      </div>
-      <div class="contact-item">
-        <span class="contact-value">+33 7 68 85 92 65</span>
-        <button class="copy-btn" data-copy="+33768859265">Copier</button>
+      <div class="contact-info">
+        <% if (page.email) { %>
+          <div class="contact-item">
+            <span class="contact-value"><%= page.email %></span>
+            <button class="copy-btn" data-copy="<%= page.email %>">Copier</button>
+          </div>
+        <% } %>
+
+        <% if (page.phone) { %>
+          <div class="contact-item">
+            <span class="contact-value"><%= page.phone %></span>
+            <button class="copy-btn" data-copy="<%= page.phone %>">Copier</button>
+          </div>
+        <% } %>
       </div>
     </div>
   </main>

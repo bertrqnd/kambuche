@@ -254,14 +254,18 @@ html, body {
   animation: fadeIn 0.8s ease-in-out; 
 }
 
-.carousel__text h3 { 
-  font-size: 2.2rem; 
-  margin-bottom: 0.5em; 
-  font-weight: 400; 
+.carousel__text h3 {
+  font-size: 2.2rem;
+  margin-bottom: 0.5em;
+  font-weight: 400;
 }
 
-.carousel__text p { 
-  display: none;
+.carousel__text p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5em;
+  font-weight: 300;
+  color: #ddd;
 }
 
 .carousel__link {

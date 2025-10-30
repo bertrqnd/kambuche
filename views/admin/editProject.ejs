@@ -2,55 +2,162 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Modifier un projet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Modifier Projet</title>
   <link rel="stylesheet" href="/css/editProject.css">
+  <script src="https://cdn.tiny.cloud/1/2lkg942xymjh2lhbkocbbe5zn77svuhdtjusocmyly8ddu8m/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      tinymce.init({
+        selector: '#description',
+        height: 500,
+        menubar: false,
+        plugins: 'link image code lists table charmap searchreplace anchor paste',
+        toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link image table charmap | searchreplace anchor | code | removeformat',
+        skin: 'oxide-dark',
+        content_css: 'dark',
+        table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+        table_appearance_options: false,
+        image_advtab: true,
+        link_assume_external_targets: true,
+        target_list: false,
+        link_title: false,
+        font_family_formats: 'Roboto Flex=Roboto Flex, sans-serif',
+        content_style: "@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap'); body { font-family: 'Roboto Flex', sans-serif; color: #fff; background-color: #1e1e1e; font-weight: 300; } * { font-family: 'Roboto Flex', sans-serif !important; color: inherit !important; }",
+        paste_as_text: false,
+        paste_block_drop: false,
+        paste_remove_styles_if_webkit: true,
+        paste_webkit_styles: 'none',
+        paste_retain_style_properties: '',
+        paste_merge_formats: true,
+        paste_preprocess: function(plugin, args) {
+          // Nettoyer les styles inline (font, color, etc.)
+          args.content = args.content.replace(/style="[^"]*"/gi, '');
+          args.content = args.content.replace(/face="[^"]*"/gi, '');
+          args.content = args.content.replace(/color="[^"]*"/gi, '');
+          args.content = args.content.replace(/<font[^>]*>/gi, '');
+          args.content = args.content.replace(/<\/font>/gi, '');
+        },
+        formats: {
+          forecolor: { inline: 'span', remove: 'all' },
+          fontname: { inline: 'span', remove: 'all' }
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <h1>Modifier le projet</h1>
-
-  <% if (error) { %>
-    <div class="error"><%= error %></div>
-  <% } %>
-
-  <form action="/admin/projects/edit/<%= project._id %>" method="POST" enctype="multipart/form-data">
-    <label for="title">Titre :</label>
+  
+  <form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
+    
+    <label for="title">Titre du projet :</label>
     <input type="text" id="title" name="title" value="<%= project.title %>" required>
-
-    <label for="description">Description :</label>
-    <textarea id="description" name="description"><%= project.description %></textarea>
-
+    
+    <label for="short_description">Description rapide (page d'accueil) :</label>
+    <input type="text" id="short_description" name="short_description" 
+           value="<%= project.short_description %>" required>
+    
+    <label for="usage">Usage :</label>
+    <input type="text" id="usage" name="usage" value="<%= project.usage || '' %>">
+    
+    <label for="surface">Surface :</label>
+    <input type="text" id="surface" name="surface" value="<%= project.surface || '' %>">
+    
+    <label for="location_year">Ville / Année :</label>
+    <input type="text" id="location_year" name="location_year" value="<%= project.location_year || '' %>">
+    
+    <label for="description">Description complète :</label>
+    <textarea id="description" name="description" required><%= project.description %></textarea>
+    
     <label>Image de couverture actuelle :</label>
-    <% if (project.coverImageUrl) { %>
+    <% if(project.cover_image_url) { %>
       <div class="cover-container">
-        <img src="<%= project.coverImageUrl %>" alt="Image de couverture">
+        <img src="<%= project.cover_image_url %>" alt="Couverture">
+        <button type="button" class="delete-image-btn" data-project-id="<%= project._id %>" data-image-url="<%= project.cover_image_url %>" data-type="cover">✕</button>
       </div>
     <% } %>
-
-    <label for="coverImage">Changer l’image de couverture :</label>
-    <input type="file" id="coverImage" name="coverImage" accept="image/*">
-
-    <label>Galerie d’images actuelle :</label>
-    <div class="gallery-container">
-      <% project.images.forEach(image => { %>
-        <div class="image-container">
-          <img src="<%= image.url %>" alt="">
-          <form class="delete-image-form" action="/admin/projects/<%= project._id %>/delete-image" method="POST">
-            <input type="hidden" name="public_id" value="<%= image.public_id %>">
-            <button type="submit" class="delete-image-btn">✕</button>
-          </form>
-        </div>
-      <% }) %>
-    </div>
-
-    <label for="images">Ajouter de nouvelles images :</label>
-    <input type="file" id="images" name="images" accept="image/*" multiple>
-
-    <button type="submit">Enregistrer les modifications</button>
+    
+    <label for="cover_image">Remplacer l'image de couverture :</label>
+    <input type="file" id="cover_image" name="cover_image" accept="image/*">
+    
+    <label>Images de la galerie actuelles :</label>
+    <% if(project.images_url && project.images_url.length > 0) { %>
+      <div class="gallery-container">
+        <% project.images_url.forEach(img => { %>
+          <div class="image-container">
+            <img src="<%= img %>" alt="Image">
+            <button type="button" class="delete-image-btn" data-project-id="<%= project._id %>" data-image-url="<%= img %>" data-type="gallery">✕</button>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+    
+    <label>Ajouter de nouvelles images :</label>
+    <div id="images-container"></div>
+    <button type="button" onclick="addImageInput()" class="add-image-btn">+ Ajouter une image</button>
+    
+    <button type="submit">Sauvegarder</button>
   </form>
+  
+  <a href="/admin/projects" class="back-link">Retour aux projets</a>
 
-  <a href="/admin/projects" class="back-link">← Retour</a>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Ajouter un champ d'image par défaut
+      addImageInput();
 
-  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-  <script src="/js/admin-project.js"></script>
+      // Gestionnaire pour les boutons de suppression d'images
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('delete-image-btn')) {
+          const projectId = e.target.dataset.projectId;
+          const imageUrl = e.target.dataset.imageUrl;
+          const type = e.target.dataset.type;
+
+          if (!confirm('Supprimer cette image ?')) return;
+
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/admin/projects/delete-image';
+          form.innerHTML = `
+            <input type="hidden" name="projectId" value="${projectId}">
+            <input type="hidden" name="imageUrl" value="${imageUrl}">
+            <input type="hidden" name="type" value="${type}">
+          `;
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    });
+
+    function addImageInput() {
+      console.log('addImageInput appelée');
+      const container = document.getElementById('images-container');
+      if (!container) {
+        console.error('Container images-container non trouvé');
+        return;
+      }
+
+      const newItem = document.createElement('div');
+      newItem.className = 'image-upload-item';
+      newItem.innerHTML = `
+        <input type="file" name="new_images" accept="image/*" class="image-input">
+        <button type="button" onclick="removeImageInput(this)" class="remove-image-btn">✕</button>
+      `;
+      container.appendChild(newItem);
+      console.log('Champ ajouté, total:', container.children.length);
+    }
+
+    function removeImageInput(btn) {
+      console.log('removeImageInput appelée');
+      const container = document.getElementById('images-container');
+      if (container && container.children.length > 1) {
+        btn.parentElement.remove();
+        console.log('Champ supprimé, restant:', container.children.length);
+      } else {
+        console.log('Impossible de supprimer: dernier champ ou container non trouvé');
+      }
+    }
+  </script>
 </body>
 </html>
