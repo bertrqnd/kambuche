@@ -20,10 +20,18 @@ const storage = new CloudinaryStorage({
 });
 
 // Configuration Multer
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB max
+    fileSize: 10 * 1024 * 1024 // 10MB max
+  },
+  fileFilter: (req, file, cb) => {
+    // Vérifier le type MIME
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Le fichier doit être une image'), false);
+    }
   }
 });
 

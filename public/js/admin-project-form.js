@@ -63,18 +63,22 @@ document.addEventListener('DOMContentLoaded', function() {
       div.className = 'image-preview-item';
       div.innerHTML = `
         <img src="${e.target.result}" alt="Cover preview">
-        <button type="button" class="remove-btn" onclick="removeCover()">×</button>
+        <button type="button" class="remove-btn" data-action="remove-cover">×</button>
       `;
       coverPreview.appendChild(div);
+
+      // Ajouter l'event listener au bouton
+      const removeBtn = div.querySelector('.remove-btn');
+      removeBtn.addEventListener('click', removeCover);
     };
     reader.readAsDataURL(file);
   }
 
-  window.removeCover = function() {
+  function removeCover() {
     coverFile = null;
     coverInput.value = '';
     coverPreview.innerHTML = '';
-  };
+  }
 
   // Gestion des images supplémentaires
   const additionalInput = document.getElementById('additional_images');
@@ -141,21 +145,80 @@ document.addEventListener('DOMContentLoaded', function() {
       reader.onload = (e) => {
         const div = document.createElement('div');
         div.className = 'image-preview-item';
+        div.setAttribute('draggable', 'true');
+        div.setAttribute('data-index', index);
         div.innerHTML = `
           <img src="${e.target.result}" alt="Preview ${index + 1}">
-          <button type="button" class="remove-btn" onclick="removeAdditional(${index})">×</button>
+          <button type="button" class="remove-btn" data-index="${index}">×</button>
+          <div class="drag-handle">⋮⋮</div>
         `;
         additionalPreview.appendChild(div);
+
+        // Ajouter l'event listener au bouton de suppression
+        const removeBtn = div.querySelector('.remove-btn');
+        removeBtn.addEventListener('click', function() {
+          removeAdditional(parseInt(this.dataset.index));
+        });
+
+        // Ajouter les handlers de drag & drop
+        addDragHandlers(div);
       };
       reader.readAsDataURL(file);
     });
   }
 
-  window.removeAdditional = function(index) {
+  // Gestion du drag & drop pour réorganiser les images
+  let draggedItem = null;
+
+  function addDragHandlers(item) {
+    item.addEventListener('dragstart', function(e) {
+      draggedItem = this;
+      this.style.opacity = '0.5';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+
+    item.addEventListener('dragend', function() {
+      this.style.opacity = '1';
+    });
+
+    item.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+
+      if (this !== draggedItem) {
+        this.style.border = '2px solid #4ecdc4';
+      }
+    });
+
+    item.addEventListener('dragleave', function() {
+      this.style.border = '';
+    });
+
+    item.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.style.border = '';
+
+      if (draggedItem !== this) {
+        // Réorganiser le tableau additionalFiles
+        const draggedIndex = parseInt(draggedItem.dataset.index);
+        const targetIndex = parseInt(this.dataset.index);
+
+        const [movedFile] = additionalFiles.splice(draggedIndex, 1);
+        additionalFiles.splice(targetIndex, 0, movedFile);
+
+        // Mettre à jour l'affichage et l'input
+        updateAdditionalInput();
+        updateAdditionalPreview();
+      }
+    });
+  }
+
+  function removeAdditional(index) {
     additionalFiles.splice(index, 1);
     updateAdditionalInput();
     updateAdditionalPreview();
-  };
+  }
 
   // Gestion du submit avec loader et validation
   const form = document.getElementById('projectForm');
@@ -219,6 +282,12 @@ document.addEventListener('DOMContentLoaded', function() {
     coverError.style.display = 'none';
     descriptionError.style.display = 'none';
     submitWrapper.classList.add('loading');
+
+    // Compter le nombre total de fichiers
+    const totalFiles = (coverInput.files ? coverInput.files.length : 0) + additionalFiles.length;
+    if (totalFiles > 3) {
+      console.log(`⏳ Upload de ${totalFiles} images en cours... Cela peut prendre quelques instants.`);
+    }
   });
 
   // Retirer l'erreur quand une image est sélectionnée

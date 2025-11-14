@@ -33,7 +33,7 @@ exports.isAuthenticated = (req, res, next) => {
 }
 
 exports.getProjects = async (req, res) => {
-    const projects = await Project.find().sort({ date: -1 });
+    const projects = await Project.find().sort({ order: 1, date: -1 });
     res.render('admin/projects', { projects });
 }
 
@@ -312,6 +312,27 @@ exports.postEditPage = async (req, res) => {
     } catch (err) {
         console.error('❌ Erreur sauvegarde page:', err);
         res.redirect('/admin/pages');
+    }
+};
+
+// Réorganiser l'ordre des projets
+exports.reorderProjects = async (req, res) => {
+    try {
+        const { projectIds } = req.body;
+        console.log('📝 Réorganisation des projets:', projectIds);
+
+        // Mettre à jour l'ordre de chaque projet
+        const updatePromises = projectIds.map((id, index) => {
+            return Project.findByIdAndUpdate(id, { order: index });
+        });
+
+        await Promise.all(updatePromises);
+
+        console.log('✅ Ordre des projets sauvegardé');
+        res.json({ success: true, message: 'Ordre sauvegardé' });
+    } catch (err) {
+        console.error('❌ Erreur réorganisation projets:', err);
+        res.status(500).json({ success: false, error: err.message });
     }
 };
 

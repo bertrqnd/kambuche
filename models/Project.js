@@ -34,9 +34,13 @@ const projectSchema = new mongoose.Schema({
     required: true, 
     unique: true 
   },
-  date: { 
-    type: Date, 
-    default: Date.now 
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  order: {
+    type: Number,
+    default: 0
   }
 });
 

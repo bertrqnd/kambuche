@@ -1,0 +1,104 @@
+// Gestion du drag & drop pour réorganiser les projets
+document.addEventListener('DOMContentLoaded', function() {
+  const tbody = document.querySelector('table tbody');
+  if (!tbody) return;
+
+  const rows = tbody.querySelectorAll('tr');
+  let draggedRow = null;
+
+  rows.forEach(row => {
+    // Rendre la ligne draggable
+    row.setAttribute('draggable', 'true');
+    row.style.cursor = 'move';
+
+    row.addEventListener('dragstart', function(e) {
+      draggedRow = this;
+      this.style.opacity = '0.5';
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', this.innerHTML);
+    });
+
+    row.addEventListener('dragend', function() {
+      this.style.opacity = '1';
+    });
+
+    row.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+
+      if (this !== draggedRow) {
+        const rect = this.getBoundingClientRect();
+        const midpoint = rect.top + rect.height / 2;
+
+        if (e.clientY < midpoint) {
+          this.style.borderTop = '2px solid #4ecdc4';
+          this.style.borderBottom = '';
+        } else {
+          this.style.borderBottom = '2px solid #4ecdc4';
+          this.style.borderTop = '';
+        }
+      }
+    });
+
+    row.addEventListener('dragleave', function() {
+      this.style.borderTop = '';
+      this.style.borderBottom = '';
+    });
+
+    row.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      this.style.borderTop = '';
+      this.style.borderBottom = '';
+
+      if (draggedRow !== this) {
+        const rect = this.getBoundingClientRect();
+        const midpoint = rect.top + rect.height / 2;
+
+        if (e.clientY < midpoint) {
+          tbody.insertBefore(draggedRow, this);
+        } else {
+          tbody.insertBefore(draggedRow, this.nextSibling);
+        }
+
+        // Sauvegarder le nouvel ordre
+        saveProjectsOrder();
+      }
+    });
+  });
+
+  function saveProjectsOrder() {
+    const rows = tbody.querySelectorAll('tr');
+    const projectIds = [];
+
+    rows.forEach((row, index) => {
+      // Extraire l'ID du projet depuis l'URL du bouton "Modifier"
+      const editLink = row.querySelector('a[href*="/admin/projects/edit/"]');
+      if (editLink) {
+        const href = editLink.getAttribute('href');
+        const id = href.split('/').pop();
+        projectIds.push(id);
+      }
+    });
+
+    console.log('💾 Sauvegarde du nouvel ordre:', projectIds);
+
+    // Envoyer au serveur
+    fetch('/admin/projects/reorder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ projectIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('✅ Ordre sauvegardé:', data);
+    })
+    .catch(error => {
+      console.error('❌ Erreur sauvegarde ordre:', error);
+      alert('Erreur lors de la sauvegarde de l\'ordre des projets');
+    });
+  }
+});
