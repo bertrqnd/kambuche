@@ -176,7 +176,76 @@ function updateAdditionalPreview() {
   });
 }
 
-// Gestion du drag & drop pour réorganiser les images
+// Gestion du drag & drop pour les images EXISTANTES
+const existingImagesContainer = document.getElementById('existingImagesContainer');
+const galleryOrderInput = document.getElementById('gallery_order');
+
+if (existingImagesContainer) {
+  const existingItems = existingImagesContainer.querySelectorAll('.existing-image-item');
+  let draggedExistingItem = null;
+
+  existingItems.forEach(item => {
+    item.style.cursor = 'move';
+
+    item.addEventListener('dragstart', function(e) {
+      draggedExistingItem = this;
+      this.style.opacity = '0.5';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+
+    item.addEventListener('dragend', function() {
+      this.style.opacity = '1';
+    });
+
+    item.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+
+      if (this !== draggedExistingItem) {
+        this.style.border = '2px solid #4ecdc4';
+      }
+    });
+
+    item.addEventListener('dragleave', function() {
+      this.style.border = '';
+    });
+
+    item.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.style.border = '';
+
+      if (draggedExistingItem !== this) {
+        // Réorganiser visuellement
+        const allItems = Array.from(existingImagesContainer.querySelectorAll('.existing-image-item'));
+        const draggedIndex = allItems.indexOf(draggedExistingItem);
+        const targetIndex = allItems.indexOf(this);
+
+        if (draggedIndex < targetIndex) {
+          existingImagesContainer.insertBefore(draggedExistingItem, this.nextSibling);
+        } else {
+          existingImagesContainer.insertBefore(draggedExistingItem, this);
+        }
+
+        // Mettre à jour l'ordre dans l'input caché
+        updateGalleryOrder();
+      }
+    });
+  });
+
+  // Fonction pour mettre à jour l'ordre des images de la galerie
+  function updateGalleryOrder() {
+    const items = existingImagesContainer.querySelectorAll('.existing-image-item');
+    const imageUrls = Array.from(items).map(item => item.dataset.imageUrl);
+    galleryOrderInput.value = JSON.stringify(imageUrls);
+    console.log('📸 Nouvel ordre des images:', imageUrls);
+  }
+
+  // Initialiser l'ordre au chargement
+  updateGalleryOrder();
+}
+
+// Gestion du drag & drop pour réorganiser les NOUVELLES images
 let draggedItem = null;
 
 function addDragHandlers(item) {

@@ -51,14 +51,16 @@
 
     <label>Images de la galerie :</label>
     <% if(project.images_url && project.images_url.length > 0) { %>
-      <div class="existing-images-container">
+      <div class="existing-images-container" id="existingImagesContainer">
         <% project.images_url.forEach(img => { %>
-          <div class="existing-image-item">
+          <div class="existing-image-item" draggable="true" data-image-url="<%= img %>">
             <img src="<%= img %>" alt="Image">
             <button type="button" class="delete-image-btn" data-project-id="<%= project._id %>" data-image-url="<%= img %>" data-type="gallery">✕</button>
+            <div class="drag-handle">⋮⋮</div>
           </div>
         <% }) %>
       </div>
+      <input type="hidden" id="gallery_order" name="gallery_order" value="">
     <% } %>
     <input type="file" id="new_images" name="new_images" accept="image/*" multiple style="display: none;">
     <div class="upload-zone" id="additionalZone">

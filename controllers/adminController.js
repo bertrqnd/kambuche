@@ -86,7 +86,7 @@ exports.getEditProject = async (req, res) => {
 
 exports.postEditProject = async (req, res) => {
     try {
-        const { title, short_description, usage, surface, location_year, description } = req.body;
+        const { title, short_description, usage, surface, location_year, description, gallery_order } = req.body;
         const project = await Project.findById(req.params.id);
 
         if (!project) {
@@ -120,6 +120,18 @@ exports.postEditProject = async (req, res) => {
             console.log('✅ Nouvelle cover:', project.cover_image_url);
         }
 
+        // Gérer l'ordre des images de la galerie
+        if (gallery_order) {
+            try {
+                const orderedUrls = JSON.parse(gallery_order);
+                console.log('📸 Nouvel ordre reçu:', orderedUrls);
+                project.images_url = orderedUrls;
+            } catch (err) {
+                console.error('⚠️ Erreur parsing gallery_order:', err);
+            }
+        }
+
+        // Ajouter les nouvelles images à la fin
         if (req.files && req.files.new_images && req.files.new_images.length > 0) {
             const newImages = req.files.new_images.map(file => file.path);
             project.images_url = [...project.images_url, ...newImages];
