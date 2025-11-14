@@ -187,12 +187,13 @@
 
     <div class="form-group">
       <label for="cover_image">Image de couverture :</label>
-      <input type="file" id="cover_image" name="cover_image" accept="image/*" required style="display: none;">
+      <input type="file" id="cover_image" name="cover_image" accept="image/*" style="display: none;">
       <div class="upload-zone" id="coverZone">
         <div class="upload-zone-text">Cliquez ou glissez une image ici</div>
-        <div class="upload-zone-hint">Image de couverture</div>
+        <div class="upload-zone-hint">Image de couverture (obligatoire)</div>
       </div>
       <div id="coverPreview" class="image-preview-container"></div>
+      <span id="coverError" style="color: #ff6b6b; font-size: 14px; display: none; margin-top: 5px;">Veuillez sélectionner une image de couverture</span>
     </div>
 
     <div class="form-group">
@@ -304,6 +305,7 @@
           additionalFiles.push(file);
         }
       });
+      updateAdditionalInput();
       updateAdditionalPreview();
     });
 
@@ -361,12 +363,41 @@
       updateAdditionalPreview();
     };
 
-    // Gestion du submit avec loader
+    // Gestion du submit avec loader et validation
     const form = document.getElementById('projectForm');
     const submitWrapper = document.getElementById('submitWrapper');
+    const coverError = document.getElementById('coverError');
 
-    form.addEventListener('submit', (e) => {
-      submitWrapper.classList.add('loading');
+    if (form && submitWrapper) {
+      form.addEventListener('submit', (e) => {
+        // Synchroniser TinyMCE avec le textarea
+        if (typeof tinymce !== 'undefined' && tinymce.get('description')) {
+          tinymce.get('description').save();
+        }
+
+        // Vérifier si une image de couverture est sélectionnée
+        if (!coverInput.files || coverInput.files.length === 0) {
+          e.preventDefault();
+          coverError.style.display = 'block';
+          coverZone.style.borderColor = '#ff6b6b';
+
+          // Scroll vers le champ d'erreur
+          coverZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return false;
+        }
+
+        // Tout est OK, afficher le loader
+        coverError.style.display = 'none';
+        submitWrapper.classList.add('loading');
+      });
+    }
+
+    // Retirer l'erreur quand une image est sélectionnée
+    coverInput.addEventListener('change', () => {
+      if (coverInput.files && coverInput.files.length > 0) {
+        coverError.style.display = 'none';
+        coverZone.style.borderColor = '';
+      }
     });
   </script>
 </body>
