@@ -106,23 +106,23 @@ body {
 .contact-info {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  align-items: flex-end;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 25px;
   padding: 15px 0;
 }
 
 .contact-value {
-  font-size: 1.2rem;
+  font-size: 2.5rem;
   font-weight: 300;
   color: #fff;
-  flex: 1;
   letter-spacing: -0.3px;
+  text-align: right;
 }
 
 .copy-btn {

@@ -6,6 +6,152 @@
   <title>Admin - Modifier Projet</title>
   <link rel="stylesheet" href="/css/editProject.css">
   <script src="https://cdn.tiny.cloud/1/2lkg942xymjh2lhbkocbbe5zn77svuhdtjusocmyly8ddu8m/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+  <style>
+    .upload-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 15px;
+    }
+    .upload-zone:hover {
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .upload-zone.dragover {
+      border-color: #4ecdc4;
+      background: rgba(78, 205, 196, 0.1);
+    }
+    .upload-zone-text {
+      font-size: 16px;
+      color: #ddd;
+      margin-bottom: 8px;
+    }
+    .upload-zone-hint {
+      font-size: 13px;
+      color: #999;
+    }
+    .image-preview-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .image-preview-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .image-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-preview-item .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(255, 107, 107, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+    }
+    .image-preview-item:hover .remove-btn {
+      opacity: 1;
+    }
+    .image-preview-item .remove-btn:hover {
+      background: #ff6b6b;
+      transform: scale(1.1);
+    }
+    .existing-images-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    .existing-image-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .existing-image-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .existing-image-item .delete-image-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(255, 107, 107, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+    }
+    .existing-image-item:hover .delete-image-btn {
+      opacity: 1;
+    }
+    .existing-image-item .delete-image-btn:hover {
+      background: #ff6b6b;
+      transform: scale(1.1);
+    }
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #4ecdc4;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .submit-btn-wrapper {
+      position: relative;
+    }
+    .submit-btn-wrapper.loading button {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .submit-loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    .submit-btn-wrapper.loading .submit-loader {
+      display: block;
+    }
+  </style>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       tinymce.init({
@@ -23,7 +169,7 @@
         target_list: false,
         link_title: false,
         font_family_formats: 'Roboto Flex=Roboto Flex, sans-serif',
-        content_style: "@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap'); body { font-family: 'Roboto Flex', sans-serif; color: #fff; background-color: #1e1e1e; font-weight: 300; } * { font-family: 'Roboto Flex', sans-serif !important; color: inherit !important; }",
+        content_style: "@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap'); body { font-family: 'Roboto Flex', sans-serif; color: #ffffff !important; background-color: #1e1e1e; font-weight: 300; } * { font-family: 'Roboto Flex', sans-serif !important; color: #ffffff !important; } p, div, span, td, th, li, a, strong, em, u { color: #ffffff !important; }",
         paste_as_text: false,
         paste_block_drop: false,
         paste_remove_styles_if_webkit: true,
@@ -69,95 +215,225 @@
     
     <label for="description">Description complète :</label>
     <textarea id="description" name="description" required><%= project.description %></textarea>
-    
-    <label>Image de couverture actuelle :</label>
+
+    <label>Image de couverture :</label>
     <% if(project.cover_image_url) { %>
-      <div class="cover-container">
-        <img src="<%= project.cover_image_url %>" alt="Couverture">
-        <button type="button" class="delete-image-btn" data-project-id="<%= project._id %>" data-image-url="<%= project.cover_image_url %>" data-type="cover">✕</button>
+      <div class="existing-images-container">
+        <div class="existing-image-item">
+          <img src="<%= project.cover_image_url %>" alt="Couverture">
+          <button type="button" class="delete-image-btn" data-project-id="<%= project._id %>" data-image-url="<%= project.cover_image_url %>" data-type="cover">✕</button>
+        </div>
       </div>
     <% } %>
-    
-    <label for="cover_image">Remplacer l'image de couverture :</label>
-    <input type="file" id="cover_image" name="cover_image" accept="image/*">
-    
-    <label>Images de la galerie actuelles :</label>
+    <input type="file" id="cover_image" name="cover_image" accept="image/*" style="display: none;">
+    <div class="upload-zone" id="coverZone">
+      <div class="upload-zone-text">Cliquez ou glissez une image ici</div>
+      <div class="upload-zone-hint">Remplacer l'image de couverture</div>
+    </div>
+    <div id="coverPreview" class="image-preview-container"></div>
+
+    <label>Images de la galerie :</label>
     <% if(project.images_url && project.images_url.length > 0) { %>
-      <div class="gallery-container">
+      <div class="existing-images-container">
         <% project.images_url.forEach(img => { %>
-          <div class="image-container">
+          <div class="existing-image-item">
             <img src="<%= img %>" alt="Image">
             <button type="button" class="delete-image-btn" data-project-id="<%= project._id %>" data-image-url="<%= img %>" data-type="gallery">✕</button>
           </div>
         <% }) %>
       </div>
     <% } %>
-    
-    <label>Ajouter de nouvelles images :</label>
-    <div id="images-container"></div>
-    <button type="button" onclick="addImageInput()" class="add-image-btn">+ Ajouter une image</button>
-    
-    <button type="submit">Sauvegarder</button>
+    <input type="file" id="new_images" name="new_images" accept="image/*" multiple style="display: none;">
+    <div class="upload-zone" id="additionalZone">
+      <div class="upload-zone-text">Cliquez ou glissez des images ici</div>
+      <div class="upload-zone-hint">Ajouter de nouvelles images à la galerie</div>
+    </div>
+    <div id="additionalPreview" class="image-preview-container"></div>
+
+    <div class="submit-btn-wrapper" id="submitWrapper">
+      <button type="submit">Sauvegarder</button>
+      <div class="submit-loader">
+        <div class="spinner"></div>
+      </div>
+    </div>
   </form>
   
   <a href="/admin/projects" class="back-link">Retour aux projets</a>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      // Ajouter un champ d'image par défaut
-      addImageInput();
+    // Variables globales
+    let coverFile = null;
+    let additionalFiles = [];
 
-      // Gestionnaire pour les boutons de suppression d'images
-      document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('delete-image-btn')) {
-          const projectId = e.target.dataset.projectId;
-          const imageUrl = e.target.dataset.imageUrl;
-          const type = e.target.dataset.type;
+    // Gestionnaire pour les boutons de suppression d'images existantes
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('delete-image-btn')) {
+        const projectId = e.target.dataset.projectId;
+        const imageUrl = e.target.dataset.imageUrl;
+        const type = e.target.dataset.type;
 
-          if (!confirm('Supprimer cette image ?')) return;
+        if (!confirm('Supprimer cette image ?')) return;
 
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = '/admin/projects/delete-image';
-          form.innerHTML = `
-            <input type="hidden" name="projectId" value="${projectId}">
-            <input type="hidden" name="imageUrl" value="${imageUrl}">
-            <input type="hidden" name="type" value="${type}">
-          `;
-          document.body.appendChild(form);
-          form.submit();
-        }
-      });
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/admin/projects/delete-image';
+        form.innerHTML = `
+          <input type="hidden" name="projectId" value="${projectId}">
+          <input type="hidden" name="imageUrl" value="${imageUrl}">
+          <input type="hidden" name="type" value="${type}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+      }
     });
 
-    function addImageInput() {
-      console.log('addImageInput appelée');
-      const container = document.getElementById('images-container');
-      if (!container) {
-        console.error('Container images-container non trouvé');
-        return;
-      }
+    // Gestion de l'image de couverture
+    const coverInput = document.getElementById('cover_image');
+    const coverZone = document.getElementById('coverZone');
+    const coverPreview = document.getElementById('coverPreview');
 
-      const newItem = document.createElement('div');
-      newItem.className = 'image-upload-item';
-      newItem.innerHTML = `
-        <input type="file" name="new_images" accept="image/*" class="image-input">
-        <button type="button" onclick="removeImageInput(this)" class="remove-image-btn">✕</button>
-      `;
-      container.appendChild(newItem);
-      console.log('Champ ajouté, total:', container.children.length);
+    // Click handler pour ouvrir le sélecteur de fichier
+    coverZone.addEventListener('click', (e) => {
+      e.preventDefault();
+      coverInput.click();
+    });
+
+    coverInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        coverFile = file;
+        showCoverPreview(file);
+      }
+    });
+
+    // Drag & drop pour cover
+    coverZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      coverZone.classList.add('dragover');
+    });
+
+    coverZone.addEventListener('dragleave', () => {
+      coverZone.classList.remove('dragover');
+    });
+
+    coverZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      coverZone.classList.remove('dragover');
+
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        coverFile = file;
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        coverInput.files = dataTransfer.files;
+        showCoverPreview(file);
+      }
+    });
+
+    function showCoverPreview(file) {
+      coverPreview.innerHTML = '';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const div = document.createElement('div');
+        div.className = 'image-preview-item';
+        div.innerHTML = `
+          <img src="${e.target.result}" alt="Cover preview">
+          <button type="button" class="remove-btn" onclick="removeCover()">×</button>
+        `;
+        coverPreview.appendChild(div);
+      };
+      reader.readAsDataURL(file);
     }
 
-    function removeImageInput(btn) {
-      console.log('removeImageInput appelée');
-      const container = document.getElementById('images-container');
-      if (container && container.children.length > 1) {
-        btn.parentElement.remove();
-        console.log('Champ supprimé, restant:', container.children.length);
-      } else {
-        console.log('Impossible de supprimer: dernier champ ou container non trouvé');
-      }
+    window.removeCover = function() {
+      coverFile = null;
+      coverInput.value = '';
+      coverPreview.innerHTML = '';
+    };
+
+    // Gestion des images supplémentaires
+    const additionalInput = document.getElementById('new_images');
+    const additionalZone = document.getElementById('additionalZone');
+    const additionalPreview = document.getElementById('additionalPreview');
+
+    // Click handler pour ouvrir le sélecteur de fichiers multiples
+    additionalZone.addEventListener('click', (e) => {
+      e.preventDefault();
+      additionalInput.click();
+    });
+
+    additionalInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        if (!additionalFiles.find(f => f.name === file.name)) {
+          additionalFiles.push(file);
+        }
+      });
+      updateAdditionalPreview();
+    });
+
+    // Drag & drop pour images supplémentaires
+    additionalZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      additionalZone.classList.add('dragover');
+    });
+
+    additionalZone.addEventListener('dragleave', () => {
+      additionalZone.classList.remove('dragover');
+    });
+
+    additionalZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      additionalZone.classList.remove('dragover');
+
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      files.forEach(file => {
+        if (!additionalFiles.find(f => f.name === file.name)) {
+          additionalFiles.push(file);
+        }
+      });
+      updateAdditionalInput();
+      updateAdditionalPreview();
+    });
+
+    function updateAdditionalInput() {
+      const dataTransfer = new DataTransfer();
+      additionalFiles.forEach(file => dataTransfer.items.add(file));
+      additionalInput.files = dataTransfer.files;
     }
+
+    function updateAdditionalPreview() {
+      additionalPreview.innerHTML = '';
+      additionalFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const div = document.createElement('div');
+          div.className = 'image-preview-item';
+          div.innerHTML = `
+            <img src="${e.target.result}" alt="Preview ${index + 1}">
+            <button type="button" class="remove-btn" onclick="removeAdditional(${index})">×</button>
+          `;
+          additionalPreview.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.removeAdditional = function(index) {
+      additionalFiles.splice(index, 1);
+      updateAdditionalInput();
+      updateAdditionalPreview();
+    };
+
+    // Gestion du submit avec loader
+    const form = document.querySelector('form');
+    const submitWrapper = document.getElementById('submitWrapper');
+
+    form.addEventListener('submit', (e) => {
+      submitWrapper.classList.add('loading');
+    });
   </script>
 </body>
 </html>
