@@ -540,22 +540,32 @@ html, body {
 @media (max-width: 768px) and (orientation: landscape) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
-  
-  .project-container {
-    flex-direction: row;
-    height: calc(100vh - 60px);
-  }
-  
-  .project-carousel {
-    width: 66.6666%;
-    height: 100%;
-  }
-  
-  .project-text {
-    width: 33.3333%;
-    height: 100%;
-    padding: 30px 25px;
+
+  html, body {
     overflow-y: auto;
+    height: auto;
+  }
+
+  .project-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    margin-top: 60px;
+  }
+
+  .project-carousel {
+    width: 100%;
+    height: 60vh;
+    flex-shrink: 0;
+    margin-top: -60px;
+    padding-top: 60px;
+  }
+
+  .project-text {
+    width: 100%;
+    min-height: auto;
+    padding: 20px 30px;
+    overflow-y: visible;
   }
 
   .project-title {
@@ -580,16 +590,19 @@ html, body {
   .project-description {
     font-size: 0.9rem;
   }
-  
+
   /* Indicateurs plus petits en horizontal */
   .carousel__indicator {
     width: 8px;
     height: 8px;
   }
-  
-  /* Scrollbar plus petite */
-  .project-text::-webkit-scrollbar {
-    width: 5px;
+
+  /* Espace en bas */
+  .project-text::after {
+    content: '';
+    display: block;
+    height: 60px;
+    flex-shrink: 0;
   }
 }
 
@@ -597,6 +610,11 @@ html, body {
 @media (max-width: 768px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
+
+  html, body {
+    overflow-y: auto;
+    height: auto;
+  }
 
   .project-container {
     flex-direction: column;
@@ -623,6 +641,7 @@ html, body {
     min-height: auto;
     padding: 12px 20px;
     margin-left: -5px;
+    overflow-y: visible;
   }
 
   .project-title {
