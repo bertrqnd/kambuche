@@ -336,7 +336,6 @@ html, body {
   border-top: 3px solid #fff;
   border-right: 3px solid #fff;
   transform-origin: center;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
 }
 
 .carousel__btn--prev::before { 
