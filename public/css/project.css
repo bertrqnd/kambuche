@@ -99,6 +99,18 @@ html, body {
   overflow: hidden;
 }
 
+/* Texte projet 1/3 droite */
+.project-text {
+  width: 33.3333%;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+}
+
 /* Wrapper pour glissement */
 .slides-wrapper {
   display: flex;
@@ -188,18 +200,6 @@ html, body {
   transform: scale(1.3);
 }
 
-/* Texte projet 1/3 droite - POLICE IDENTIQUE ACCUEIL */
-.project-text {
-  width: 33.3333%;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex-shrink: 0;
-}
-
 /* Titre principal - Plus grand mais moins gras */
 .project-title {
   font-size: 2.5rem;
@@ -255,7 +255,7 @@ html, body {
 /* Description complète - Support TinyMCE */
 .project-description,
 .tinymce-content {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 300;
   line-height: 1.7;
   color: #ddd;
