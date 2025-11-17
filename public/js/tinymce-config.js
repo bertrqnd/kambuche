@@ -1,8 +1,7 @@
-// Configuration TinyMCE pour la partie admin
+// Configuration TinyMCE unifiée pour tous les éditeurs
 document.addEventListener("DOMContentLoaded", () => {
-  tinymce.init({
-    selector: '#description',
-    height: 500,
+  // Configuration commune
+  const commonConfig = {
     menubar: false,
     plugins: 'link image code lists table charmap searchreplace anchor paste',
     toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link image table charmap | searchreplace anchor | code | removeformat',
@@ -22,7 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     paste_webkit_styles: 'none',
     paste_retain_style_properties: '',
     paste_merge_formats: true,
-    paste_preprocess: function(plugin, args) {
+    paste_preprocess: function(_plugin, args) {
+      // Nettoyer les styles inline (font, color, etc.)
       args.content = args.content.replace(/style="[^"]*"/gi, '');
       args.content = args.content.replace(/face="[^"]*"/gi, '');
       args.content = args.content.replace(/color="[^"]*"/gi, '');
@@ -33,5 +33,23 @@ document.addEventListener("DOMContentLoaded", () => {
       forecolor: { inline: 'span', remove: 'all' },
       fontname: { inline: 'span', remove: 'all' }
     }
-  });
+  };
+
+  // Initialiser #description (projets) si présent
+  if (document.querySelector('#description')) {
+    tinymce.init({
+      ...commonConfig,
+      selector: '#description',
+      height: 500
+    });
+  }
+
+  // Initialiser #content (pages) si présent
+  if (document.querySelector('#content')) {
+    tinymce.init({
+      ...commonConfig,
+      selector: '#content',
+      height: 600
+    });
+  }
 });
