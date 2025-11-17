@@ -60,4 +60,7 @@ app.use('/admin', adminRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
+// Augmenter le timeout pour les uploads de fichiers volumineux (5 minutes)
+server.timeout = 300000; // 5 minutes en millisecondes
