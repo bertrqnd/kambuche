@@ -54,6 +54,12 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 * 2 } // 2 heures
 }));
 
+// Middleware pour passer la clé TinyMCE à toutes les vues
+app.use((_req, res, next) => {
+  res.locals.tinymceApiKey = process.env.TINYMCE_API_KEY || '';
+  next();
+});
+
 // Routes
 app.use('/', publicRoutes);
 app.use('/admin', adminRoutes);

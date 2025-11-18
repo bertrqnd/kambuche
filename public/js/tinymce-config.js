@@ -1,7 +1,11 @@
 // Configuration TinyMCE unifiée pour tous les éditeurs
 document.addEventListener("DOMContentLoaded", () => {
+  // Récupérer la clé API depuis l'attribut data
+  const tinymceApiKey = document.body.dataset.tinymceApiKey || '';
+
   // Configuration commune
   const commonConfig = {
+    apiKey: tinymceApiKey,
     menubar: false,
     plugins: 'link image code lists table charmap searchreplace anchor paste',
     toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link image table charmap | searchreplace anchor | code | removeformat',

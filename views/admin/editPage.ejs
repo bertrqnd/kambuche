@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Modifier <%= page.title %></title>
   <link rel="stylesheet" href="/css/admin.css">
-  <script src="https://cdn.tiny.cloud/1/2lkg942xymjh2lhbkocbbe5zn77svuhdtjusocmyly8ddu8m/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
   <script src="/js/tinymce-config.js"></script>
 </head>
-<body>
+<body data-tinymce-api-key="<%= tinymceApiKey %>">
   <div class="admin-header">
     <h1>Modifier : <%= page.title %></h1>
   </div>
