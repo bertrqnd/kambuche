@@ -23,7 +23,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB max
+    fileSize: 20 * 1024 * 1024 // 20MB max
   },
   fileFilter: (req, file, cb) => {
     // Vérifier le type MIME
