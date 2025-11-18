@@ -3,7 +3,7 @@ const Page = require('../models/Page');
 
 // === Liste de tous les projets ===
 exports.getProjects = async (req, res) => {
-  const projects = await Project.find().sort({ date: -1 });
+  const projects = await Project.find().sort({ order: 1, date: -1 });
   console.log('Projets récupérés :', projects);
 
   // Préparer les données pour le carousel
@@ -42,7 +42,7 @@ exports.getProject = async (req, res) => {
 
 // === Page contact ===
 exports.getContact = async (req, res) => {
-  const projects = await Project.find().sort({ date: -1 });
+  const projects = await Project.find().sort({ order: 1, date: -1 });
   let page = await Page.findOne({ slug: 'contact' });
 
   // Si la page n'existe pas, créer un contenu par défaut
@@ -66,7 +66,7 @@ exports.getContact = async (req, res) => {
 
 // === Page à propos ===
 exports.getAbout = async (req, res) => {
-  const projects = await Project.find().sort({ date: -1 });
+  const projects = await Project.find().sort({ order: 1, date: -1 });
   let page = await Page.findOne({ slug: 'about' });
 
   // Si la page n'existe pas, créer un contenu par défaut

@@ -25,6 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
   coverInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Vérifier la taille (10 MB max pour Cloudinary gratuit)
+      const maxSize = 10 * 1024 * 1024; // 10 MB en octets
+      if (file.size > maxSize) {
+        alert(`L'image de couverture est trop volumineuse (${(file.size / 1024 / 1024).toFixed(2)} MB).\nTaille maximum: 10 MB.\nVeuillez compresser ou choisir une autre image.`);
+        coverInput.value = '';
+        return;
+      }
       coverFile = file;
       showCoverPreview(file);
     }
@@ -47,6 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
+      // Vérifier la taille (10 MB max pour Cloudinary gratuit)
+      const maxSize = 10 * 1024 * 1024; // 10 MB en octets
+      if (file.size > maxSize) {
+        alert(`L'image de couverture est trop volumineuse (${(file.size / 1024 / 1024).toFixed(2)} MB).\nTaille maximum: 10 MB.\nVeuillez compresser ou choisir une autre image.`);
+        return;
+      }
       coverFile = file;
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(file);
@@ -98,11 +111,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   additionalInput.addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
+    const maxSize = 10 * 1024 * 1024; // 10 MB en octets
+    const rejectedFiles = [];
+
     files.forEach(file => {
-      if (!additionalFiles.find(f => f.name === file.name)) {
+      if (file.size > maxSize) {
+        rejectedFiles.push(`${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+      } else if (!additionalFiles.find(f => f.name === file.name)) {
         additionalFiles.push(file);
       }
     });
+
+    if (rejectedFiles.length > 0) {
+      alert(`Les images suivantes sont trop volumineuses (max 10 MB):\n\n${rejectedFiles.join('\n')}\n\nVeuillez compresser ces images.`);
+    }
+
     updateAdditionalInput();
     updateAdditionalPreview();
   });
@@ -123,11 +146,21 @@ document.addEventListener('DOMContentLoaded', function() {
     additionalZone.classList.remove('dragover');
 
     const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    const maxSize = 10 * 1024 * 1024; // 10 MB en octets
+    const rejectedFiles = [];
+
     files.forEach(file => {
-      if (!additionalFiles.find(f => f.name === file.name)) {
+      if (file.size > maxSize) {
+        rejectedFiles.push(`${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+      } else if (!additionalFiles.find(f => f.name === file.name)) {
         additionalFiles.push(file);
       }
     });
+
+    if (rejectedFiles.length > 0) {
+      alert(`Les images suivantes sont trop volumineuses (max 10 MB):\n\n${rejectedFiles.join('\n')}\n\nVeuillez compresser ces images.`);
+    }
+
     updateAdditionalInput();
     updateAdditionalPreview();
   });
