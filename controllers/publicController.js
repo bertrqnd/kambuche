@@ -18,8 +18,8 @@ exports.getProjects = async (req, res) => {
     projects,          // pour le menu dropdown
     carouselProjects,  // pour le carousel
     meta: {
-      title: 'Andrea Layton - Architecte à Toulouse | Rénovation & Construction',
-      description: "Andrea Layton, architecte à Toulouse. Spécialisée en rénovation, extension et construction neuve. Accompagnement personnalisé pour vos projets d'architecture."
+      title: 'Andrea Layton - Maître d\'œuvre à Toulouse | Rénovation & Construction',
+      description: "Andrea Layton, maître d'œuvre à Toulouse. Spécialisée en rénovation, extension et construction neuve. Accompagnement personnalisé pour vos projets d'architecture."
     }
   });
 };
@@ -33,8 +33,8 @@ exports.getProject = async (req, res) => {
   res.render('public/project', {
     project,
     meta: {
-      title: `${project.title} | Andrea Layton - Architecte Toulouse`,
-      description: project.short_description || `Projet ${project.title} réalisé par Andrea Layton, architecte à Toulouse. ${project.usage ? project.usage + '.' : ''} ${project.location_year || ''}`
+      title: `${project.title} | Andrea Layton - Maître d'œuvre Toulouse`,
+      description: project.short_description || `Projet ${project.title} réalisé par Andrea Layton, maître d'œuvre à Toulouse. ${project.usage ? project.usage + '.' : ''} ${project.location_year || ''}`
     }
   });
 };
@@ -57,8 +57,8 @@ exports.getContact = async (req, res) => {
     projects,
     page,
     meta: {
-      title: 'Contact | Andrea Layton - Architecte Toulouse',
-      description: "Contactez Andrea Layton, architecte à Toulouse. Devis gratuit pour vos projets de rénovation, extension ou construction neuve."
+      title: 'Contact | Andrea Layton - Maître d\'œuvre Toulouse',
+      description: "Contactez Andrea Layton, maître d'œuvre à Toulouse. Devis gratuit pour vos projets de rénovation, extension ou construction neuve."
     }
   });
 };
@@ -81,8 +81,8 @@ exports.getAbout = async (req, res) => {
     projects,
     page,
     meta: {
-      title: 'À propos | Andrea Layton - Architecte Toulouse',
-      description: "Découvrez le parcours d'Andrea Layton, architecte diplômée à Toulouse. Expertise en rénovation, extension et projets d'architecture sur mesure."
+      title: 'À propos | Andrea Layton - Maître d\'œuvre Toulouse',
+      description: "Découvrez le parcours d'Andrea Layton, maître d'œuvre à Toulouse. Expertise en rénovation, extension et projets d'architecture sur mesure."
     }
   });
 };
