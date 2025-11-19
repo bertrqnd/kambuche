@@ -45,8 +45,6 @@ exports.postAddProject = async (req, res) => {
     try {
         const { title, short_description, usage, surface, location_year, description } = req.body;
 
-        console.log('📝 Body:', req.body);
-        console.log('📁 Files:', req.files);
 
         const cover_image_url = req.files && req.files.cover_image ? 
             req.files.cover_image[0].path : '';
@@ -54,8 +52,6 @@ exports.postAddProject = async (req, res) => {
         const images_url = req.files && req.files.images ? 
             req.files.images.map(file => file.path) : [];
 
-        console.log('🖼️ Cover:', cover_image_url);
-        console.log('🖼️ Images:', images_url);
 
         const slug = slugify(title, { lower: true, strict: true });
 
@@ -93,8 +89,6 @@ exports.postEditProject = async (req, res) => {
             return res.redirect('/admin/projects');
         }
 
-        console.log('📝 Edit Body:', req.body);
-        console.log('📁 Edit Files:', req.files);
 
         project.title = title;
         project.short_description = short_description;
@@ -302,19 +296,16 @@ exports.postEditPage = async (req, res) => {
         // Ajouter l'image si uploadée (pour la page À propos)
         if (slug === 'about' && req.file) {
             updateData.image_url = req.file.path;
-            console.log('🖼️ Image uploadée:', req.file.path);
         }
 
         // Ajouter phone et email seulement pour la page Contact
         if (slug === 'contact') {
             updateData.phone = phone || '';
             updateData.email = email || '';
-            console.log('📞 Téléphone:', phone);
-            console.log('📧 Email:', email);
         }
 
         // Mettre à jour ou créer la page
-        const page = await Page.findOneAndUpdate(
+        await Page.findOneAndUpdate(
             { slug },
             updateData,
             {
@@ -325,7 +316,6 @@ exports.postEditPage = async (req, res) => {
         );
 
         console.log('✅ Page sauvegardée:', slug);
-        console.log('✅ Données sauvegardées:', page);
         res.redirect('/admin/pages/edit/' + slug);
     } catch (err) {
         console.error('❌ Erreur sauvegarde page:', err);
