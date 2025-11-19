@@ -99,21 +99,48 @@ body {
 }
 
 .about-container {
-  max-width: 800px;
+  max-width: 1000px;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: flex-start;
 }
 
 /* Image À propos */
 .about-image {
-  width: 100%;
-  margin-bottom: 30px;
+  flex: 0 0 300px;
+  order: 2;
 }
 
 .about-image img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   border-radius: 4px;
   display: block;
+}
+
+.about-content {
+  flex: 1;
+  order: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+  }
+
+  .about-image {
+    flex: none;
+    width: 100%;
+    order: 1;
+    margin-bottom: 20px;
+  }
+
+  .about-content {
+    order: 2;
+  }
 }
 
 .about-container h1 {
