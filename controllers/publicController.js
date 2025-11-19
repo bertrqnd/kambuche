@@ -14,13 +14,17 @@ exports.getProjects = async (req, res) => {
     image: p.cover_image_url || (p.images_url && p.images_url[0]) || '/images/default.jpg'
   }));
 
+  const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
+
   res.render('public/projects', {
     projects,          // pour le menu dropdown
     carouselProjects,  // pour le carousel
     meta: {
       title: 'Andrea Layton - Maître d\'œuvre à Toulouse | Rénovation & Construction',
       description: "Andrea Layton, maître d'œuvre à Toulouse. Spécialisée en rénovation, extension et construction neuve. Accompagnement personnalisé pour vos projets d'architecture."
-    }
+    },
+    canonical: baseUrl,
+    ogImage: `${baseUrl}/og-image.png`
   });
 };
 
@@ -30,12 +34,16 @@ exports.getProject = async (req, res) => {
   const project = await Project.findOne({ slug: req.params.slug });
   if (!project) return res.status(404).render('public/404');
 
+  const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
+
   res.render('public/project', {
     project,
     meta: {
       title: `${project.title} | Andrea Layton - Maître d'œuvre Toulouse`,
       description: project.short_description || `Projet ${project.title} réalisé par Andrea Layton, maître d'œuvre à Toulouse. ${project.usage ? project.usage + '.' : ''} ${project.location_year || ''}`
-    }
+    },
+    canonical: `${baseUrl}/projets/${project.slug}`,
+    ogImage: project.cover_image_url || `${baseUrl}/og-image.jpg`
   });
 };
 
@@ -53,13 +61,17 @@ exports.getContact = async (req, res) => {
     };
   }
 
+  const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
+
   res.render('public/contact', {
     projects,
     page,
     meta: {
       title: 'Contact | Andrea Layton - Maître d\'œuvre Toulouse',
       description: "Contactez Andrea Layton, maître d'œuvre à Toulouse. Devis gratuit pour vos projets de rénovation, extension ou construction neuve."
-    }
+    },
+    canonical: `${baseUrl}/contact`,
+    ogImage: `${baseUrl}/og-image.png`
   });
 };
 
@@ -77,13 +89,17 @@ exports.getAbout = async (req, res) => {
     };
   }
 
+  const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
+
   res.render('public/about', {
     projects,
     page,
     meta: {
       title: 'À propos | Andrea Layton - Maître d\'œuvre Toulouse',
       description: "Découvrez le parcours d'Andrea Layton, maître d'œuvre à Toulouse. Expertise en rénovation, extension et projets d'architecture sur mesure."
-    }
+    },
+    canonical: `${baseUrl}/a-propos`,
+    ogImage: page.image_url || `${baseUrl}/og-image.jpg`
   });
 };
 

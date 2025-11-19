@@ -5,6 +5,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const compression = require('compression');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const { doubleCsrf } = require('csrf-csrf');
@@ -28,6 +29,7 @@ app.use(
 );
 
 // Autres middlewares
+app.use(compression()); // Gzip compression
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.json({ limit: '10kb' }));
@@ -108,6 +110,11 @@ const adminRoutes = require('./routes/adminRoutes');
 // Routes
 app.use('/', publicRoutes);
 app.use('/admin', adminRoutes);
+
+// Middleware 404 global
+app.use((_req, res) => {
+  res.status(404).render('public/404');
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

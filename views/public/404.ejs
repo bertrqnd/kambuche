@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page non trouvée | Andrea Layton</title>
+  <meta name="description" content="La page que vous cherchez n'existe pas.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .error-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .error-code {
+      font-size: 6rem;
+      font-weight: bold;
+      margin: 0;
+      line-height: 1;
+    }
+    .error-message {
+      font-size: 1.5rem;
+      margin: 1rem 0 2rem;
+    }
+    .error-link {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border: 1px solid currentColor;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .error-link:hover {
+      background: #000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <main class="error-page">
+    <h1 class="error-code">404</h1>
+    <p class="error-message">La page que vous cherchez n'existe pas.</p>
+    <a href="/" class="error-link">Retour à l'accueil</a>
+  </main>
+</body>
+</html>
