@@ -10,10 +10,6 @@ const cookieParser = require('cookie-parser');
 const { doubleCsrf } = require('csrf-csrf');
 const DOMPurify = require('isomorphic-dompurify');
 
-// Import routes
-const publicRoutes = require('./routes/publicRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-
 const app = express();
 
 // Helmet avec CSP configurée pour autoriser Cloudinary et TinyMCE
@@ -71,7 +67,7 @@ app.use(session({
 }));
 
 // Configuration CSRF
-const { doubleCsrfProtection, generateToken } = doubleCsrf({
+const csrfConfig = doubleCsrf({
   getSecret: () => sessionSecret || 'dev-csrf-secret',
   cookieName: '__csrf',
   cookieOptions: {
@@ -79,12 +75,15 @@ const { doubleCsrfProtection, generateToken } = doubleCsrf({
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production'
   },
-  getTokenFromRequest: (req) => req.body._csrf || req.headers['x-csrf-token']
+  getTokenFromRequest: (req) => req.body._csrf || req.headers['x-csrf-token'],
+  getSessionIdentifier: (req) => req.session?.id || ''
 });
+
+const { doubleCsrfProtection, generateCsrfToken } = csrfConfig;
 
 // Middleware pour passer le token CSRF à toutes les vues
 app.use((req, res, next) => {
-  res.locals.csrfToken = generateToken(req, res);
+  res.locals.csrfToken = generateCsrfToken(req, res);
   next();
 });
 
@@ -99,12 +98,16 @@ app.use((_req, res, next) => {
   next();
 });
 
+// Export CSRF protection pour les routes admin (avant le chargement des routes)
+module.exports = { doubleCsrfProtection };
+
+// Import routes (après l'export pour éviter la dépendance circulaire)
+const publicRoutes = require('./routes/publicRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
 // Routes
 app.use('/', publicRoutes);
 app.use('/admin', adminRoutes);
-
-// Export CSRF protection pour les routes admin
-module.exports = { doubleCsrfProtection };
 
 // Start server
 const PORT = process.env.PORT || 3000;
