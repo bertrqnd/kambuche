@@ -15,4 +15,8 @@ router.get('/projets', (req, res) => {
 router.get('/contact', publicController.getContact);
 router.get('/a-propos', publicController.getAbout);
 
+// SEO
+router.get('/sitemap.xml', publicController.getSitemap);
+router.get('/robots.txt', publicController.getRobots);
+
 module.exports = router;
