@@ -1,35 +1,11 @@
-
-const User = require('../models/User');
 const Project = require('../models/Project');
 const Page = require('../models/Page');
-const bcrypt = require('bcrypt');
 const slugify = require('slugify');
 const { cloudinary } = require('../config/cloudinary');
 
+// Page de login (affiche le bouton Google)
 exports.getLogin = (req, res) => {
-    res.render('admin/login');
-}
-
-exports.postLogin = async (req, res) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) return res.render('admin/login', { error: 'Utilisateur non trouvé' });
-
-    const match = await user.comparePassword(password);
-    if (!match) return res.render('admin/login', { error: 'Mot de passe incorrect' });
-
-    req.session.userId = user._id;
-    res.redirect('/admin/projects');
-}
-
-exports.logout = (req, res) => {
-    req.session.destroy();
-    res.redirect('/admin/login');
-}
-
-exports.isAuthenticated = (req, res, next) => {
-    if (req.session.userId) return next();
-    res.redirect('/admin/login');
+    res.render('admin/login', { query: req.query });
 }
 
 exports.getProjects = async (req, res) => {

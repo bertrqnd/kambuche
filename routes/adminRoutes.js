@@ -1,16 +1,48 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const adminController = require('../controllers/adminController');
 const { upload } = require('../config/cloudinary');
 const { doubleCsrfProtection } = require('../app');
 
-// Routes login/logout
+// Page de login
 router.get('/login', adminController.getLogin);
-router.post('/login', doubleCsrfProtection, adminController.postLogin);
-router.get('/logout', adminController.logout);
 
-// Middleware auth
-router.use(adminController.isAuthenticated);
+// Démarrer l'authentification Google
+router.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+
+// Callback Google
+router.get('/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/admin/login?error=unauthorized',
+    failureMessage: true
+  }),
+  (req, res) => {
+    // Authentification réussie
+    res.redirect('/admin/projects');
+  }
+);
+
+// Logout
+router.get('/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) console.error('Erreur logout:', err);
+    req.session.destroy();
+    res.redirect('/admin/login');
+  });
+});
+
+// Middleware auth (vérifie que l'utilisateur est connecté via Passport)
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/admin/login');
+};
+
+router.use(isAuthenticated);
 
 // CRUD projets
 router.get('/projects', adminController.getProjects);

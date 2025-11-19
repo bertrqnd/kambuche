@@ -10,6 +10,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const { doubleCsrf } = require('csrf-csrf');
 const DOMPurify = require('isomorphic-dompurify');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const app = express();
 
@@ -67,6 +69,34 @@ app.use(session({
     secure: process.env.NODE_ENV === 'production' // HTTPS en production
   }
 }));
+
+// Configuration Passport Google OAuth
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
+  },
+  (_accessToken, _refreshToken, profile, done) => {
+    // Vérifier que l'email est autorisé
+    const email = profile.emails && profile.emails[0] && profile.emails[0].value;
+    if (email === process.env.ALLOWED_EMAIL) {
+      return done(null, { id: profile.id, email: email, name: profile.displayName });
+    } else {
+      return done(null, false, { message: 'Email non autorisé' });
+    }
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Configuration CSRF
 const csrfConfig = doubleCsrf({
