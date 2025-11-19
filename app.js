@@ -15,6 +15,11 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const app = express();
 
+// Trust proxy pour Render/Heroku (permet secure cookies derrière reverse proxy)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Helmet avec CSP configurée pour autoriser Cloudinary et TinyMCE
 app.use(
   helmet.contentSecurityPolicy({
