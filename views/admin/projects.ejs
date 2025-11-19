@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrfToken %>">
   <title>Admin - Projets</title>
   <link rel="stylesheet" href="/css/admin.css">
   <script src="/js/admin-projects-sortable.js"></script>
@@ -49,6 +50,7 @@
               <button class="edit-btn">Modifier</button>
             </a>
             <form action="/admin/projects/delete/<%= project._id %>" method="post" style="display:inline-block; margin: 0;" onsubmit="return confirm('Voulez-vous vraiment supprimer ce projet ?');">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit" class="delete-btn">Supprimer</button>
             </form>
           </td>

@@ -84,11 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('💾 Sauvegarde du nouvel ordre:', projectIds);
 
+    // Récupérer le token CSRF
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
     // Envoyer au serveur
     fetch('/admin/projects/reorder', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
       },
       body: JSON.stringify({ projectIds })
     })

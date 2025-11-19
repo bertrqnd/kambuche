@@ -12,10 +12,14 @@ document.addEventListener('click', function(e) {
 
     if (!confirm('Supprimer cette image ?')) return;
 
+    // Récupérer le token CSRF
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '/admin/projects/delete-image';
     form.innerHTML = `
+      <input type="hidden" name="_csrf" value="${csrfToken}">
       <input type="hidden" name="projectId" value="${projectId}">
       <input type="hidden" name="imageUrl" value="${imageUrl}">
       <input type="hidden" name="type" value="${type}">

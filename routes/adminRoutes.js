@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 const { upload } = require('../config/cloudinary');
+const { doubleCsrfProtection } = require('../app');
 
 // Routes login/logout
 router.get('/login', adminController.getLogin);
-router.post('/login', adminController.postLogin);
+router.post('/login', doubleCsrfProtection, adminController.postLogin);
 router.get('/logout', adminController.logout);
 
 // Middleware auth
@@ -30,6 +31,7 @@ const handleMulterError = (err, req, res, next) => {
 // Upload Cloudinary (cover + images)
 router.post(
   '/projects/add',
+  doubleCsrfProtection,
   upload.fields([
     { name: 'cover_image', maxCount: 1 },
     { name: 'images', maxCount: 10 }
@@ -43,6 +45,7 @@ router.get('/projects/edit/:id', adminController.getEditProject);
 // Correction ici aussi pour "new_images"
 router.post(
   '/projects/edit/:id',
+  doubleCsrfProtection,
   upload.fields([
     { name: 'cover_image', maxCount: 1 },
     { name: 'new_images', maxCount: 10 }
@@ -52,19 +55,20 @@ router.post(
 );
 
 // Supprimer projet
-router.post('/projects/delete/:id', adminController.deleteProject);
+router.post('/projects/delete/:id', doubleCsrfProtection, adminController.deleteProject);
 
 // Supprimer image individuelle
-router.post('/projects/delete-image', adminController.deleteProjectImage);
+router.post('/projects/delete-image', doubleCsrfProtection, adminController.deleteProjectImage);
 
 // Réorganiser l'ordre des projets
-router.post('/projects/reorder', adminController.reorderProjects);
+router.post('/projects/reorder', doubleCsrfProtection, adminController.reorderProjects);
 
 // Routes pour éditer les pages (À propos et Contact)
 router.get('/pages', adminController.getPages);
 router.get('/pages/edit/:slug', adminController.getEditPage);
 router.post(
   '/pages/edit/:slug',
+  doubleCsrfProtection,
   upload.single('image'),
   handleMulterError,
   adminController.postEditPage

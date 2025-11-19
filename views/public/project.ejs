@@ -65,7 +65,7 @@
         <% } %>
 
         <div class="project-description tinymce-content">
-          <%- project.description %>
+          <%- sanitize(project.description) %>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrfToken %>">
   <title>Admin - Modifier Projet</title>
   <link rel="stylesheet" href="/css/admin.css">
   <link rel="stylesheet" href="/css/admin-project-form.css">
@@ -13,7 +14,8 @@
   <h1>Modifier le projet</h1>
   
   <form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
-    
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
     <label for="title">Titre du projet :</label>
     <input type="text" id="title" name="title" value="<%= project.title %>" required>
     

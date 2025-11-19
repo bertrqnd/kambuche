@@ -31,7 +31,7 @@
         </div>
       <% } %>
       <div class="about-content tinymce-content">
-        <%- page.content %>
+        <%- sanitize(page.content) %>
       </div>
     </div>
   </main>

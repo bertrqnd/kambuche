@@ -15,6 +15,7 @@
   </div>
 
   <form action="/admin/projects/add" method="post" enctype="multipart/form-data" id="projectForm" class="page-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
     <div class="form-group">
       <label for="title">Titre du projet :</label>
