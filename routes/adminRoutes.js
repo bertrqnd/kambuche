@@ -63,6 +63,11 @@ router.post('/projects/reorder', adminController.reorderProjects);
 // Routes pour éditer les pages (À propos et Contact)
 router.get('/pages', adminController.getPages);
 router.get('/pages/edit/:slug', adminController.getEditPage);
-router.post('/pages/edit/:slug', adminController.postEditPage);
+router.post(
+  '/pages/edit/:slug',
+  upload.single('image'),
+  handleMulterError,
+  adminController.postEditPage
+);
 
 module.exports = router;

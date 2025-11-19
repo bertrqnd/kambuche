@@ -103,6 +103,19 @@ body {
   width: 100%;
 }
 
+/* Image À propos */
+.about-image {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.about-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
 .about-container h1 {
   font-size: 2.5rem;
   font-weight: 400;

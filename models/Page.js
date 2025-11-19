@@ -24,6 +24,11 @@ const pageSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  // Champ spécifique pour la page À propos
+  image_url: {
+    type: String,
+    default: ''
+  },
   updatedAt: {
     type: Date,
     default: Date.now

@@ -299,6 +299,12 @@ exports.postEditPage = async (req, res) => {
             updatedAt: Date.now()
         };
 
+        // Ajouter l'image si uploadée (pour la page À propos)
+        if (slug === 'about' && req.file) {
+            updateData.image_url = req.file.path;
+            console.log('🖼️ Image uploadée:', req.file.path);
+        }
+
         // Ajouter phone et email seulement pour la page Contact
         if (slug === 'contact') {
             updateData.phone = phone || '';
