@@ -202,10 +202,10 @@ html, body {
 
 /* Titre principal - Plus grand mais moins gras */
 .project-title {
-  font-size: 2.5rem;
-  font-weight: 200;
+  font-size: 2.2rem;
+  font-weight: 300;
   margin-bottom: 0.6em;
-  line-height: 1.2;
+  line-height: 1;
   flex-shrink: 0;
   color: #fff;
   letter-spacing: -0.5px;
@@ -213,12 +213,11 @@ html, body {
 
 /* Description courte */
 .project-short-desc {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1;
   margin-bottom: 2em;
   color: #ccc;
-  font-style: italic;
 }
 
 /* Section métadonnées */
