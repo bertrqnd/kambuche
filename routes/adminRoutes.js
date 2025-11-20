@@ -1,15 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const rateLimit = require('express-rate-limit');
 const adminController = require('../controllers/adminController');
 const { upload } = require('../config/cloudinary');
 const { doubleCsrfProtection } = require('../app');
 
+// Rate limiter pour les tentatives de connexion
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 tentatives maximum
+  message: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // Page de login
 router.get('/login', adminController.getLogin);
 
-// Démarrer l'authentification Google
-router.get('/auth/google', passport.authenticate('google', {
+// Démarrer l'authentification Google (avec rate limiting)
+router.get('/auth/google', authLimiter, passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
 

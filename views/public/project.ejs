@@ -27,7 +27,7 @@
           <% let allImages = [project.cover_image_url].concat(project.images_url.filter(img => img !== project.cover_image_url)); %>
           <% allImages.forEach((img, index) => { %>
             <div class="carousel-slide">
-              <img src="<%= img %>" alt="<%= project.title %>" loading="lazy">
+              <img src="<%= img %>" alt="<%= project.title %>" width="1200" height="800" loading="lazy">
             </div>
           <% }) %>
           <button class="carousel__btn carousel__btn--prev"></button>

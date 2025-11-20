@@ -35,6 +35,15 @@ app.use(
   })
 );
 
+// HSTS - Force HTTPS en production
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet.hsts({
+    maxAge: 31536000, // 1 an
+    includeSubDomains: true,
+    preload: true
+  }));
+}
+
 // Autres middlewares
 app.use(compression()); // Gzip compression
 app.use(morgan('dev'));
@@ -148,6 +157,29 @@ app.use('/admin', adminRoutes);
 // Middleware 404 global
 app.use((_req, res) => {
   res.status(404).render('public/404');
+});
+
+// Error handler global (doit être après toutes les routes)
+app.use((err, _req, res, _next) => {
+  console.error('❌ Erreur serveur:', err);
+
+  // Ne pas exposer les détails d'erreur en production
+  const isDev = process.env.NODE_ENV !== 'production';
+
+  res.status(err.status || 500);
+
+  // En production, message générique
+  if (!isDev) {
+    return res.render('public/404', {
+      message: 'Une erreur est survenue'
+    });
+  }
+
+  // En dev, afficher les détails
+  res.send(`
+    <h1>Erreur ${err.status || 500}</h1>
+    <pre>${err.stack}</pre>
+  `);
 });
 
 // Start server

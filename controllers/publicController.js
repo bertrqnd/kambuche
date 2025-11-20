@@ -108,8 +108,8 @@ exports.getAbout = async (req, res) => {
 exports.getSitemap = async (req, res) => {
   const projects = await Project.find().sort({ order: 1, date: -1 });
 
-  // URL de base (à remplacer par votre domaine en production)
-  const baseUrl = process.env.SITE_URL || 'https://votre-domaine.com';
+  // URL de base depuis les variables d'environnement
+  const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
@@ -148,7 +148,7 @@ exports.getSitemap = async (req, res) => {
 
 // === Robots.txt ===
 exports.getRobots = (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://votre-domaine.com';
+  const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
 
   const robots = `User-agent: *
 Allow: /
