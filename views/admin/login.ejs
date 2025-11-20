@@ -6,6 +6,13 @@
 <title>Admin - Login</title>
 <link rel="stylesheet" href="/css/admin.css">
 <style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+  }
+
   .login-container {
     display: flex;
     flex-direction: column;
@@ -14,73 +21,173 @@
     min-height: 100vh;
     padding: 2rem;
   }
+
   .login-box {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 3rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     text-align: center;
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
+    animation: fadeIn 0.5s ease;
   }
-  .login-box h1 {
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .logo {
     margin-bottom: 1.5rem;
-    font-size: 1.5rem;
   }
+
+  .logo-text {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #333;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text .first-name {
+    font-weight: 300;
+    color: #666;
+  }
+
+  .logo-text .last-name {
+    font-weight: 600;
+    color: #667eea;
+  }
+
+  .login-box h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
   .google-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    background: #4285f4;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 0.875rem 2rem;
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
     text-decoration: none;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
   }
+
   .google-btn:hover {
-    background: #357ae8;
+    background: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
   }
+
   .google-btn svg {
     width: 20px;
     height: 20px;
   }
+
   .error {
     color: #dc3545;
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    background: #f8d7da;
-    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    padding: 0.875rem 1rem;
+    background: #fff3f3;
+    border: 1px solid #ffcdd2;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    animation: shake 0.4s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+
+  .divider {
+    margin: 1.5rem 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+  }
+
+  .footer-text {
+    margin-top: 2rem;
+    color: #999;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 480px) {
+    .login-box {
+      padding: 2rem 1.5rem;
+    }
+
+    .logo-text {
+      font-size: 1.75rem;
+    }
+
+    .login-box h1 {
+      font-size: 1.25rem;
+    }
   }
 </style>
 </head>
 <body>
 <div class="login-container">
   <div class="login-box">
-    <h1>Administration</h1>
+    <div class="logo">
+      <div class="logo-text">
+        <span class="first-name">Andrea</span><span class="last-name">Layton</span>
+      </div>
+    </div>
+
+    <h1>Espace Administration</h1>
+    <p class="subtitle">Connectez-vous pour accéder au panneau d'administration</p>
 
     <% if(typeof error !== 'undefined' || (typeof query !== 'undefined' && query.error === 'unauthorized')) { %>
     <p class="error">
       <% if(typeof error !== 'undefined') { %>
         <%= error %>
       <% } else { %>
-        Email non autorisé. Seul andrealaytonh@gmail.com peut accéder à l'admin.
+        ⚠️ Accès refusé. Seul le compte autorisé peut accéder à l'administration.
       <% } %>
     </p>
     <% } %>
 
     <a href="/admin/auth/google" class="google-btn">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
       </svg>
       Se connecter avec Google
     </a>
+
+    <div class="footer-text">
+      Connexion sécurisée via Google OAuth 2.0
+    </div>
   </div>
 </div>
 </body>
