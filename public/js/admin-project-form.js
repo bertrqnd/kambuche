@@ -74,15 +74,21 @@ document.addEventListener('DOMContentLoaded', function() {
     reader.onload = (e) => {
       const div = document.createElement('div');
       div.className = 'image-preview-item';
-      div.innerHTML = `
-        <img src="${e.target.result}" alt="Cover preview">
-        <button type="button" class="remove-btn" data-action="remove-cover">×</button>
-      `;
-      coverPreview.appendChild(div);
 
-      // Ajouter l'event listener au bouton
-      const removeBtn = div.querySelector('.remove-btn');
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.alt = 'Cover preview';
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-btn';
+      removeBtn.setAttribute('data-action', 'remove-cover');
+      removeBtn.textContent = '×';
       removeBtn.addEventListener('click', removeCover);
+
+      div.appendChild(img);
+      div.appendChild(removeBtn);
+      coverPreview.appendChild(div);
     };
     reader.readAsDataURL(file);
   }
@@ -180,18 +186,28 @@ document.addEventListener('DOMContentLoaded', function() {
         div.className = 'image-preview-item';
         div.setAttribute('draggable', 'true');
         div.setAttribute('data-index', index);
-        div.innerHTML = `
-          <img src="${e.target.result}" alt="Preview ${index + 1}">
-          <button type="button" class="remove-btn" data-index="${index}">×</button>
-          <div class="drag-handle">⋮⋮</div>
-        `;
-        additionalPreview.appendChild(div);
 
-        // Ajouter l'event listener au bouton de suppression
-        const removeBtn = div.querySelector('.remove-btn');
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = `Preview ${index + 1}`;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-btn';
+        removeBtn.setAttribute('data-index', index);
+        removeBtn.textContent = '×';
         removeBtn.addEventListener('click', function() {
           removeAdditional(parseInt(this.dataset.index));
         });
+
+        const dragHandle = document.createElement('div');
+        dragHandle.className = 'drag-handle';
+        dragHandle.textContent = '⋮⋮';
+
+        div.appendChild(img);
+        div.appendChild(removeBtn);
+        div.appendChild(dragHandle);
+        additionalPreview.appendChild(div);
 
         // Ajouter les handlers de drag & drop
         addDragHandlers(div);

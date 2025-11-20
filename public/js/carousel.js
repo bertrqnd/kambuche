@@ -26,13 +26,26 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const overlayClone = document.createElement('div');
       overlayClone.classList.add('carousel__overlay');
-      overlayClone.innerHTML = `
-        <div class="carousel__text">
-          <h3>${project.title}</h3>
-          <p>${project.short_description || ''}</p>
-          <a href="/projets/${project.slug}" class="carousel__link" data-slide-index="${i}">Voir le projet</a>
-        </div>
-      `;
+
+      const textDiv = document.createElement('div');
+      textDiv.classList.add('carousel__text');
+
+      const h3 = document.createElement('h3');
+      h3.textContent = project.title;
+
+      const p = document.createElement('p');
+      p.textContent = project.short_description || '';
+
+      const a = document.createElement('a');
+      a.href = `/projets/${project.slug}`;
+      a.classList.add('carousel__link');
+      a.setAttribute('data-slide-index', i);
+      a.textContent = 'Voir le projet';
+
+      textDiv.appendChild(h3);
+      textDiv.appendChild(p);
+      textDiv.appendChild(a);
+      overlayClone.appendChild(textDiv);
       
       slide.appendChild(img);
       slide.appendChild(overlayClone);
