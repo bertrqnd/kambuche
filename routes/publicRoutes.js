@@ -1,21 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const publicController = require('../controllers/publicController'); // ✅ pas d’erreur ici
+const publicController = require('../controllers/publicController');
 
-// La page d'accueil rend directement projects.ejs
-router.get('/', publicController.getProjects);
+// Middleware pour extraire et valider la langue
+const languageMiddleware = (req, res, next) => {
+  const lang = req.params.lang || 'fr';
+  const supportedLanguages = ['fr', 'en', 'es'];
 
-// Route pour les projets individuels
-router.get('/projets/:slug', publicController.getProject);
-router.get('/projets', (req, res) => {
-  res.redirect('/');
+  if (!supportedLanguages.includes(lang)) {
+    return res.redirect('/fr' + req.path);
+  }
+
+  req.language = lang;
+  req.i18n.changeLanguage(lang);
+  next();
+};
+
+// Redirection de la racine vers /fr
+router.get('/', (_req, res) => {
+  res.redirect('/fr');
 });
 
-// Autres pages
-router.get('/contact', publicController.getContact);
-router.get('/a-propos', publicController.getAbout);
+// Routes avec préfixe de langue
+router.get('/:lang', languageMiddleware, publicController.getProjects);
+router.get('/:lang/projets', languageMiddleware, (req, res) => {
+  res.redirect('/' + req.params.lang);
+});
+router.get('/:lang/projets/:slug', languageMiddleware, publicController.getProject);
+router.get('/:lang/contact', languageMiddleware, publicController.getContact);
+router.get('/:lang/a-propos', languageMiddleware, publicController.getAbout);
 
-// SEO
+// SEO (pas de préfixe de langue)
 router.get('/sitemap.xml', publicController.getSitemap);
 router.get('/robots.txt', publicController.getRobots);
 

@@ -18,6 +18,15 @@
     <!-- Le titre est caché mais toujours envoyé pour maintenir la cohérence de la DB -->
     <input type="hidden" id="title" name="title" value="<%= page.title %>">
 
+    <div class="form-group">
+      <label for="language">Langue :</label>
+      <select id="language" name="language" required>
+        <option value="fr" <%= page.language === 'fr' ? 'selected' : '' %>>Français</option>
+        <option value="en" <%= page.language === 'en' ? 'selected' : '' %>>English</option>
+        <option value="es" <%= page.language === 'es' ? 'selected' : '' %>>Español</option>
+      </select>
+    </div>
+
     <% if (page.slug === 'contact') { %>
       <!-- Champs spécifiques pour Contact -->
       <div class="form-group">

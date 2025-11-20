@@ -1,0 +1,41 @@
+<!-- Language Switcher -->
+<div class="language-switcher">
+  <% availableLanguages.forEach(lang => { %>
+    <% if (lang === language) { %>
+      <span class="lang-current"><%= lang.toUpperCase() %></span>
+    <% } else { %>
+      <%
+        // Construire l'URL dans la nouvelle langue
+        const currentPath = typeof req !== 'undefined' && req.path ? req.path : '';
+        const pathWithoutLang = currentPath.replace(/^\/(fr|en|es)/, '');
+        const newPath = `/${lang}${pathWithoutLang || ''}`;
+      %>
+      <a href="<%= newPath %>" class="lang-link"><%= lang.toUpperCase() %></a>
+    <% } %>
+  <% }) %>
+</div>
+
+<style>
+.language-switcher {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.lang-current {
+  font-weight: bold;
+  color: #333;
+}
+
+.lang-link {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.lang-link:hover {
+  color: #333;
+  text-decoration: underline;
+}
+</style>

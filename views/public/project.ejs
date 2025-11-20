@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= language %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +10,13 @@
 <body>
   <header class="navbar">
     <span class="nav-left">
-      <a href="/" class="andrea-link">
+      <a href="/<%= language %>" class="andrea-link">
         <span class="first-name">Andrea</span><span class="last-name">Layton</span>
       </a>
     </span>
     <div class="nav-links">
-      <a href="/" class="nav-item">Retour</a>
+      <a href="/<%= language %>" class="nav-item"><%= t('project.back_to_projects') %></a>
+      <%- include('partials/language-switcher', { language, availableLanguages, req }) %>
     </div>
   </header>
 
@@ -45,19 +46,19 @@
           <div class="project-metadata">
             <% if(project.usage) { %>
               <p class="metadata-item">
-                <span class="metadata-label">Usages</span>
+                <span class="metadata-label"><%= t('project.usage') %></span>
                 <span class="metadata-value"><%= project.usage %></span>
               </p>
             <% } %>
             <% if(project.surface) { %>
               <p class="metadata-item">
-                <span class="metadata-label">Surface</span>
+                <span class="metadata-label"><%= t('project.surface') %></span>
                 <span class="metadata-value"><%= project.surface %></span>
               </p>
             <% } %>
             <% if(project.location_year) { %>
               <p class="metadata-item">
-                <span class="metadata-label">Ville/année</span>
+                <span class="metadata-label"><%= t('project.location_year') %></span>
                 <span class="metadata-value"><%= project.location_year %></span>
               </p>
             <% } %>

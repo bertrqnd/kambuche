@@ -12,6 +12,18 @@
 <!-- Canonical URL -->
 <link rel="canonical" href="<%= typeof canonical !== 'undefined' ? canonical : 'https://www.andrea-layton.com' %>">
 
+<!-- Hreflang pour SEO multilingue -->
+<% if (typeof language !== 'undefined' && typeof req !== 'undefined') { %>
+  <%
+    const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
+    const pathWithoutLang = req.path.replace(/^\/(fr|en|es)/, '');
+  %>
+  <link rel="alternate" hreflang="fr" href="<%= baseUrl %>/fr<%= pathWithoutLang %>">
+  <link rel="alternate" hreflang="en" href="<%= baseUrl %>/en<%= pathWithoutLang %>">
+  <link rel="alternate" hreflang="es" href="<%= baseUrl %>/es<%= pathWithoutLang %>">
+  <link rel="alternate" hreflang="x-default" href="<%= baseUrl %>/fr<%= pathWithoutLang %>">
+<% } %>
+
 <!-- Open Graph (Facebook, LinkedIn) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="<%= meta.title %>">
@@ -19,7 +31,7 @@
 <meta property="og:url" content="<%= typeof canonical !== 'undefined' ? canonical : 'https://www.andrea-layton.com' %>">
 <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : 'https://www.andrea-layton.com/og-image.png' %>">
 <meta property="og:site_name" content="Andrea Layton - Maître d'œuvre">
-<meta property="og:locale" content="fr_FR">
+<meta property="og:locale" content="<%= typeof language !== 'undefined' ? (language === 'en' ? 'en_US' : language === 'es' ? 'es_ES' : 'fr_FR') : 'fr_FR' %>">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">

@@ -4,8 +4,13 @@ const pageSchema = new mongoose.Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
     enum: ['about', 'contact']
+  },
+  language: {
+    type: String,
+    required: true,
+    enum: ['fr', 'en', 'es'],
+    default: 'fr'
   },
   title: {
     type: String,
@@ -34,5 +39,8 @@ const pageSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
+// Index composé pour garantir l'unicité de slug + language
+pageSchema.index({ slug: 1, language: 1 }, { unique: true });
 
 module.exports = mongoose.model('Page', pageSchema);

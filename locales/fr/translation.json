@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "projects": "Projets",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Andrea Layton - Maître d'œuvre",
+    "subtitle": "Architecture et conception d'intérieur"
+  },
+  "project": {
+    "usage": "Usage",
+    "surface": "Surface",
+    "location_year": "Lieu et année",
+    "back_to_projects": "Retour aux projets"
+  },
+  "about": {
+    "page_title": "À propos d'Andrea Layton",
+    "meta_title": "À propos - Andrea Layton",
+    "meta_description": "Découvrez Andrea Layton, maître d'œuvre spécialisée en architecture et conception d'intérieur."
+  },
+  "contact": {
+    "page_title": "Contact",
+    "meta_title": "Contact - Andrea Layton",
+    "meta_description": "Contactez Andrea Layton pour vos projets d'architecture et de conception d'intérieur.",
+    "phone": "Téléphone",
+    "email": "Email"
+  },
+  "error": {
+    "404_title": "Page non trouvée",
+    "404_message": "Désolé, la page que vous recherchez n'existe pas.",
+    "back_home": "Retour à l'accueil"
+  },
+  "admin": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "projects": "Projets",
+    "pages": "Pages",
+    "add_project": "Ajouter un projet",
+    "edit_project": "Modifier le projet",
+    "delete_project": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "title": "Titre",
+    "short_description": "Description courte",
+    "description": "Description",
+    "cover_image": "Image de couverture",
+    "gallery_images": "Images de la galerie",
+    "language": "Langue",
+    "manage_projects": "Gérer les projets",
+    "manage_pages": "Gérer les pages",
+    "edit": "Modifier",
+    "confirm_delete": "Êtes-vous sûr de vouloir supprimer ce projet ?"
+  },
+  "seo": {
+    "home_title": "Andrea Layton - Maître d'œuvre | Architecture et conception d'intérieur",
+    "home_description": "Découvrez les projets d'Andrea Layton, maître d'œuvre spécialisée en architecture et conception d'intérieur à Montpellier.",
+    "project_title": "{{title}} - Andrea Layton"
+  }
+}

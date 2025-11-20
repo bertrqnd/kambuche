@@ -19,28 +19,29 @@ exports.getAddProject = (req, res) => {
 
 exports.postAddProject = async (req, res) => {
     try {
-        const { title, short_description, usage, surface, location_year, description } = req.body;
+        const { title, short_description, usage, surface, location_year, description, language } = req.body;
 
 
-        const cover_image_url = req.files && req.files.cover_image ? 
+        const cover_image_url = req.files && req.files.cover_image ?
             req.files.cover_image[0].path : '';
 
-        const images_url = req.files && req.files.images ? 
+        const images_url = req.files && req.files.images ?
             req.files.images.map(file => file.path) : [];
 
 
         const slug = slugify(title, { lower: true, strict: true });
 
-        await Project.create({ 
-            title, 
+        await Project.create({
+            title,
             short_description,
             usage,
             surface,
             location_year,
-            description, 
-            cover_image_url, 
-            images_url, 
-            slug 
+            description,
+            cover_image_url,
+            images_url,
+            slug,
+            language: language || 'fr'
         });
 
         console.log('✅ Projet créé avec succès');
@@ -58,7 +59,7 @@ exports.getEditProject = async (req, res) => {
 
 exports.postEditProject = async (req, res) => {
     try {
-        const { title, short_description, usage, surface, location_year, description, gallery_order } = req.body;
+        const { title, short_description, usage, surface, location_year, description, gallery_order, language } = req.body;
         const project = await Project.findById(req.params.id);
 
         if (!project) {
@@ -72,6 +73,7 @@ exports.postEditProject = async (req, res) => {
         project.surface = surface || '';
         project.location_year = location_year || '';
         project.description = description;
+        project.language = language || project.language || 'fr';
         project.slug = slugify(title, { lower: true, strict: true });
 
         if (req.files && req.files.cover_image && req.files.cover_image.length > 0) {
@@ -226,9 +228,10 @@ exports.getPages = async (req, res) => {
 exports.getEditPage = async (req, res) => {
     try {
         const { slug } = req.params;
+        const lang = req.query.lang || 'fr';
 
-        // Chercher la page par slug
-        let page = await Page.findOne({ slug });
+        // Chercher la page par slug et langue
+        let page = await Page.findOne({ slug, language: lang });
 
         // Si la page n'existe pas, la créer avec un contenu par défaut
         if (!page) {
@@ -240,9 +243,10 @@ exports.getEditPage = async (req, res) => {
             page = await Page.create({
                 slug,
                 title: defaultTitle,
-                content: defaultContent
+                content: defaultContent,
+                language: lang
             });
-            console.log('✅ Page créée:', slug);
+            console.log('✅ Page créée:', slug, lang);
         }
 
         res.render('admin/editPage', { page });
@@ -256,16 +260,18 @@ exports.getEditPage = async (req, res) => {
 exports.postEditPage = async (req, res) => {
     try {
         const { slug } = req.params;
-        const { title, content, phone, email } = req.body;
+        const { title, content, phone, email, language } = req.body;
 
         console.log('📝 Modification page:', slug);
         console.log('📝 Titre:', title);
+        console.log('📝 Langue:', language);
         console.log('📝 Contenu (extrait):', content ? content.substring(0, 100) + '...' : 'N/A');
 
         // Préparer les données à mettre à jour
         const updateData = {
             title,
             content: content || '',
+            language: language || 'fr',
             updatedAt: Date.now()
         };
 
@@ -282,7 +288,7 @@ exports.postEditPage = async (req, res) => {
 
         // Mettre à jour ou créer la page
         await Page.findOneAndUpdate(
-            { slug },
+            { slug, language: language || 'fr' },
             updateData,
             {
                 new: true,
@@ -291,8 +297,8 @@ exports.postEditPage = async (req, res) => {
             }
         );
 
-        console.log('✅ Page sauvegardée:', slug);
-        res.redirect('/admin/pages/edit/' + slug);
+        console.log('✅ Page sauvegardée:', slug, language);
+        res.redirect('/admin/pages/edit/' + slug + '?lang=' + (language || 'fr'));
     } catch (err) {
         console.error('❌ Erreur sauvegarde page:', err);
         res.redirect('/admin/pages');

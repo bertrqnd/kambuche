@@ -16,11 +16,18 @@
   <form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
+    <label for="language">Langue :</label>
+    <select id="language" name="language" required>
+      <option value="fr" <%= project.language === 'fr' ? 'selected' : '' %>>Français</option>
+      <option value="en" <%= project.language === 'en' ? 'selected' : '' %>>English</option>
+      <option value="es" <%= project.language === 'es' ? 'selected' : '' %>>Español</option>
+    </select>
+
     <label for="title">Titre du projet :</label>
     <input type="text" id="title" name="title" value="<%= project.title %>" required>
-    
+
     <label for="short_description">Description rapide (page d'accueil) :</label>
-    <input type="text" id="short_description" name="short_description" 
+    <input type="text" id="short_description" name="short_description"
            value="<%= project.short_description %>" required>
     
     <label for="usage">Usage :</label>

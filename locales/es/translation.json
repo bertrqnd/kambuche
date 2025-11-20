@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "projects": "Proyectos",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "home": {
+    "title": "Andrea Layton - Directora de obra",
+    "subtitle": "Arquitectura y diseño de interiores"
+  },
+  "project": {
+    "usage": "Uso",
+    "surface": "Superficie",
+    "location_year": "Lugar y año",
+    "back_to_projects": "Volver a proyectos"
+  },
+  "about": {
+    "page_title": "Acerca de Andrea Layton",
+    "meta_title": "Acerca de - Andrea Layton",
+    "meta_description": "Descubra Andrea Layton, directora de obra especializada en arquitectura y diseño de interiores."
+  },
+  "contact": {
+    "page_title": "Contacto",
+    "meta_title": "Contacto - Andrea Layton",
+    "meta_description": "Contacte con Andrea Layton para sus proyectos de arquitectura y diseño de interiores.",
+    "phone": "Teléfono",
+    "email": "Correo electrónico"
+  },
+  "error": {
+    "404_title": "Página no encontrada",
+    "404_message": "Lo sentimos, la página que busca no existe.",
+    "back_home": "Volver al inicio"
+  },
+  "admin": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "projects": "Proyectos",
+    "pages": "Páginas",
+    "add_project": "Añadir proyecto",
+    "edit_project": "Editar proyecto",
+    "delete_project": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "title": "Título",
+    "short_description": "Descripción corta",
+    "description": "Descripción",
+    "cover_image": "Imagen de portada",
+    "gallery_images": "Imágenes de la galería",
+    "language": "Idioma",
+    "manage_projects": "Gestionar proyectos",
+    "manage_pages": "Gestionar páginas",
+    "edit": "Editar",
+    "confirm_delete": "¿Está seguro de que desea eliminar este proyecto?"
+  },
+  "seo": {
+    "home_title": "Andrea Layton - Directora de obra | Arquitectura y diseño de interiores",
+    "home_description": "Descubra los proyectos de Andrea Layton, directora de obra especializada en arquitectura y diseño de interiores en Montpellier.",
+    "project_title": "{{title}} - Andrea Layton"
+  }
+}

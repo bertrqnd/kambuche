@@ -3,7 +3,8 @@ const Page = require('../models/Page');
 
 // === Liste de tous les projets ===
 exports.getProjects = async (req, res) => {
-  const projects = await Project.find().sort({ order: 1, date: -1 });
+  const lang = req.language || 'fr';
+  const projects = await Project.find({ language: lang }).sort({ order: 1, date: -1 });
   console.log('Projets récupérés :', projects);
 
   // Préparer les données pour le carousel
@@ -17,21 +18,23 @@ exports.getProjects = async (req, res) => {
   const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
 
   res.render('public/projects', {
-    projects,          // pour le menu dropdown
-    carouselProjects,  // pour le carousel
+    projects,
+    carouselProjects,
     meta: {
-      title: 'Andrea Layton - Maître d\'œuvre à Toulouse | Rénovation & Construction',
-      description: "Andrea Layton, maître d'œuvre à Toulouse. Spécialisée en rénovation, extension et construction neuve. Accompagnement personnalisé pour vos projets d'architecture."
+      title: req.t('seo.home_title'),
+      description: req.t('seo.home_description')
     },
-    canonical: baseUrl,
-    ogImage: `${baseUrl}/og-image.png`
+    canonical: `${baseUrl}/${lang}`,
+    ogImage: `${baseUrl}/og-image.png`,
+    req
   });
 };
 
 
 // === Page projet unique ===
 exports.getProject = async (req, res) => {
-  const project = await Project.findOne({ slug: req.params.slug });
+  const lang = req.language || 'fr';
+  const project = await Project.findOne({ slug: req.params.slug, language: lang });
   if (!project) return res.status(404).render('public/404');
 
   const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
@@ -39,24 +42,26 @@ exports.getProject = async (req, res) => {
   res.render('public/project', {
     project,
     meta: {
-      title: `${project.title} | Andrea Layton - Maître d'œuvre Toulouse`,
-      description: project.short_description || `Projet ${project.title} réalisé par Andrea Layton, maître d'œuvre à Toulouse. ${project.usage ? project.usage + '.' : ''} ${project.location_year || ''}`
+      title: req.t('seo.project_title', { title: project.title }),
+      description: project.short_description || `${project.title}. ${project.usage || ''} ${project.location_year || ''}`
     },
-    canonical: `${baseUrl}/projets/${project.slug}`,
-    ogImage: project.cover_image_url || `${baseUrl}/og-image.jpg`
+    canonical: `${baseUrl}/${lang}/projets/${project.slug}`,
+    ogImage: project.cover_image_url || `${baseUrl}/og-image.jpg`,
+    req
   });
 };
 
 
 // === Page contact ===
 exports.getContact = async (req, res) => {
-  const projects = await Project.find().sort({ order: 1, date: -1 });
-  let page = await Page.findOne({ slug: 'contact' });
+  const lang = req.language || 'fr';
+  const projects = await Project.find({ language: lang }).sort({ order: 1, date: -1 });
+  let page = await Page.findOne({ slug: 'contact', language: lang });
 
   // Si la page n'existe pas, créer un contenu par défaut
   if (!page) {
     page = {
-      title: 'Contact',
+      title: req.t('contact.page_title'),
       content: '<p>Contenu de la page Contact...</p>'
     };
   }
@@ -67,24 +72,26 @@ exports.getContact = async (req, res) => {
     projects,
     page,
     meta: {
-      title: 'Contact | Andrea Layton - Maître d\'œuvre Toulouse',
-      description: "Contactez Andrea Layton, maître d'œuvre à Toulouse. Devis gratuit pour vos projets de rénovation, extension ou construction neuve."
+      title: req.t('contact.meta_title'),
+      description: req.t('contact.meta_description')
     },
-    canonical: `${baseUrl}/contact`,
-    ogImage: `${baseUrl}/og-image.png`
+    canonical: `${baseUrl}/${lang}/contact`,
+    ogImage: `${baseUrl}/og-image.png`,
+    req
   });
 };
 
 
 // === Page à propos ===
 exports.getAbout = async (req, res) => {
-  const projects = await Project.find().sort({ order: 1, date: -1 });
-  let page = await Page.findOne({ slug: 'about' });
+  const lang = req.language || 'fr';
+  const projects = await Project.find({ language: lang }).sort({ order: 1, date: -1 });
+  let page = await Page.findOne({ slug: 'about', language: lang });
 
   // Si la page n'existe pas, créer un contenu par défaut
   if (!page) {
     page = {
-      title: 'À propos',
+      title: req.t('about.page_title'),
       content: '<p>Contenu de la page À propos...</p>'
     };
   }
@@ -95,11 +102,12 @@ exports.getAbout = async (req, res) => {
     projects,
     page,
     meta: {
-      title: 'À propos | Andrea Layton - Maître d\'œuvre Toulouse',
-      description: "Découvrez le parcours d'Andrea Layton, maître d'œuvre à Toulouse. Expertise en rénovation, extension et projets d'architecture sur mesure."
+      title: req.t('about.meta_title'),
+      description: req.t('about.meta_description')
     },
-    canonical: `${baseUrl}/a-propos`,
-    ogImage: page.image_url || `${baseUrl}/og-image.jpg`
+    canonical: `${baseUrl}/${lang}/a-propos`,
+    ogImage: page.image_url || `${baseUrl}/og-image.jpg`,
+    req
   });
 };
 
@@ -107,32 +115,35 @@ exports.getAbout = async (req, res) => {
 // === Sitemap XML ===
 exports.getSitemap = async (req, res) => {
   const projects = await Project.find().sort({ order: 1, date: -1 });
+  const languages = ['fr', 'en', 'es'];
 
   // URL de base depuis les variables d'environnement
   const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 
-  // Pages statiques
+  // Pages statiques pour chaque langue
   const staticPages = [
-    { url: '/', priority: '1.0', changefreq: 'weekly' },
+    { url: '', priority: '1.0', changefreq: 'weekly' },
     { url: '/a-propos', priority: '0.8', changefreq: 'monthly' },
     { url: '/contact', priority: '0.8', changefreq: 'monthly' }
   ];
 
-  staticPages.forEach(page => {
-    xml += '  <url>\n';
-    xml += `    <loc>${baseUrl}${page.url}</loc>\n`;
-    xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
-    xml += `    <priority>${page.priority}</priority>\n`;
-    xml += '  </url>\n';
+  languages.forEach(lang => {
+    staticPages.forEach(page => {
+      xml += '  <url>\n';
+      xml += `    <loc>${baseUrl}/${lang}${page.url}</loc>\n`;
+      xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
+      xml += `    <priority>${page.priority}</priority>\n`;
+      xml += '  </url>\n';
+    });
   });
 
-  // Pages projets dynamiques
+  // Pages projets dynamiques pour chaque langue
   projects.forEach(project => {
     xml += '  <url>\n';
-    xml += `    <loc>${baseUrl}/projets/${project.slug}</loc>\n`;
+    xml += `    <loc>${baseUrl}/${project.language}/projets/${project.slug}</loc>\n`;
     xml += `    <lastmod>${project.date.toISOString().split('T')[0]}</lastmod>\n`;
     xml += '    <changefreq>monthly</changefreq>\n';
     xml += '    <priority>0.9</priority>\n';

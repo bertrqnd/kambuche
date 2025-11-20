@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= language %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,18 +13,19 @@
   <!-- === NAVBAR === -->
   <header class="navbar">
     <span class="nav-left">
-      <a href="/" class="andrea-link">
+      <a href="/<%= language %>" class="andrea-link">
         <span class="first-name">Andrea</span><span class="last-name">Layton</span>
       </a>
     </span>
     <div class="nav-links">
-      <a href="/" class="nav-item">Retour</a>
+      <a href="/<%= language %>" class="nav-item"><%= t('project.back_to_projects') %></a>
+      <%- include('partials/language-switcher', { language, availableLanguages, req }) %>
     </div>
   </header>
 
   <!-- === MAIN À PROPOS === -->
   <main class="about-page">
-    <h1 class="visually-hidden">À propos d'Andrea Layton</h1>
+    <h1 class="visually-hidden"><%= t('about.page_title') %></h1>
     <div class="about-container">
       <% if (page.image_url) { %>
         <div class="about-image">

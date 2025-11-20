@@ -12,8 +12,35 @@ const { doubleCsrf } = require('csrf-csrf');
 const DOMPurify = require('isomorphic-dompurify');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const i18next = require('i18next');
+const i18nextMiddleware = require('i18next-http-middleware');
+const Backend = require('i18next-fs-backend');
 
 const app = express();
+
+// Configuration i18next
+i18next
+  .use(Backend)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    backend: {
+      loadPath: path.join(__dirname, 'locales', '{{lng}}', '{{ns}}.json')
+    },
+    fallbackLng: 'fr',
+    preload: ['fr', 'en', 'es'],
+    supportedLngs: ['fr', 'en', 'es'],
+    detection: {
+      order: ['path', 'cookie', 'header'],
+      caches: ['cookie'],
+      cookieName: 'i18next'
+    },
+    interpolation: {
+      escapeValue: false // EJS fait déjà l'échappement
+    }
+  });
+
+// Middleware i18next
+app.use(i18nextMiddleware.handle(i18next));
 
 // Trust proxy pour Render/Heroku (permet secure cookies derrière reverse proxy)
 if (process.env.NODE_ENV === 'production') {
@@ -126,9 +153,12 @@ const csrfConfig = doubleCsrf({
 
 const { doubleCsrfProtection, generateCsrfToken } = csrfConfig;
 
-// Middleware pour passer le token CSRF à toutes les vues
+// Middleware pour passer le token CSRF et les fonctions i18n à toutes les vues
 app.use((req, res, next) => {
   res.locals.csrfToken = generateCsrfToken(req, res);
+  res.locals.t = req.t; // Fonction de traduction
+  res.locals.language = req.language || 'fr'; // Langue actuelle
+  res.locals.availableLanguages = ['fr', 'en', 'es']; // Langues disponibles
   next();
 });
 

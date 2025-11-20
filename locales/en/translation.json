@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Andrea Layton - Project Manager",
+    "subtitle": "Architecture and interior design"
+  },
+  "project": {
+    "usage": "Usage",
+    "surface": "Surface",
+    "location_year": "Location and year",
+    "back_to_projects": "Back to projects"
+  },
+  "about": {
+    "page_title": "About Andrea Layton",
+    "meta_title": "About - Andrea Layton",
+    "meta_description": "Discover Andrea Layton, project manager specializing in architecture and interior design."
+  },
+  "contact": {
+    "page_title": "Contact",
+    "meta_title": "Contact - Andrea Layton",
+    "meta_description": "Contact Andrea Layton for your architecture and interior design projects.",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "error": {
+    "404_title": "Page not found",
+    "404_message": "Sorry, the page you are looking for does not exist.",
+    "back_home": "Back to home"
+  },
+  "admin": {
+    "login": "Login",
+    "logout": "Logout",
+    "projects": "Projects",
+    "pages": "Pages",
+    "add_project": "Add project",
+    "edit_project": "Edit project",
+    "delete_project": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "title": "Title",
+    "short_description": "Short description",
+    "description": "Description",
+    "cover_image": "Cover image",
+    "gallery_images": "Gallery images",
+    "language": "Language",
+    "manage_projects": "Manage projects",
+    "manage_pages": "Manage pages",
+    "edit": "Edit",
+    "confirm_delete": "Are you sure you want to delete this project?"
+  },
+  "seo": {
+    "home_title": "Andrea Layton - Project Manager | Architecture and interior design",
+    "home_description": "Discover Andrea Layton's projects, project manager specializing in architecture and interior design in Montpellier.",
+    "project_title": "{{title}} - Andrea Layton"
+  }
+}
