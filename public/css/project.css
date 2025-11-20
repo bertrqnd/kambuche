@@ -561,6 +561,11 @@ html, body {
     padding-top: 60px;
   }
 
+  /* Cacher les flèches du carrousel sur mobile paysage */
+  .carousel__btn {
+    display: none;
+  }
+
   .project-text {
     width: 100%;
     min-height: auto;
@@ -629,6 +634,11 @@ html, body {
     flex-shrink: 0;
     margin-top: -60px;
     padding-top: 60px;
+  }
+
+  /* Cacher les flèches du carrousel sur mobile portrait */
+  .carousel__btn {
+    display: none;
   }
 
   .carousel-slide img {
