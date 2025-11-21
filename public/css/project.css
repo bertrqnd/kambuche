@@ -202,8 +202,8 @@ main {
 }
 
 .carousel__indicator {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: rgba(255,255,255,0.6);
   cursor: pointer;
@@ -613,8 +613,8 @@ main {
 
   /* Indicateurs plus petits en horizontal */
   .carousel__indicator {
-    width: 8px;
-    height: 8px;
+    width: 5px;
+    height: 5px;
   }
 
   /* Espace en bas */
@@ -699,12 +699,12 @@ main {
 
   /* Indicateurs plus petits sur téléphone vertical */
   .carousel__indicator {
-    width: 8px;
-    height: 8px;
+    width: 5px;
+    height: 5px;
   }
 
   .carousel__indicator.active {
-    transform: scale(1.4);
+    transform: scale(1.5);
   }
   
   /* Lightbox mobile */
