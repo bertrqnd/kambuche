@@ -1,7 +1,25 @@
+// Détecter si c'est le premier chargement de la session
+let isFirstLoad = !sessionStorage.getItem('hasVisited');
+
 // Effet de fondu au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-  // Fade in au chargement
-  document.body.classList.add('fade-in');
+  if (isFirstLoad) {
+    // Premier chargement : fondu complet du body
+    document.body.classList.add('fade-in');
+    sessionStorage.setItem('hasVisited', 'true');
+  } else {
+    // Navigation interne : body visible immédiatement, main fait son fade-in
+    document.body.style.opacity = '1';
+
+    // Faire apparaître le main avec un fade-in
+    const main = document.querySelector('main');
+    if (main) {
+      main.style.opacity = '0';
+      // Force reflow pour que la transition CSS s'applique
+      main.offsetHeight;
+      main.style.opacity = '1';
+    }
+  }
 });
 
 // Intercepter les clics sur les liens pour ajouter un fondu avant navigation
@@ -29,9 +47,8 @@ document.addEventListener('click', (e) => {
   // Empêcher la navigation par défaut
   e.preventDefault();
 
-  // Ajouter la classe fade-out
-  document.body.classList.remove('fade-in');
-  document.body.classList.add('fade-out');
+  // Navigation interne : fondu uniquement du main (pas de la navbar)
+  document.body.classList.add('content-fade-out');
 
   // Naviguer après l'animation (300ms)
   setTimeout(() => {
@@ -41,9 +58,9 @@ document.addEventListener('click', (e) => {
 
 // Gérer le bouton retour du navigateur
 window.addEventListener('pageshow', (event) => {
-  // Si la page vient du cache (bouton retour), forcer le fade-in
+  // Si la page vient du cache (bouton retour)
   if (event.persisted) {
-    document.body.classList.remove('fade-out');
-    document.body.classList.add('fade-in');
+    document.body.classList.remove('fade-out', 'content-fade-out');
+    document.body.style.opacity = '1';
   }
 });

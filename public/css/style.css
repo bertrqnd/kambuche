@@ -12,6 +12,7 @@ html, body {
 }
 
 /* === PAGE FADE TRANSITION === */
+/* Fondu complet au chargement initial */
 body {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
@@ -22,6 +23,16 @@ body.fade-in {
 }
 
 body.fade-out {
+  opacity: 0;
+}
+
+/* Fondu uniquement du main lors de la navigation interne */
+main {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+body.content-fade-out main {
   opacity: 0;
 }
 
