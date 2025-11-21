@@ -672,24 +672,17 @@ main {
   .project-metadata-line {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
-    order: 2;
   }
 
   .project-title {
     font-size: 2.5rem;
     font-weight: 500 !important;
-    margin-bottom: 0.5em;
-    order: 1;
+    margin-bottom: 0.2em;
   }
 
   .project-short-desc {
     font-size: 1rem;
     margin-bottom: 2em;
-    order: 3;
-  }
-
-  .project-description {
-    order: 4;
   }
 
   .project-description {
