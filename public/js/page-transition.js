@@ -4,21 +4,26 @@ let isFirstLoad = !sessionStorage.getItem('hasVisited');
 // Effet de fondu au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
   if (isFirstLoad) {
-    // Premier chargement : fondu complet du body
+    // Premier chargement : fondu complet du body (navbar + main)
     document.body.classList.add('fade-in');
     sessionStorage.setItem('hasVisited', 'true');
   } else {
-    // Navigation interne : body visible immédiatement, main fait son fade-in
+    // Navigation interne : navbar visible immédiatement, main fait son fade-in
     document.body.style.opacity = '1';
 
-    // Faire apparaître le main avec un fade-in
-    const main = document.querySelector('main');
-    if (main) {
-      main.style.opacity = '0';
-      // Force reflow pour que la transition CSS s'applique
-      main.offsetHeight;
-      main.style.opacity = '1';
-    }
+    // Attendre un petit délai pour que le DOM soit prêt
+    requestAnimationFrame(() => {
+      const main = document.querySelector('main');
+      if (main) {
+        // Démarrer avec opacity 0
+        main.style.opacity = '0';
+
+        // Attendre le prochain frame pour appliquer le fade-in
+        requestAnimationFrame(() => {
+          main.style.opacity = '1';
+        });
+      }
+    });
   }
 });
 
@@ -47,10 +52,13 @@ document.addEventListener('click', (e) => {
   // Empêcher la navigation par défaut
   e.preventDefault();
 
-  // Navigation interne : fondu uniquement du main (pas de la navbar)
-  document.body.classList.add('content-fade-out');
+  // Faire fondre uniquement le main (pas la navbar)
+  const main = document.querySelector('main');
+  if (main) {
+    main.style.opacity = '0';
+  }
 
-  // Naviguer après l'animation (300ms)
+  // Naviguer après l'animation (500ms)
   setTimeout(() => {
     window.location.href = href;
   }, 500);
@@ -62,5 +70,10 @@ window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
     document.body.classList.remove('fade-out', 'content-fade-out');
     document.body.style.opacity = '1';
+
+    const main = document.querySelector('main');
+    if (main) {
+      main.style.opacity = '1';
+    }
   }
 });
