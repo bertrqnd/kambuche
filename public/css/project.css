@@ -202,8 +202,8 @@ main {
 }
 
 .carousel__indicator {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: rgba(255,255,255,0.6);
   cursor: pointer;
@@ -212,7 +212,7 @@ main {
 
 .carousel__indicator.active {
   background: #f5c518;
-  transform: scale(1.3);
+  transform: scale(1.4);
 }
 
 /* Ligne métadonnées au-dessus du titre */
@@ -521,6 +521,27 @@ main {
 .lightbox-next { right: 30px; }
 
 /* === RESPONSIVE === */
+
+/* Laptop screens - titres longs */
+@media (max-width: 1440px) {
+  .project-title {
+    font-size: 4rem;
+  }
+  .project-short-desc {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .project-title {
+    font-size: 3.2rem;
+  }
+  .project-short-desc {
+    font-size: 1.2rem;
+  }
+}
+
+/* Tablette */
 @media (max-width: 1024px) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
