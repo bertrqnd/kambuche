@@ -11,6 +11,20 @@ html, body {
   font-weight: 300;
 }
 
+/* === PAGE FADE TRANSITION === */
+body {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+
+body.fade-out {
+  opacity: 0;
+}
+
 /* Classe utilitaire pour masquer visuellement (SEO) */
 .visually-hidden {
   position: absolute;
