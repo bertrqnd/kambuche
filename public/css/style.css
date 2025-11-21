@@ -15,7 +15,7 @@ html, body {
 /* Fondu complet au chargement initial */
 body {
   opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
 }
 
 body.fade-in {
@@ -29,7 +29,7 @@ body.fade-out {
 /* Fondu uniquement du main lors de la navigation interne */
 main {
   opacity: 1;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
 }
 
 body.content-fade-out main {
@@ -471,18 +471,18 @@ body.content-fade-out main {
   }
 
   .project-card__title {
-    font-size: 1rem;
-    font-weight: 230;
-    margin-bottom: 5px;
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 2px;
     margin-left: -6px;
     color: #fff;
   }
 
   .project-card__description {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 300;
     line-height: 1.4;
-    color: #ccc;
+    color: #999;
     margin-left: -6px;
   }
 
@@ -544,18 +544,18 @@ body.content-fade-out main {
   }
 
   .project-card__title {
-    font-size: 1rem;
-    font-weight: 230;
-    margin-bottom: 5px;
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 2px;
     margin-left: -6px;
     color: #fff;
   }
 
   .project-card__description {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 300;
     line-height: 1.4;
-    color: #ccc;
+    color: #999;
     margin-left: -6px;
   }
 }

@@ -28,6 +28,21 @@ html, body {
   font-weight: 300;
 }
 
+/* === PAGE FADE TRANSITION === */
+body {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+
+main {
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+
 body {
   display: flex;
   flex-direction: column;

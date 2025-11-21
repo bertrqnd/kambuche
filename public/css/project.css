@@ -17,6 +17,21 @@ html, body {
   font-weight: 300;
 }
 
+/* === PAGE FADE TRANSITION === */
+body {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+
+main {
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+
 /* === NAVBAR === */
 .navbar {
   position: fixed;
@@ -654,17 +669,17 @@ html, body {
   }
 
   .project-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.3em;
+    font-size: 2.5rem;
+    margin-bottom: 0.2em;
   }
 
   .project-short-desc {
-    font-size: 0.95rem;
-    margin-bottom: 0.6em;
+    font-size: 1rem;
+    margin-bottom: 2em;
   }
 
   .project-metadata {
-    margin-bottom: 0.8em;
+    margin-bottom: 1.5em;
     gap: 0.3em;
   }
 

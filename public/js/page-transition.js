@@ -3,27 +3,17 @@ let isFirstLoad = !sessionStorage.getItem('hasVisited');
 
 // Effet de fondu au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-  if (isFirstLoad) {
-    // Premier chargement : fondu complet du body (navbar + main)
-    document.body.classList.add('fade-in');
-    sessionStorage.setItem('hasVisited', 'true');
-  } else {
-    // Navigation interne : navbar visible immédiatement, main fait son fade-in
+  // Faire fondre tout le body (navbar + main)
+  document.body.style.opacity = '0';
+
+  // Utiliser setTimeout pour forcer le navigateur à appliquer la transition
+  setTimeout(() => {
     document.body.style.opacity = '1';
+  }, 50);
 
-    // Attendre un petit délai pour que le DOM soit prêt
-    requestAnimationFrame(() => {
-      const main = document.querySelector('main');
-      if (main) {
-        // Démarrer avec opacity 0
-        main.style.opacity = '0';
-
-        // Attendre le prochain frame pour appliquer le fade-in
-        requestAnimationFrame(() => {
-          main.style.opacity = '1';
-        });
-      }
-    });
+  // Marquer comme visité après le premier chargement
+  if (isFirstLoad) {
+    sessionStorage.setItem('hasVisited', 'true');
   }
 });
 
@@ -52,16 +42,13 @@ document.addEventListener('click', (e) => {
   // Empêcher la navigation par défaut
   e.preventDefault();
 
-  // Faire fondre uniquement le main (pas la navbar)
-  const main = document.querySelector('main');
-  if (main) {
-    main.style.opacity = '0';
-  }
+  // Faire fondre tout le body (navbar + main)
+  document.body.style.opacity = '0';
 
-  // Naviguer après l'animation (500ms)
+  // Naviguer après l'animation (400ms)
   setTimeout(() => {
     window.location.href = href;
-  }, 500);
+  }, 400);
 });
 
 // Gérer le bouton retour du navigateur
@@ -70,10 +57,5 @@ window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
     document.body.classList.remove('fade-out', 'content-fade-out');
     document.body.style.opacity = '1';
-
-    const main = document.querySelector('main');
-    if (main) {
-      main.style.opacity = '1';
-    }
   }
 });
