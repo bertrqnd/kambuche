@@ -81,6 +81,11 @@ const handleMulterError = (err, req, res, next) => {
 // Upload Cloudinary (cover + images)
 router.post(
   '/projects/add',
+  upload.fields([
+    { name: 'cover_image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+  ]),
+  handleMulterError,
   (req, res, next) => {
     console.log('📝 CSRF Token reçu:', req.body._csrf?.substring(0, 20) + '...');
     console.log('🍪 CSRF Cookie:', req.cookies.__csrf?.substring(0, 20) + '...');
@@ -88,11 +93,6 @@ router.post(
     next();
   },
   doubleCsrfProtection,
-  upload.fields([
-    { name: 'cover_image', maxCount: 1 },
-    { name: 'images', maxCount: 10 }
-  ]),
-  handleMulterError,
   adminController.postAddProject
 );
 
@@ -101,6 +101,11 @@ router.get('/projects/edit/:id', adminController.getEditProject);
 // Correction ici aussi pour "new_images"
 router.post(
   '/projects/edit/:id',
+  upload.fields([
+    { name: 'cover_image', maxCount: 1 },
+    { name: 'new_images', maxCount: 10 }
+  ]),
+  handleMulterError,
   (req, res, next) => {
     console.log('🔧 EDIT - CSRF Token reçu:', req.body._csrf?.substring(0, 20) + '...');
     console.log('🔧 EDIT - CSRF Cookie:', req.cookies.__csrf?.substring(0, 20) + '...');
@@ -108,11 +113,6 @@ router.post(
     next();
   },
   doubleCsrfProtection,
-  upload.fields([
-    { name: 'cover_image', maxCount: 1 },
-    { name: 'new_images', maxCount: 10 }
-  ]),
-  handleMulterError,
   adminController.postEditProject
 );
 
@@ -130,9 +130,9 @@ router.get('/pages', adminController.getPages);
 router.get('/pages/edit/:slug', adminController.getEditPage);
 router.post(
   '/pages/edit/:slug',
-  doubleCsrfProtection,
   upload.single('image'),
   handleMulterError,
+  doubleCsrfProtection,
   adminController.postEditPage
 );
 
