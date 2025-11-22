@@ -171,16 +171,24 @@ app.use((req, res, next) => {
     res.locals.csrfToken = token;
 
     // Debug CSRF en production
-    if (process.env.NODE_ENV === 'production' && req.method === 'POST') {
-      console.log('🔐 CSRF Debug:', {
-        method: req.method,
-        path: req.path,
-        hasToken: !!req.body._csrf,
-        hasCookie: !!req.cookies.__csrf,
-        hasSession: !!req.sessionID,
-        tokenLength: req.body._csrf?.length,
-        cookieLength: req.cookies.__csrf?.length
-      });
+    if (process.env.NODE_ENV === 'production') {
+      if (req.method === 'GET' && req.path.includes('/edit')) {
+        console.log('🎫 Token généré pour formulaire:', token?.substring(0, 20) + '...');
+        console.log('🍪 Cookie actuel:', req.cookies.__csrf?.substring(0, 20) + '...');
+      }
+      if (req.method === 'POST') {
+        console.log('🔐 CSRF Debug:', {
+          method: req.method,
+          path: req.path,
+          hasToken: !!req.body._csrf,
+          hasCookie: !!req.cookies.__csrf,
+          hasSession: !!req.sessionID,
+          tokenLength: req.body._csrf?.length,
+          cookieLength: req.cookies.__csrf?.length,
+          tokenPreview: req.body._csrf?.substring(0, 20),
+          cookiePreview: req.cookies.__csrf?.substring(0, 20)
+        });
+      }
     }
   } catch (err) {
     console.error('❌ Erreur génération CSRF token:', err);
