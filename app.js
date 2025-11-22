@@ -20,17 +20,27 @@ if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1);
 }
 
-// Helmet avec CSP configurée pour autoriser Cloudinary et TinyMCE
+// Helmet avec CSP configurée pour autoriser Cloudinary, TinyMCE et Google Fonts
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
       scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tiny.cloud"], // TinyMCE CDN
-      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tiny.cloud"], // TinyMCE styles
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.tiny.cloud",       // TinyMCE styles
+        "https://fonts.googleapis.com"   // Google Fonts
+      ],
       connectSrc: ["'self'", "https://res.cloudinary.com", "https://cdn.tiny.cloud"], // TinyMCE API
       frameAncestors: ["'self'"],
-      fontSrc: ["'self'", "data:", "https://cdn.tiny.cloud"], // TinyMCE fonts
+      fontSrc: [
+        "'self'",
+        "data:",
+        "https://cdn.tiny.cloud",        // TinyMCE fonts
+        "https://fonts.gstatic.com"      // Google Fonts
+      ],
     },
   })
 );
@@ -43,6 +53,9 @@ if (process.env.NODE_ENV === 'production') {
     preload: true
   }));
 }
+
+// COOP - Isolation des fenêtres (sécurité)
+app.use(helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }));
 
 // Autres middlewares
 app.use(compression()); // Gzip compression
