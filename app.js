@@ -8,7 +8,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const { doubleCsrf } = require('csrf-csrf');
+const crypto = require('crypto');
 const DOMPurify = require('isomorphic-dompurify');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -142,56 +142,77 @@ passport.deserializeUser((user, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Configuration CSRF
-const csrfConfig = doubleCsrf({
-  getSecret: () => sessionSecret || 'dev-csrf-secret',
-  cookieName: '__csrf',
-  cookieOptions: {
-    httpOnly: true,
-    sameSite: 'lax', // 'lax' au lieu de 'strict' pour permettre les formulaires
-    secure: process.env.NODE_ENV === 'production',
-    path: '/'
-  },
-  getTokenFromRequest: (req) => {
-    // Essayer de récupérer le token depuis plusieurs sources
-    return req.body._csrf || req.headers['x-csrf-token'] || req.headers['csrf-token'];
-  },
-  getSessionIdentifier: (req) => {
-    // Utiliser sessionID fourni par express-session
-    return req.sessionID || '';
-  }
-});
+// Configuration CSRF custom (csrf-csrf ne fonctionne pas avec Render proxy)
+const csrfSecret = sessionSecret || 'dev-csrf-secret';
 
-const { doubleCsrfProtection, generateCsrfToken } = csrfConfig;
+// Générer un token CSRF basé sur la session
+function generateCsrfToken(sessionID) {
+  const timestamp = Date.now();
+  const randomBytes = crypto.randomBytes(16).toString('hex');
+  const hash = crypto
+    .createHmac('sha256', csrfSecret)
+    .update(`${sessionID}-${timestamp}-${randomBytes}`)
+    .digest('hex');
+  return `${hash}.${timestamp}.${randomBytes}`;
+}
+
+// Valider un token CSRF
+function validateCsrfToken(token, sessionID) {
+  if (!token || !sessionID) return false;
+
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+
+  const [hash, timestamp, randomBytes] = parts;
+
+  // Vérifier que le token n'est pas trop vieux (24h max)
+  const tokenAge = Date.now() - parseInt(timestamp);
+  if (tokenAge > 24 * 60 * 60 * 1000) return false;
+
+  // Recalculer le hash et comparer
+  const expectedHash = crypto
+    .createHmac('sha256', csrfSecret)
+    .update(`${sessionID}-${timestamp}-${randomBytes}`)
+    .digest('hex');
+
+  return hash === expectedHash;
+}
+
+// Middleware CSRF protection
+const doubleCsrfProtection = (req, res, next) => {
+  const token = req.body._csrf || req.headers['x-csrf-token'] || req.headers['csrf-token'];
+  const sessionID = req.sessionID;
+
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔐 CSRF Validation:', {
+      hasToken: !!token,
+      hasSession: !!sessionID,
+      tokenPreview: token?.substring(0, 20)
+    });
+  }
+
+  if (!validateCsrfToken(token, sessionID)) {
+    console.error('❌ Invalid CSRF token');
+    return res.status(403).send('Invalid CSRF token');
+  }
+
+  next();
+};
 
 // Middleware pour passer le token CSRF à toutes les vues
 app.use((req, res, next) => {
   try {
-    const token = generateCsrfToken(req, res);
-    res.locals.csrfToken = token;
+    if (req.sessionID) {
+      const token = generateCsrfToken(req.sessionID);
+      res.locals.csrfToken = token;
 
-    // Debug CSRF en production
-    if (process.env.NODE_ENV === 'production') {
-      if (req.method === 'GET' && (req.path.includes('/edit') || req.path.includes('/add'))) {
-        console.log('🎫 Token généré pour formulaire:', token?.substring(0, 20) + '...');
-        console.log('🍪 Cookie actuel:', req.cookies.__csrf?.substring(0, 20) + '...');
+      // Debug en production
+      if (process.env.NODE_ENV === 'production' && req.method === 'GET' && (req.path.includes('/edit') || req.path.includes('/add'))) {
+        console.log('🎫 Token généré:', token.substring(0, 30) + '...');
         console.log('🆔 Session ID:', req.sessionID?.substring(0, 20) + '...');
-        console.log('🔍 Token === Cookie?', token === req.cookies.__csrf);
       }
-      if (req.method === 'POST') {
-        console.log('🔐 CSRF Debug:', {
-          method: req.method,
-          path: req.path,
-          hasToken: !!req.body._csrf,
-          hasCookie: !!req.cookies.__csrf,
-          hasSession: !!req.sessionID,
-          tokenLength: req.body._csrf?.length,
-          cookieLength: req.cookies.__csrf?.length,
-          tokenPreview: req.body._csrf?.substring(0, 20),
-          cookiePreview: req.cookies.__csrf?.substring(0, 20),
-          areEqual: req.body._csrf === req.cookies.__csrf
-        });
-      }
+    } else {
+      res.locals.csrfToken = '';
     }
   } catch (err) {
     console.error('❌ Erreur génération CSRF token:', err);
