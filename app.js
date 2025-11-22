@@ -100,13 +100,18 @@ app.use(session({
   secret: sessionSecret || 'dev-secret-change-in-production',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    touchAfter: 24 * 3600 // Lazy session update
+  }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 2, // 2 heures
+    maxAge: 1000 * 60 * 60 * 24, // 24 heures (augmenté de 2h à 24h)
     httpOnly: true,
     sameSite: 'lax', // 'lax' nécessaire pour OAuth (callback depuis Google)
-    secure: process.env.NODE_ENV === 'production' // HTTPS en production
-  }
+    secure: process.env.NODE_ENV === 'production', // HTTPS en production
+    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+  },
+  proxy: true // IMPORTANT pour Render (derrière un proxy)
 }));
 
 // Configuration Passport Google OAuth
@@ -161,7 +166,26 @@ const { doubleCsrfProtection, generateCsrfToken } = csrfConfig;
 
 // Middleware pour passer le token CSRF à toutes les vues
 app.use((req, res, next) => {
-  res.locals.csrfToken = generateCsrfToken(req, res);
+  try {
+    const token = generateCsrfToken(req, res);
+    res.locals.csrfToken = token;
+
+    // Debug CSRF en production
+    if (process.env.NODE_ENV === 'production' && req.method === 'POST') {
+      console.log('🔐 CSRF Debug:', {
+        method: req.method,
+        path: req.path,
+        hasToken: !!req.body._csrf,
+        hasCookie: !!req.cookies.__csrf,
+        hasSession: !!req.sessionID,
+        tokenLength: req.body._csrf?.length,
+        cookieLength: req.cookies.__csrf?.length
+      });
+    }
+  } catch (err) {
+    console.error('❌ Erreur génération CSRF token:', err);
+    res.locals.csrfToken = '';
+  }
   next();
 });
 

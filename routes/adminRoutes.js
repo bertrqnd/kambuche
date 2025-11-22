@@ -101,6 +101,12 @@ router.get('/projects/edit/:id', adminController.getEditProject);
 // Correction ici aussi pour "new_images"
 router.post(
   '/projects/edit/:id',
+  (req, res, next) => {
+    console.log('🔧 EDIT - CSRF Token reçu:', req.body._csrf?.substring(0, 20) + '...');
+    console.log('🔧 EDIT - CSRF Cookie:', req.cookies.__csrf?.substring(0, 20) + '...');
+    console.log('🔧 EDIT - Session ID:', req.sessionID?.substring(0, 20) + '...');
+    next();
+  },
   doubleCsrfProtection,
   upload.fields([
     { name: 'cover_image', maxCount: 1 },
