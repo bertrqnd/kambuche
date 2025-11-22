@@ -108,8 +108,8 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24, // 24 heures (augmenté de 2h à 24h)
     httpOnly: true,
     sameSite: 'lax', // 'lax' nécessaire pour OAuth (callback depuis Google)
-    secure: process.env.NODE_ENV === 'production', // HTTPS en production
-    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+    secure: process.env.NODE_ENV === 'production' // HTTPS en production
+    // Pas de domaine explicite - laisse le navigateur décider
   },
   proxy: true // IMPORTANT pour Render (derrière un proxy)
 }));
@@ -172,9 +172,11 @@ app.use((req, res, next) => {
 
     // Debug CSRF en production
     if (process.env.NODE_ENV === 'production') {
-      if (req.method === 'GET' && req.path.includes('/edit')) {
+      if (req.method === 'GET' && (req.path.includes('/edit') || req.path.includes('/add'))) {
         console.log('🎫 Token généré pour formulaire:', token?.substring(0, 20) + '...');
         console.log('🍪 Cookie actuel:', req.cookies.__csrf?.substring(0, 20) + '...');
+        console.log('🆔 Session ID:', req.sessionID?.substring(0, 20) + '...');
+        console.log('🔍 Token === Cookie?', token === req.cookies.__csrf);
       }
       if (req.method === 'POST') {
         console.log('🔐 CSRF Debug:', {
@@ -186,7 +188,8 @@ app.use((req, res, next) => {
           tokenLength: req.body._csrf?.length,
           cookieLength: req.cookies.__csrf?.length,
           tokenPreview: req.body._csrf?.substring(0, 20),
-          cookiePreview: req.cookies.__csrf?.substring(0, 20)
+          cookiePreview: req.cookies.__csrf?.substring(0, 20),
+          areEqual: req.body._csrf === req.cookies.__csrf
         });
       }
     }
