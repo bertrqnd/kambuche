@@ -49,8 +49,20 @@ app.use(compression()); // Gzip compression
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.json({ limit: '10kb' }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+
+// Assets statiques avec cache HTTP optimisé
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '1y',        // Cache 1 an pour tous les assets (CSS, JS, images, fonts)
+  immutable: true,     // Les fichiers ne changent jamais (recommandé avec cache busting)
+  etag: true,          // Génère des ETags pour validation
+  lastModified: true   // Ajoute header Last-Modified
+}));
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads'), {
+  maxAge: '1y',
+  immutable: true,
+  etag: true,
+  lastModified: true
+}));
 
 // View engine
 app.set('views', path.join(__dirname, 'views'));
@@ -135,11 +147,33 @@ app.use((req, res, next) => {
 // Middleware pour passer la clé TinyMCE et le sanitizer à toutes les vues
 app.use((_req, res, next) => {
   res.locals.tinymceApiKey = process.env.TINYMCE_API_KEY || '';
+
   // Helper pour sanitiser le HTML (protection XSS)
   res.locals.sanitize = (html) => DOMPurify.sanitize(html, {
     ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'pre', 'code', 'span', 'div'],
     ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'style', 'target', 'rel']
   });
+
+  // Helper pour optimiser les URLs Cloudinary
+  res.locals.cloudinaryOptimize = (url, width = 1200) => {
+    if (!url || typeof url !== 'string' || !url.includes('cloudinary.com')) return url;
+    return url.replace('/upload/', `/upload/w_${width},f_auto,q_auto/`);
+  };
+
+  // Helper pour images responsive Cloudinary (srcset)
+  res.locals.cloudinaryResponsive = (url, sizes = [400, 800, 1200, 1920]) => {
+    if (!url || typeof url !== 'string' || !url.includes('cloudinary.com')) {
+      return { src: url, srcset: '' };
+    }
+
+    const src = url.replace('/upload/', `/upload/w_${sizes[2]},f_auto,q_auto/`);
+    const srcset = sizes.map(w =>
+      `${url.replace('/upload/', `/upload/w_${w},f_auto,q_auto/`)} ${w}w`
+    ).join(', ');
+
+    return { src, srcset };
+  };
+
   next();
 });
 

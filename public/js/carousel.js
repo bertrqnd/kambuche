@@ -19,10 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
     projectsData.forEach((project, i) => {
       const slide = document.createElement('div');
       slide.classList.add('carousel-slide');
-      
+
       const img = document.createElement('img');
-      img.src = project.image || '/images/default.jpg';
+      // Optimiser l'image Cloudinary
+      const originalUrl = project.image || '/images/default.jpg';
+      if (originalUrl.includes('cloudinary.com')) {
+        img.src = originalUrl.replace('/upload/', '/upload/w_1920,f_auto,q_auto/');
+        img.srcset = `
+          ${originalUrl.replace('/upload/', '/upload/w_800,f_auto,q_auto/')} 800w,
+          ${originalUrl.replace('/upload/', '/upload/w_1200,f_auto,q_auto/')} 1200w,
+          ${originalUrl.replace('/upload/', '/upload/w_1920,f_auto,q_auto/')} 1920w
+        `.trim();
+        img.sizes = '100vw';
+      } else {
+        img.src = originalUrl;
+      }
       img.alt = project.title;
+      if (i === 0) {
+        img.fetchPriority = 'high'; // LCP optimization
+      } else {
+        img.loading = 'lazy';
+      }
       
       const overlayClone = document.createElement('div');
       overlayClone.classList.add('carousel__overlay');

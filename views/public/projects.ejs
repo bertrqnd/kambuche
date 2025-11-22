@@ -72,10 +72,19 @@
     <!-- Liste mobile vertical -->
     <section class="projects-mobile">
       <% carouselProjects.forEach((project, index) => { %>
+        <% const imgData = cloudinaryResponsive(project.image, [400, 800, 1200]) %>
         <article class="project-card" id="project-<%= index %>">
           <a href="/projets/<%= project.slug %>" class="project-card__link">
             <div class="project-card__image">
-              <img src="<%= project.image %>" alt="<%= project.title %>" width="800" height="600" loading="lazy">
+              <img
+                src="<%= imgData.src %>"
+                srcset="<%= imgData.srcset %>"
+                sizes="90vw"
+                alt="<%= project.title %>"
+                width="800"
+                height="600"
+                loading="lazy"
+              >
             </div>
             <div class="project-card__content">
               <h3 class="project-card__title"><%= project.title %></h3>

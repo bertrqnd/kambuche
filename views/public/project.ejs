@@ -26,8 +26,17 @@
         <% if(project.cover_image_url || (project.images_url && project.images_url.length > 0)) { %>
           <% let allImages = [project.cover_image_url].concat(project.images_url.filter(img => img !== project.cover_image_url)); %>
           <% allImages.forEach((img, index) => { %>
+            <% const imgData = cloudinaryResponsive(img, [800, 1200, 1600, 2400]) %>
             <div class="carousel-slide">
-              <img src="<%= img %>" alt="<%= project.title %>" width="1200" height="800" loading="lazy">
+              <img
+                src="<%= imgData.src %>"
+                srcset="<%= imgData.srcset %>"
+                sizes="(max-width: 768px) 100vw, 66vw"
+                alt="<%= project.title %> - Image <%= index + 1 %>"
+                width="1200"
+                height="800"
+                <% if (index === 0) { %>fetchpriority="high"<% } else { %>loading="lazy"<% } %>
+              >
             </div>
           <% }) %>
           <button class="carousel__btn carousel__btn--prev"></button>
