@@ -81,6 +81,12 @@ const handleMulterError = (err, req, res, next) => {
 // Upload Cloudinary (cover + images)
 router.post(
   '/projects/add',
+  (req, res, next) => {
+    console.log('📝 CSRF Token reçu:', req.body._csrf?.substring(0, 20) + '...');
+    console.log('🍪 CSRF Cookie:', req.cookies.__csrf?.substring(0, 20) + '...');
+    console.log('🔑 Session ID:', req.sessionID?.substring(0, 20) + '...');
+    next();
+  },
   doubleCsrfProtection,
   upload.fields([
     { name: 'cover_image', maxCount: 1 },

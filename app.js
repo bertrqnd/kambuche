@@ -144,10 +144,17 @@ const csrfConfig = doubleCsrf({
   cookieOptions: {
     httpOnly: true,
     sameSite: 'lax', // 'lax' au lieu de 'strict' pour permettre les formulaires
-    secure: process.env.NODE_ENV === 'production'
+    secure: process.env.NODE_ENV === 'production',
+    path: '/'
   },
-  getTokenFromRequest: (req) => req.body._csrf || req.headers['x-csrf-token'],
-  getSessionIdentifier: (req) => req.session?.id || ''
+  getTokenFromRequest: (req) => {
+    // Essayer de récupérer le token depuis plusieurs sources
+    return req.body._csrf || req.headers['x-csrf-token'] || req.headers['csrf-token'];
+  },
+  getSessionIdentifier: (req) => {
+    // Utiliser sessionID fourni par express-session
+    return req.sessionID || '';
+  }
 });
 
 const { doubleCsrfProtection, generateCsrfToken } = csrfConfig;
