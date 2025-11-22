@@ -15,6 +15,14 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Redirection /admin vers login ou projects
+router.get('/', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/admin/projects');
+  }
+  res.redirect('/admin/login');
+});
+
 // Page de login
 router.get('/login', adminController.getLogin);
 

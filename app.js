@@ -55,7 +55,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // COOP - Isolation des fenêtres (sécurité)
-app.use(helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }));
+// Note: 'same-origin-allow-popups' pour permettre Google OAuth
+app.use(helmet.crossOriginOpenerPolicy({ policy: 'same-origin-allow-popups' }));
 
 // Autres middlewares
 app.use(compression()); // Gzip compression
@@ -142,7 +143,7 @@ const csrfConfig = doubleCsrf({
   cookieName: '__csrf',
   cookieOptions: {
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax', // 'lax' au lieu de 'strict' pour permettre les formulaires
     secure: process.env.NODE_ENV === 'production'
   },
   getTokenFromRequest: (req) => req.body._csrf || req.headers['x-csrf-token'],
