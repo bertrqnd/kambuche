@@ -538,13 +538,120 @@ main {
   }
 }
 
-/* Tablette */
-@media (max-width: 1024px) {
+/* Tablette portrait (769px-1366px) : diaporama + texte empilé */
+@media (min-width: 769px) and (max-width: 1366px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
-  .project-title { font-size: 1.8rem; }
-  .project-short-desc { font-size: 1.05rem; }
-  .project-description { font-size: 1rem; }
+
+  html, body {
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .project-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    margin-top: 60px;
+  }
+
+  .project-carousel {
+    width: 100%;
+    height: 65vh;
+    flex-shrink: 0;
+    margin-top: -60px;
+    padding-top: 60px;
+  }
+
+  .carousel__btn {
+    opacity: 0.6;
+  }
+
+  .project-text {
+    width: 100%;
+    min-height: auto;
+    padding: 30px 40px;
+    overflow-y: visible;
+  }
+
+  .project-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5em;
+  }
+
+  .project-short-desc {
+    font-size: 1.2rem;
+    margin-bottom: 2em;
+  }
+
+  .project-description {
+    font-size: 1rem;
+  }
+
+  .project-text::after {
+    content: '';
+    display: block;
+    height: 60px;
+    flex-shrink: 0;
+  }
+}
+
+/* Tablette horizontale (769px-1366px) : diaporama + texte empilé */
+@media (min-width: 769px) and (max-width: 1366px) and (orientation: landscape) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+
+  html, body {
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .project-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    margin-top: 60px;
+  }
+
+  .project-carousel {
+    width: 100%;
+    height: 70vh;
+    flex-shrink: 0;
+    margin-top: -60px;
+    padding-top: 60px;
+  }
+
+  .carousel__btn {
+    opacity: 0.6;
+  }
+
+  .project-text {
+    width: 100%;
+    min-height: auto;
+    padding: 25px 35px;
+    overflow-y: visible;
+  }
+
+  .project-title {
+    font-size: 2rem;
+    margin-bottom: 0.5em;
+  }
+
+  .project-short-desc {
+    font-size: 1.1rem;
+    margin-bottom: 1.8em;
+  }
+
+  .project-description {
+    font-size: 0.95rem;
+  }
+
+  .project-text::after {
+    content: '';
+    display: block;
+    height: 50px;
+    flex-shrink: 0;
+  }
 }
 
 /* Tablette et téléphone horizontal */
