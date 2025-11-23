@@ -11,7 +11,10 @@
   <script src="/js/tinymce-config.js"></script>
 </head>
 <body>
-  <h1>Modifier le projet</h1>
+  <div class="admin-header">
+    <h1>Modifier le projet</h1>
+    <a href="/admin/projects" class="btn-secondary header-back-btn">Retour</a>
+  </div>
   
   <form action="/admin/projects/edit/<%= project._id %>" method="post" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">

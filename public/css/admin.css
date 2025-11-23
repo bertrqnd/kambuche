@@ -22,13 +22,21 @@ body {
   padding: 20px 30px;
   margin-bottom: 30px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .admin-header h1 {
   font-size: 2rem;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 15px;
+  margin: 0;
+}
+
+.header-back-btn {
+  flex-shrink: 0;
+  margin: 0;
 }
 
 .admin-nav {
