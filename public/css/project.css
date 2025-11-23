@@ -575,8 +575,7 @@ main {
   }
 
   .project-title {
-    font-size: 2.5rem;
-    margin-bottom: 0.5em;
+    font-size: 3rem;
   }
 
   .project-short-desc {
@@ -596,29 +595,30 @@ main {
   }
 }
 
-/* Tablette horizontale (769px-1366px) : diaporama + texte empilé */
+/* Tablette horizontale (769px-1366px) : diaporama 2/3 gauche + texte 1/3 droite */
 @media (min-width: 769px) and (max-width: 1366px) and (orientation: landscape) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
 
   html, body {
-    overflow-y: auto;
-    height: auto;
+    overflow: hidden;
+    height: 100%;
   }
 
   .project-container {
-    flex-direction: column;
-    height: auto;
-    min-height: 100vh;
+    flex-direction: row;
+    height: calc(100vh - 60px);
     margin-top: 60px;
   }
 
   .project-carousel {
-    width: 100%;
-    height: 70vh;
+    width: 66.6666%;
+    height: 100%;
     flex-shrink: 0;
-    margin-top: -60px;
-    padding-top: 60px;
+  }
+
+  .carousel-slide img {
+    object-fit: contain;
   }
 
   .carousel__btn {
@@ -626,24 +626,23 @@ main {
   }
 
   .project-text {
-    width: 100%;
-    min-height: auto;
-    padding: 25px 35px;
-    overflow-y: visible;
+    width: 33.3333%;
+    height: 100%;
+    padding: 30px 25px;
+    overflow-y: auto;
   }
 
   .project-title {
-    font-size: 2rem;
-    margin-bottom: 0.5em;
+    font-size: 3rem;
   }
 
   .project-short-desc {
-    font-size: 1.1rem;
-    margin-bottom: 1.8em;
+    font-size: 1.4rem;
+    margin-bottom: 1.5em;
   }
 
   .project-description {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .project-text::after {
