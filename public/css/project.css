@@ -628,9 +628,8 @@ main {
   .project-text {
     width: 33.3333%;
     height: 100%;
-    padding: 30px 25px;
+    padding: 30px 25px 0 25px;
     margin-top: 2rem;
-    margin-bottom: 6rem;
     overflow-y: auto;
   }
 
@@ -650,7 +649,7 @@ main {
   .project-text::after {
     content: '';
     display: block;
-    height: 50px;
+    height: 200px;
     flex-shrink: 0;
   }
 }
