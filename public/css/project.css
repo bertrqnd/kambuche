@@ -629,6 +629,7 @@ main {
     width: 33.3333%;
     height: 100%;
     padding: 30px 25px;
+    margin-top: 2rem;
     overflow-y: auto;
   }
 
