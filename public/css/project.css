@@ -630,6 +630,7 @@ main {
     height: 100%;
     padding: 30px 25px;
     margin-top: 2rem;
+    margin-bottom: 6rem;
     overflow-y: auto;
   }
 
