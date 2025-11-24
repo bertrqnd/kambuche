@@ -670,7 +670,7 @@ main {
   .project-text {
     width: 100%;
     min-height: auto;
-    padding: 20px 30px;
+    padding: 20px 15px;
     overflow-y: visible;
   }
 
