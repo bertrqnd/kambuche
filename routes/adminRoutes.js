@@ -6,7 +6,6 @@ const adminController = require('../controllers/adminController');
 const { upload } = require('../config/cloudinary');
 const { doubleCsrfProtection } = require('../app');
 
-// Rate limiter pour les tentatives de connexion
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // 5 tentatives maximum
@@ -15,7 +14,6 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Redirection /admin vers login ou projects
 router.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/admin/projects');
@@ -23,27 +21,22 @@ router.get('/', (req, res) => {
   res.redirect('/admin/login');
 });
 
-// Page de login
 router.get('/login', adminController.getLogin);
 
-// Démarrer l'authentification Google (avec rate limiting)
 router.get('/auth/google', authLimiter, passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
 
-// Callback Google
 router.get('/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/admin/login?error=unauthorized',
     failureMessage: true
   }),
   (req, res) => {
-    // Authentification réussie
     res.redirect('/admin/projects');
   }
 );
 
-// Logout
 router.get('/logout', (req, res) => {
   req.logout((err) => {
     if (err) console.error('Erreur logout:', err);
@@ -52,7 +45,6 @@ router.get('/logout', (req, res) => {
   });
 });
 
-// Middleware auth (vérifie que l'utilisateur est connecté via Passport)
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -62,11 +54,9 @@ const isAuthenticated = (req, res, next) => {
 
 router.use(isAuthenticated);
 
-// CRUD projets
 router.get('/projects', adminController.getProjects);
 router.get('/projects/add', adminController.getAddProject);
 
-// Middleware de gestion d'erreur Multer
 const handleMulterError = (err, req, res, next) => {
   if (err) {
     console.error('❌ Erreur Multer:', err.message);
@@ -78,7 +68,6 @@ const handleMulterError = (err, req, res, next) => {
   next();
 };
 
-// Upload Cloudinary (cover + images)
 router.post(
   '/projects/add',
   upload.fields([
@@ -98,7 +87,6 @@ router.post(
 
 router.get('/projects/edit/:id', adminController.getEditProject);
 
-// Correction ici aussi pour "new_images"
 router.post(
   '/projects/edit/:id',
   upload.fields([
@@ -116,16 +104,10 @@ router.post(
   adminController.postEditProject
 );
 
-// Supprimer projet
 router.post('/projects/delete/:id', doubleCsrfProtection, adminController.deleteProject);
-
-// Supprimer image individuelle
 router.post('/projects/delete-image', doubleCsrfProtection, adminController.deleteProjectImage);
-
-// Réorganiser l'ordre des projets
 router.post('/projects/reorder', doubleCsrfProtection, adminController.reorderProjects);
 
-// Routes pour éditer les pages (À propos et Contact)
 router.get('/pages', adminController.getPages);
 router.get('/pages/edit/:slug', adminController.getEditPage);
 router.post(

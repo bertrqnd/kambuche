@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // === CAROUSEL (desktop et landscape uniquement) ===
   const dataElement = document.getElementById('carousel-data');
   const projectsData = JSON.parse(dataElement?.dataset.projects || '[]');
   let currentIndex = 0;
@@ -15,13 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     slidesWrapper.classList.add('slides-wrapper');
     carousel.insertBefore(slidesWrapper, indicatorsContainer);
 
-    // Créer les slides
     projectsData.forEach((project, i) => {
       const slide = document.createElement('div');
       slide.classList.add('carousel-slide');
 
       const img = document.createElement('img');
-      // Optimiser l'image Cloudinary
       const originalUrl = project.image || '/images/default.jpg';
       if (originalUrl.includes('cloudinary.com')) {
         img.src = originalUrl.replace('/upload/', '/upload/w_1920,f_auto,q_auto/');
@@ -36,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       img.alt = project.title;
       if (i === 0) {
-        img.fetchPriority = 'high'; // LCP optimization
+        img.fetchPriority = 'high';
       } else {
         img.loading = 'lazy';
       }
@@ -68,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
       slide.appendChild(overlayClone);
       slidesWrapper.appendChild(slide);
 
-      // Créer les indicateurs
       const dot = document.createElement('div');
       dot.classList.add('carousel__indicator');
       if (i === 0) dot.classList.add('active');
@@ -112,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
       startAutoplay();
     }
 
-    // Boutons navigation
     btnNext.addEventListener('click', () => {
       nextSlide();
       resetAutoplay();
@@ -123,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
       resetAutoplay();
     });
 
-    // Navigation tactile
     let startX = 0, endX = 0;
     slidesWrapper.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
@@ -140,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
       startAutoplay();
     });
 
-    // Navigation clavier
     document.addEventListener('keydown', e => {
       if (e.key === 'ArrowLeft') {
         prevSlide();
@@ -151,11 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Pause autoplay au survol
     carousel.addEventListener('mouseenter', stopAutoplay);
     carousel.addEventListener('mouseleave', startAutoplay);
 
-    // Sauvegarder l'index du slide au clic sur "Voir le projet"
     carousel.addEventListener('click', (e) => {
       if (e.target.classList.contains('carousel__link')) {
         const slideIndex = e.target.getAttribute('data-slide-index');
@@ -163,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Restaurer l'index du slide au chargement
     const savedSlideIndex = sessionStorage.getItem('carouselSlideIndex');
     if (savedSlideIndex !== null) {
       sessionStorage.removeItem('carouselSlideIndex');
@@ -173,23 +163,19 @@ document.addEventListener('DOMContentLoaded', () => {
       showSlide(currentIndex);
     }
 
-    // Démarrer autoplay
     startAutoplay();
   }
 
-  // === MENU BURGER ===
   const burger = document.querySelector('.burger');
   const navLinksMobile = document.querySelector('.nav-links-mobile');
 
   if (burger && navLinksMobile) {
-    // Toggle menu mobile
     burger.addEventListener('click', (e) => {
       e.stopPropagation();
       burger.classList.toggle('active');
       navLinksMobile.classList.toggle('mobile-active');
     });
 
-    // Fermer le menu en cliquant sur un lien
     const navItemsMobile = navLinksMobile.querySelectorAll('.nav-item-mobile');
     navItemsMobile.forEach(item => {
       item.addEventListener('click', () => {
@@ -198,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Fermer le menu en cliquant ailleurs
     document.addEventListener('click', (e) => {
       if (!navLinksMobile.contains(e.target) && !burger.contains(e.target)) {
         burger.classList.remove('active');
@@ -207,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // === SCROLL TO TOP (mobile) ===
   const navLeft = document.querySelector('.nav-left');
   if (navLeft) {
     navLeft.addEventListener('click', () => {
@@ -215,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // === SAUVEGARDER POSITION SCROLL ===
   const projectLinks = document.querySelectorAll('.project-card__link');
   projectLinks.forEach((link, index) => {
     link.addEventListener('click', () => {
@@ -223,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // === RESTAURER POSITION SCROLL ===
   const scrollToProject = sessionStorage.getItem('scrollToProject');
   if (scrollToProject !== null) {
     sessionStorage.removeItem('scrollToProject');

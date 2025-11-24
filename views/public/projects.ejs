@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= meta.title %></title>
   <meta name="description" content="<%= meta.description %>">
-    <!-- Favicons -->
-    <%- include('partials/head') %>
+  <%- include('partials/head') %>
 
-  <!-- Preload première image carousel (LCP) -->
   <% if (carouselProjects && carouselProjects.length > 0 && carouselProjects[0].image) { %>
     <link rel="preload" as="image" href="<%= carouselProjects[0].image %>">
   <% } %>
@@ -16,18 +14,14 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <!-- H1 SEO masqué visuellement -->
   <h1 class="visually-hidden">Andrea Layton - Maître d'œuvre à Toulouse | Portfolio</h1>
 
-  <!-- === NAVBAR === -->
   <header class="navbar">
     <span class="nav-left">
       <span class="first-name">Andrea</span><span class="last-name">Layton</span>
     </span>
-    
-    <!-- Navigation desktop -->
+
     <nav class="nav-links">
-      <!-- Dropdown Projets -->
       <div class="dropdown">
         <button class="dropdown-btn nav-item">Projets</button>
         <ul class="dropdown-menu">
@@ -40,7 +34,6 @@
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
 
-    <!-- Navigation mobile -->
     <nav class="nav-links-mobile">
       <% projects.forEach(project => { %>
         <a href="/projets/<%= project.slug %>" class="nav-item-mobile"><%= project.title %></a>
@@ -49,7 +42,6 @@
       <a href="/contact" class="nav-item-mobile nav-item-mobile--highlight">Contact</a>
     </nav>
 
-    <!-- Menu burger -->
     <button class="burger" aria-label="Menu">
       <span></span>
       <span></span>
@@ -57,20 +49,16 @@
   </header>
 
   <main>
-    <!-- Données pour le carousel -->
     <div id="carousel-data" data-projects='<%= JSON.stringify(carouselProjects) %>'></div>
-    
-    <!-- Carousel Desktop/Tablette -->
+
     <section class="carousel-desktop">
       <div class="carousel">
-        <!-- Les slides seront générées par JavaScript -->
         <button class="carousel__btn carousel__btn--prev" aria-label="Slide précédent"></button>
         <button class="carousel__btn carousel__btn--next" aria-label="Slide suivant"></button>
         <div class="carousel__indicators"></div>
       </div>
     </section>
 
-    <!-- Liste mobile vertical -->
     <section class="projects-mobile">
       <% carouselProjects.forEach((project, index) => { %>
         <% const imgData = cloudinaryResponsive(project.image, [400, 800, 1200]) %>

@@ -1,12 +1,10 @@
 const Project = require('../models/Project');
 const Page = require('../models/Page');
 
-// === Liste de tous les projets ===
 exports.getProjects = async (req, res) => {
   const projects = await Project.find().sort({ order: 1, date: -1 });
   console.log('Projets récupérés :', projects);
 
-  // Préparer les données pour le carousel
   const carouselProjects = projects.map(p => ({
     title: p.title,
     short_description: p.short_description,
@@ -17,8 +15,8 @@ exports.getProjects = async (req, res) => {
   const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
 
   res.render('public/projects', {
-    projects,          // pour le menu dropdown
-    carouselProjects,  // pour le carousel
+    projects,
+    carouselProjects,
     meta: {
       title: 'Andrea Layton - Maître d\'œuvre à Toulouse | Rénovation & Construction',
       description: "Andrea Layton, maître d'œuvre à Toulouse. Spécialisée en rénovation, extension et construction neuve. Accompagnement personnalisé pour vos projets d'architecture."
@@ -28,8 +26,6 @@ exports.getProjects = async (req, res) => {
   });
 };
 
-
-// === Page projet unique ===
 exports.getProject = async (req, res) => {
   const project = await Project.findOne({ slug: req.params.slug });
   if (!project) return res.status(404).render('public/404');
@@ -47,13 +43,10 @@ exports.getProject = async (req, res) => {
   });
 };
 
-
-// === Page contact ===
 exports.getContact = async (req, res) => {
   const projects = await Project.find().sort({ order: 1, date: -1 });
   let page = await Page.findOne({ slug: 'contact' });
 
-  // Si la page n'existe pas, créer un contenu par défaut
   if (!page) {
     page = {
       title: 'Contact',
@@ -75,13 +68,10 @@ exports.getContact = async (req, res) => {
   });
 };
 
-
-// === Page à propos ===
 exports.getAbout = async (req, res) => {
   const projects = await Project.find().sort({ order: 1, date: -1 });
   let page = await Page.findOne({ slug: 'about' });
 
-  // Si la page n'existe pas, créer un contenu par défaut
   if (!page) {
     page = {
       title: 'À propos',
@@ -103,18 +93,13 @@ exports.getAbout = async (req, res) => {
   });
 };
 
-
-// === Sitemap XML ===
 exports.getSitemap = async (req, res) => {
   const projects = await Project.find().sort({ order: 1, date: -1 });
-
-  // URL de base depuis les variables d'environnement
   const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  // Pages statiques
   const staticPages = [
     { url: '/', priority: '1.0', changefreq: 'weekly' },
     { url: '/a-propos', priority: '0.8', changefreq: 'monthly' },
@@ -129,7 +114,6 @@ exports.getSitemap = async (req, res) => {
     xml += '  </url>\n';
   });
 
-  // Pages projets dynamiques
   projects.forEach(project => {
     xml += '  <url>\n';
     xml += `    <loc>${baseUrl}/projets/${project.slug}</loc>\n`;
@@ -145,18 +129,14 @@ exports.getSitemap = async (req, res) => {
   res.send(xml);
 };
 
-
-// === Robots.txt ===
 exports.getRobots = (req, res) => {
   const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
 
   const robots = `User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: ${baseUrl}/sitemap.xml
 
-# Interdire l'admin
 Disallow: /admin/
 `;
 

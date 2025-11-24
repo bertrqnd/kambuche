@@ -1,4 +1,4 @@
-/* === RESET === */
+/* Reset */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
@@ -9,8 +9,7 @@ html, body {
   font-weight: 300;
 }
 
-/* === PAGE FADE TRANSITION === */
-/* Fondu complet au chargement initial */
+/* Page transitions */
 body {
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
@@ -24,7 +23,6 @@ body.fade-out {
   opacity: 0;
 }
 
-/* Fondu uniquement du main lors de la navigation interne */
 main {
   opacity: 1;
   transition: opacity 0.4s ease-in-out;
@@ -34,7 +32,6 @@ body.content-fade-out main {
   opacity: 0;
 }
 
-/* Classe utilitaire pour masquer visuellement (SEO) */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -47,7 +44,7 @@ body.content-fade-out main {
   border: 0;
 }
 
-/* === NAVBAR === */
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -63,7 +60,6 @@ body.content-fade-out main {
   z-index: 100;
 }
 
-/* === Nom gauche === */
 .nav-left {
   font-size: 1.4rem;
   letter-spacing: -0.5px;
@@ -85,7 +81,6 @@ body.content-fade-out main {
   color: #f5c518;
 }
 
-/* === Liens à droite (desktop) === */
 .nav-links {
   display: flex;
   align-items: center;
@@ -110,7 +105,6 @@ body.content-fade-out main {
 }
 .nav-item:hover, .dropdown-btn:hover { color: #f5c518; }
 
-/* === Dropdown Projets (desktop) === */
 .dropdown { position: relative; }
 .dropdown-menu {
   display: none;
@@ -153,7 +147,6 @@ body.content-fade-out main {
 .dropdown-menu a:hover { background: rgba(255,255,255,0.1); }
 .dropdown:hover .dropdown-menu { display: block; }
 
-/* === Navigation mobile (cachée par défaut) === */
 .nav-links-mobile {
   display: none;
   position: fixed;
@@ -213,7 +206,6 @@ body.content-fade-out main {
   font-weight: 400;
 }
 
-/* === MENU BURGER === */
 .burger {
   display: none;
   flex-direction: column;
@@ -240,7 +232,7 @@ body.content-fade-out main {
   transform: rotate(-45deg) translate(4px, -4px);
 }
 
-/* === CAROUSEL DESKTOP === */
+/* Carousel */
 .carousel-desktop {
   display: block;
 }
@@ -390,12 +382,12 @@ body.content-fade-out main {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* === LISTE MOBILE === */
+/* Mobile list */
 .projects-mobile {
   display: none;
 }
 
-/* === RESPONSIVE === */
+/* Responsive */
 @media (max-width: 1024px) {
   .carousel__text h3 { font-size: 1.8rem; }
   .carousel__text p { font-size: 1rem; }
@@ -407,26 +399,21 @@ body.content-fade-out main {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
   
-  /* Cacher navigation desktop */
   .nav-links { display: none; }
-  
-  /* Afficher burger */
   .burger { display: flex; }
 }
 
-/* Mobile vertical : liste au lieu du carousel */
+/* Mobile portrait */
 @media (max-width: 768px) and (orientation: portrait) {
   html, body {
     overflow-y: auto;
     height: auto;
   }
 
-  /* Cacher carousel */
   .carousel-desktop {
     display: none;
   }
 
-  /* Afficher liste */
   .projects-mobile {
     display: block;
     padding: 80px 0 40px;
@@ -483,23 +470,19 @@ body.content-fade-out main {
     color: #999;
     margin-left: -6px;
   }
-
-
 }
 
-/* Tablette portrait (768px-1366px) : afficher les cartes comme sur mobile */
+/* Tablette portrait */
 @media (min-width: 769px) and (max-width: 1366px) and (orientation: portrait) {
   html, body {
     overflow-y: auto;
     height: auto;
   }
 
-  /* Cacher carousel */
   .carousel-desktop {
     display: none;
   }
 
-  /* Afficher liste */
   .projects-mobile {
     display: block;
     padding: 80px 0 40px;
@@ -558,9 +541,8 @@ body.content-fade-out main {
   }
 }
 
-/* Tablette horizontale (769px-1366px) : garder le carousel */
+/* Tablette landscape */
 @media (min-width: 769px) and (max-width: 1366px) and (orientation: landscape) {
-  /* Le carousel reste affiché (comportement par défaut) */
   .carousel-desktop {
     display: block;
   }
@@ -570,14 +552,12 @@ body.content-fade-out main {
   }
 }
 
-/* Mobile horizontal : afficher les cartes comme en portrait */
+/* Mobile landscape */
 @media (max-width: 768px) and (orientation: landscape) {
   html, body {
     overflow-y: auto;
     height: auto;
   }
-
-  /* Cacher carousel */
   .carousel-desktop {
     display: none;
   }

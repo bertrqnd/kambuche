@@ -3,7 +3,6 @@ const Page = require('../models/Page');
 const slugify = require('slugify');
 const { cloudinary } = require('../config/cloudinary');
 
-// Page de login (affiche le bouton Google)
 exports.getLogin = (req, res) => {
     res.render('admin/login', { query: req.query });
 }
@@ -90,7 +89,6 @@ exports.postEditProject = async (req, res) => {
             console.log('✅ Nouvelle cover:', project.cover_image_url);
         }
 
-        // Gérer l'ordre des images de la galerie
         if (gallery_order) {
             try {
                 const orderedUrls = JSON.parse(gallery_order);
@@ -101,7 +99,6 @@ exports.postEditProject = async (req, res) => {
             }
         }
 
-        // Ajouter les nouvelles images à la fin
         if (req.files && req.files.new_images && req.files.new_images.length > 0) {
             const newImages = req.files.new_images.map(file => file.path);
             project.images_url = [...project.images_url, ...newImages];
@@ -209,9 +206,6 @@ function extractPublicId(url) {
     }
 }
 
-// === GESTION DES PAGES (À propos, Contact) ===
-
-// Afficher la liste des pages
 exports.getPages = async (req, res) => {
     try {
         const pages = await Page.find();
@@ -222,12 +216,10 @@ exports.getPages = async (req, res) => {
     }
 };
 
-// Afficher le formulaire d'édition d'une page
 exports.getEditPage = async (req, res) => {
     try {
         const { slug } = req.params;
 
-        // Chercher la page par slug
         let page = await Page.findOne({ slug });
 
         // Si la page n'existe pas, la créer avec un contenu par défaut

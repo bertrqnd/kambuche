@@ -1,4 +1,4 @@
-/* === RESET === */
+/* Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,7 +14,7 @@ html, body {
   font-weight: 300;
 }
 
-/* === PAGE FADE TRANSITION === */
+/* Page transitions */
 body {
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
@@ -29,7 +29,7 @@ main {
   transition: opacity 0.4s ease-in-out;
 }
 
-/* === NAVBAR === */
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -45,7 +45,6 @@ main {
   z-index: 100;
 }
 
-/* Andrea Layton - IDENTIQUE À L'ACCUEIL */
 .nav-left {
   font-size: 1.4rem;
   letter-spacing: -0.5px;
@@ -76,7 +75,6 @@ main {
   color: #f5c518;
 }
 
-/* Liens à droite */
 .nav-links {
   display: flex;
   align-items: center;
@@ -97,21 +95,19 @@ main {
   color: #f5c518;
 }
 
-/* === PROJECT CONTAINER === */
+/* Project container */
 .project-container {
   display: flex;
   height: calc(100vh - 60px);
   margin-top: 60px;
 }
 
-/* Carousel 2/3 gauche */
 .project-carousel {
   width: 66.6666%;
   position: relative;
   overflow: hidden;
 }
 
-/* Texte projet 1/3 droite */
 .project-text {
   width: 33.3333%;
   padding: 50px;
@@ -123,7 +119,6 @@ main {
   flex-shrink: 0;
 }
 
-/* Wrapper pour glissement */
 .slides-wrapper {
   display: flex;
   width: 100%;
@@ -131,7 +126,6 @@ main {
   transition: transform 0.5s ease;
 }
 
-/* Slides */
 .carousel-slide {
   min-width: 100%;
   height: 100%;
@@ -145,7 +139,6 @@ main {
   cursor: pointer;
 }
 
-/* Chevrons */
 .carousel__btn {
   position: absolute;
   top: 50%;
@@ -187,7 +180,6 @@ main {
 .carousel__btn--prev { left: 20px; }
 .carousel__btn--next { right: 20px; }
 
-/* Indicators */
 .carousel__indicators {
   position: absolute;
   bottom: 20px;
@@ -212,7 +204,6 @@ main {
   transform: scale(1.4);
 }
 
-/* Ligne métadonnées au-dessus du titre */
 .project-metadata-line {
   font-size: 0.9rem;
   font-weight: 300;
@@ -222,7 +213,6 @@ main {
   letter-spacing: 0.3px;
 }
 
-/* Titre principal - Plus grand mais moins gras */
 .project-title {
   font-size: 5rem;
   font-weight: 300;
@@ -233,7 +223,6 @@ main {
   margin-bottom: 0.5rem;
 }
 
-/* Description courte */
 .project-short-desc {
   font-size: 1.5rem;
   font-weight: 300;
@@ -242,7 +231,6 @@ main {
   color: #ccc;
 }
 
-/* Description complète - Support TinyMCE */
 .project-description,
 .tinymce-content {
   font-size: 0.95rem;
@@ -366,7 +354,6 @@ main {
   border-radius: 4px;
 }
 
-/* Scrollbar personnalisée */
 .project-text::-webkit-scrollbar {
   width: 8px;
 }
@@ -384,7 +371,7 @@ main {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* === LIGHTBOX AMÉLIORÉE === */
+/* Lightbox */
 .lightbox {
   display: none;
   position: fixed;
@@ -395,7 +382,6 @@ main {
   z-index: 2000;
 }
 
-/* Fond sombre */
 .lightbox-backdrop {
   position: absolute;
   top: 0;
@@ -406,7 +392,6 @@ main {
   z-index: 2001;
 }
 
-/* Contenu lightbox */
 .lightbox-content {
   position: relative;
   width: 100%;
@@ -417,7 +402,6 @@ main {
   z-index: 2002;
 }
 
-/* Wrapper slides lightbox */
 .lightbox-slides {
   display: flex;
   width: 100%;
@@ -448,7 +432,6 @@ main {
   display: block;
 }
 
-/* Bouton fermer */
 .lightbox-close {
   position: fixed;
   top: 20px;
@@ -475,7 +458,6 @@ main {
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* Boutons navigation lightbox */
 .lightbox-btn {
   position: fixed;
   top: 50%;
@@ -517,9 +499,7 @@ main {
 .lightbox-prev { left: 30px; }
 .lightbox-next { right: 30px; }
 
-/* === RESPONSIVE === */
-
-/* Laptop screens - titres longs */
+/* Responsive */
 @media (max-width: 1440px) {
   .project-title {
     font-size: 4rem;
@@ -538,7 +518,7 @@ main {
   }
 }
 
-/* Tablette portrait (769px-1366px) : diaporama + texte empilé */
+/* Tablette portrait */
 @media (min-width: 769px) and (max-width: 1366px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
@@ -595,7 +575,7 @@ main {
   }
 }
 
-/* Tablette horizontale (769px-1366px) : diaporama 2/3 gauche + texte 1/3 droite */
+/* Tablette landscape */
 @media (min-width: 769px) and (max-width: 1366px) and (orientation: landscape) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
@@ -654,7 +634,7 @@ main {
   }
 }
 
-/* Tablette et téléphone horizontal */
+/* Mobile landscape */
 @media (max-width: 768px) and (orientation: landscape) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
@@ -679,7 +659,6 @@ main {
     padding-top: 60px;
   }
 
-  /* Cacher les flèches du carrousel sur mobile paysage */
   .carousel__btn {
     display: none;
   }
@@ -715,13 +694,11 @@ main {
     font-size: 0.9rem;
   }
 
-  /* Indicateurs plus petits en horizontal */
   .carousel__indicator {
     width: 5px;
     height: 5px;
   }
 
-  /* Espace en bas */
   .project-text::after {
     content: '';
     display: block;
@@ -730,7 +707,7 @@ main {
   }
 }
 
-/* Téléphone vertical uniquement */
+/* Mobile portrait */
 @media (max-width: 768px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
@@ -755,7 +732,6 @@ main {
     padding-top: 60px;
   }
 
-  /* Cacher les flèches du carrousel sur mobile portrait */
   .carousel__btn {
     display: none;
   }
@@ -793,7 +769,6 @@ main {
     font-size: 0.95rem;
   }
 
-  /* Espace noir en bas pour la barre d'adresse */
   .project-text::after {
     content: '';
     display: block;
@@ -801,7 +776,6 @@ main {
     flex-shrink: 0;
   }
 
-  /* Indicateurs plus petits sur téléphone vertical */
   .carousel__indicator {
     width: 5px;
     height: 5px;
@@ -810,8 +784,6 @@ main {
   .carousel__indicator.active {
     transform: scale(1.5);
   }
-  
-  /* Lightbox mobile */
   .lightbox-slide {
     padding: 5px;
   }

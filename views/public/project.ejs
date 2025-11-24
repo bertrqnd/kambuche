@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= meta.title %></title>
   <meta name="description" content="<%= meta.description %>">
-
-  <!-- Favicons et meta tags SEO -->
   <%- include('partials/head') %>
 
   <link rel="stylesheet" href="/css/project.css">
@@ -25,7 +23,6 @@
 
   <main>
     <div class="project-container">
-      <!-- Carousel 2/3 gauche -->
       <div class="project-carousel">
         <% if(project.cover_image_url || (project.images_url && project.images_url.length > 0)) { %>
           <% let allImages = [project.cover_image_url].concat(project.images_url.filter(img => img !== project.cover_image_url)); %>
@@ -49,7 +46,6 @@
         <% } %>
       </div>
 
-      <!-- Texte projet 1/3 droite -->
       <div class="project-text">
         <% if(project.usage || project.surface || project.location_year) { %>
           <p class="project-metadata-line">
@@ -71,7 +67,6 @@
     </div>
   </main>
 
-  <!-- Lightbox -->
   <div id="lightbox" class="lightbox">
     <div class="lightbox-backdrop"></div>
     <div class="lightbox-content">

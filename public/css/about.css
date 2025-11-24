@@ -62,7 +62,6 @@ body {
   z-index: 100;
 }
 
-/* Andrea Layton - IDENTIQUE À L'ACCUEIL */
 .nav-left {
   font-size: 1.4rem;
   letter-spacing: -0.5px;
@@ -93,7 +92,6 @@ body {
   color: #f5c518;
 }
 
-/* Liens à droite */
 .nav-links {
   display: flex;
   align-items: center;
@@ -133,7 +131,6 @@ body {
   align-items: flex-start;
 }
 
-/* Image À propos */
 .about-image {
   flex: 0 0 300px;
   order: 2;
@@ -151,7 +148,6 @@ body {
   order: 1;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .about-container {
     flex-direction: column;
