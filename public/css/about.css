@@ -225,14 +225,49 @@ body {
 }
 
 /* === RESPONSIVE === */
-@media (max-width: 1024px) {
+
+/* Tablette portrait */
+@media (min-width: 769px) and (max-width: 1366px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
-  .about-container h1 { font-size: 2rem; }
-  .about-container p { font-size: 1.1rem; }
+
+  .about-content {
+    font-size: 1rem;
+  }
 }
 
-@media (max-width: 768px) {
+/* Tablette landscape */
+@media (min-width: 769px) and (max-width: 1366px) and (orientation: landscape) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+
+  .about-content {
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+  .navbar { height: 60px; padding: 0 25px; }
+  .nav-left { font-size: 1.2rem; margin-left: -10px; }
+
+  .about-page {
+    padding: 20px 15px;
+  }
+
+  .about-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .about-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 768px) and (orientation: portrait) {
   .navbar { height: 60px; padding: 0 25px; }
   .nav-left { font-size: 1.2rem; margin-left: -10px; }
 
