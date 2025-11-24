@@ -488,7 +488,7 @@ body.content-fade-out main {
 }
 
 /* Tablette portrait (768px-1366px) : afficher les cartes comme sur mobile */
-@media (min-width: 769px) and (max-width: 1366px) and (max-aspect-ratio: 4/5) {
+@media (min-width: 769px) and (max-width: 1366px) and (orientation: portrait) {
   html, body {
     overflow-y: auto;
     height: auto;
