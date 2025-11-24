@@ -177,10 +177,14 @@ body {
   font-weight: 300;
   line-height: 1.8;
   color: #ddd;
+  text-align: left;
+  word-spacing: normal;
 }
 
 .about-content p {
   margin-bottom: 1.2em;
+  text-align: left !important;
+  word-spacing: normal !important;
 }
 
 .about-content h2,

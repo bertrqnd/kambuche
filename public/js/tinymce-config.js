@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const commonConfig = {
     menubar: false,
     plugins: 'link image code lists table charmap searchreplace anchor paste',
-    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link image table charmap | searchreplace anchor | code | removeformat',
+    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | outdent indent | blockquote | link image table charmap | searchreplace anchor | code | removeformat',
     skin: 'oxide-dark',
     content_css: 'dark',
     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
