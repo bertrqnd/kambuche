@@ -18,8 +18,8 @@ exports.getProjects = async (req, res) => {
     projects,
     carouselProjects,
     meta: {
-      title: 'Andrea Layton - Maître d\'œuvre',
-      description: "Diplômée d'architecture, je vous accompagne dans vos projet de construction, d'extension ou de rénovation."
+      title: 'Andrea Layton - Conception et maîtrise d\'œuvre',
+      description: "Diplômée d'architecture, je vous accompagne dans vos projets de construction, d'extension ou de rénovation."
     },
     canonical: baseUrl,
     ogImage: `${baseUrl}/og-image.png`
@@ -35,7 +35,7 @@ exports.getProject = async (req, res) => {
   res.render('public/project', {
     project,
     meta: {
-      title: `${project.title} | Andrea Layton - Maître d'œuvre`,
+      title: `${project.title} | Andrea Layton - Conception et maîtrise d\'œuvre`,
       description: project.short_description || `Projet ${project.title} réalisé par Andrea Layton, maître d'œuvre à Toulouse. ${project.usage ? project.usage + '.' : ''} ${project.location_year || ''}`
     },
     canonical: `${baseUrl}/projets/${project.slug}`,
@@ -60,7 +60,7 @@ exports.getContact = async (req, res) => {
     projects,
     page,
     meta: {
-      title: 'Contact | Andrea Layton - Maître d\'œuvre',
+      title: 'Contact | Andrea Layton - Conception et maîtrise d\'œuvre',
       description: "Contacter Andrea Layton pour échanger sur votre projet, demander un devis ou tout autre question..."
     },
     canonical: `${baseUrl}/contact`,
@@ -85,7 +85,7 @@ exports.getAbout = async (req, res) => {
     projects,
     page,
     meta: {
-      title: 'À propos | Andrea Layton - Maître d\'œuvre',
+      title: 'À propos | Andrea Layton - Conception et maîtrise d\'œuvre',
       description: "Découvrez le parcours d'Andrea Layton, maître d'œuvre à Toulouse. Expertise en rénovation, extension et projets d'architecture sur mesure."
     },
     canonical: `${baseUrl}/a-propos`,
