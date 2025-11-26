@@ -224,10 +224,21 @@ exports.getEditPage = async (req, res) => {
 
         // Si la page n'existe pas, la créer avec un contenu par défaut
         if (!page) {
-            const defaultTitle = slug === 'about' ? 'À propos' : 'Contact';
-            const defaultContent = slug === 'about'
-                ? '<p>Contenu de la page À propos...</p>'
-                : '<p>Contenu de la page Contact...</p>';
+            let defaultTitle, defaultContent;
+
+            if (slug === 'about') {
+                defaultTitle = 'À propos';
+                defaultContent = '<p>Contenu de la page À propos...</p>';
+            } else if (slug === 'contact') {
+                defaultTitle = 'Contact';
+                defaultContent = '<p>Contenu de la page Contact...</p>';
+            } else if (slug === 'intro') {
+                defaultTitle = 'Slide d\'intro';
+                defaultContent = 'Diplômée d\'architecture, je vous accompagne dans vos projets de construction, extension et rénovation';
+            } else {
+                defaultTitle = slug.charAt(0).toUpperCase() + slug.slice(1);
+                defaultContent = '<p>Contenu par défaut...</p>';
+            }
 
             page = await Page.create({
                 slug,

@@ -5,7 +5,7 @@ const pageSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    enum: ['about', 'contact']
+    enum: ['about', 'contact', 'intro']
   },
   title: {
     type: String,
@@ -13,7 +13,19 @@ const pageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true
+    required: [true, 'Le contenu est obligatoire'],
+    trim: true,
+    maxlength: [2000, 'Le contenu ne peut dépasser 2000 caractères'],
+    validate: {
+      validator: function(value) {
+        // Pour la page intro, limiter à 500 caractères
+        if (this.slug === 'intro') {
+          return value.length <= 500;
+        }
+        return true;
+      },
+      message: 'Le texte d\'intro ne peut dépasser 500 caractères'
+    }
   },
   // Champs spécifiques pour la page Contact
   phone: {

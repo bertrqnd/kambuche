@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const dataElement = document.getElementById('carousel-data');
   const projectsData = JSON.parse(dataElement?.dataset.projects || '[]');
+  const introText = dataElement?.dataset.introText || 'Diplômée d\'architecture, je vous accompagne dans vos projets de construction, extension et rénovation';
   let currentIndex = 0;
   let autoplayInterval = null;
 
@@ -9,10 +10,66 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPrev = document.querySelector('.carousel__btn--prev');
   const indicatorsContainer = document.querySelector('.carousel__indicators');
 
+  // Vérifier si on doit ajouter la slide d'intro
+  // Fonction helper pour gérer localStorage avec fallback
+  function safeCheckIntroVisibility() {
+    try {
+      return localStorage.getItem('shouldHideIntroSlide') === 'true';
+    } catch (e) {
+      // Fallback: utiliser sessionStorage si localStorage est bloqué
+      try {
+        return sessionStorage.getItem('shouldHideIntroSlide') === 'true';
+      } catch {
+        // Si tout échoue, cacher l'intro par sécurité (meilleure UX)
+        return true;
+      }
+    }
+  }
+
+  const hasVisitedProject = safeCheckIntroVisibility();
+
   if (carousel && btnNext && btnPrev && indicatorsContainer && projectsData.length > 0) {
     const slidesWrapper = document.createElement('div');
     slidesWrapper.classList.add('slides-wrapper');
     carousel.insertBefore(slidesWrapper, indicatorsContainer);
+
+    // Ajouter la slide d'intro si l'utilisateur n'a jamais visité de projet
+    if (!hasVisitedProject) {
+      const introSlide = document.createElement('div');
+      introSlide.classList.add('carousel-slide', 'carousel-slide--intro');
+
+      const introOverlay = document.createElement('div');
+      introOverlay.classList.add('carousel__overlay');
+
+      const introTextDiv = document.createElement('div');
+      introTextDiv.classList.add('carousel__text');
+
+      const introH3 = document.createElement('h3');
+      introH3.textContent = introText;
+
+      const introButton = document.createElement('button');
+      introButton.classList.add('intro-cta-btn');
+      introButton.textContent = 'Voir mes projets';
+      introButton.addEventListener('click', () => {
+        nextSlide();
+        resetAutoplay();
+      });
+
+      introTextDiv.appendChild(introH3);
+      introTextDiv.appendChild(introButton);
+      introOverlay.appendChild(introTextDiv);
+      introSlide.appendChild(introOverlay);
+      slidesWrapper.appendChild(introSlide);
+
+      // Ajouter l'indicateur pour la slide d'intro
+      const introDot = document.createElement('div');
+      introDot.classList.add('carousel__indicator', 'active');
+      introDot.addEventListener('click', () => {
+        showSlide(0);
+        resetAutoplay();
+      });
+      indicatorsContainer.appendChild(introDot);
+    }
 
     projectsData.forEach((project, i) => {
       const slide = document.createElement('div');
@@ -65,17 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
       slide.appendChild(overlayClone);
       slidesWrapper.appendChild(slide);
 
+      const slideOffset = hasVisitedProject ? 0 : 1; // Décalage si slide intro existe
       const dot = document.createElement('div');
       dot.classList.add('carousel__indicator');
-      if (i === 0) dot.classList.add('active');
+      if (i === 0 && hasVisitedProject) dot.classList.add('active');
       dot.addEventListener('click', () => {
-        showSlide(i);
+        showSlide(i + slideOffset);
         resetAutoplay();
       });
       indicatorsContainer.appendChild(dot);
     });
 
     const indicators = document.querySelectorAll('.carousel__indicator');
+    const totalSlides = hasVisitedProject ? projectsData.length : projectsData.length + 1;
 
     function showSlide(index) {
       slidesWrapper.style.transform = `translateX(-${index * 100}%)`;
@@ -84,16 +143,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function nextSlide() {
-      showSlide((currentIndex + 1) % projectsData.length);
+      showSlide((currentIndex + 1) % totalSlides);
     }
 
     function prevSlide() {
-      showSlide((currentIndex - 1 + projectsData.length) % projectsData.length);
+      showSlide((currentIndex - 1 + totalSlides) % totalSlides);
     }
 
-    // Autoplay
+    // Autoplay avec durée adaptée selon le type de slide
     function startAutoplay() {
-      autoplayInterval = setInterval(nextSlide, 10000);
+      // Donner plus de temps (15s) si on est sur l'intro slide, sinon 10s
+      const isOnIntroSlide = !hasVisitedProject && currentIndex === 0;
+      const delay = isOnIntroSlide ? 15000 : 10000;
+      autoplayInterval = setInterval(nextSlide, delay);
     }
 
     function stopAutoplay() {
@@ -150,7 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
     carousel.addEventListener('click', (e) => {
       if (e.target.classList.contains('carousel__link')) {
         const slideIndex = e.target.getAttribute('data-slide-index');
-        sessionStorage.setItem('carouselSlideIndex', slideIndex);
+        if (slideIndex) {
+          const slideOffset = hasVisitedProject ? 0 : 1;
+          sessionStorage.setItem('carouselSlideIndex', parseInt(slideIndex) + slideOffset);
+        }
       }
     });
 
@@ -215,5 +280,41 @@ document.addEventListener('DOMContentLoaded', () => {
         projectCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 100);
+  }
+
+  // Ajouter la carte d'intro en mobile si l'utilisateur n'a jamais visité de projet
+  const projectsMobile = document.querySelector('.projects-mobile');
+  if (projectsMobile && !hasVisitedProject) {
+    const introCard = document.createElement('article');
+    introCard.classList.add('project-card', 'project-card--intro');
+    introCard.id = 'intro-card';
+
+    const introContent = document.createElement('div');
+    introContent.classList.add('project-card__content', 'project-card__content--intro');
+
+    const introTextPara = document.createElement('p');
+    introTextPara.classList.add('project-card__intro-text');
+    introTextPara.textContent = introText;
+
+    const introButtonMobile = document.createElement('button');
+    introButtonMobile.classList.add('intro-cta-btn', 'intro-cta-btn--mobile');
+    introButtonMobile.textContent = 'Voir mes projets';
+    introButtonMobile.addEventListener('click', () => {
+      // Scroll jusqu'au bord haut de la première carte projet
+      const firstProjectCard = document.getElementById('project-0');
+      if (firstProjectCard) {
+        const firstProjectImage = firstProjectCard.querySelector('.project-card__image');
+        if (firstProjectImage) {
+          firstProjectImage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+
+    introContent.appendChild(introTextPara);
+    introContent.appendChild(introButtonMobile);
+    introCard.appendChild(introContent);
+
+    // Insérer la carte d'intro en première position
+    projectsMobile.insertBefore(introCard, projectsMobile.firstChild);
   }
 });

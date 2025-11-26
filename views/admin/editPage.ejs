@@ -18,7 +18,28 @@
     <!-- Le titre est caché mais toujours envoyé pour maintenir la cohérence de la DB -->
     <input type="hidden" id="title" name="title" value="<%= page.title %>">
 
-    <% if (page.slug === 'contact') { %>
+    <% if (page.slug === 'intro') { %>
+      <!-- Champ spécifique pour la slide d'intro -->
+      <div class="form-group">
+        <label for="content">Texte de la slide/carte d'intro :</label>
+        <textarea id="content" name="content" rows="4" required maxlength="500" style="font-family: inherit; resize: vertical;"><%= page.content %></textarea>
+        <small style="display: block; margin-top: 5px; color: #666;">
+          Ce texte apparaîtra sur la slide d'intro (desktop) et la carte d'intro (mobile) lors de la première visite.<br>
+          <strong>Maximum : 500 caractères</strong> (<span id="char-count"><%= page.content ? page.content.length : 0 %></span>/500)
+        </small>
+      </div>
+      <script>
+        // Compteur de caractères en temps réel
+        const textarea = document.getElementById('content');
+        const charCount = document.getElementById('char-count');
+
+        textarea.addEventListener('input', () => {
+          const count = textarea.value.length;
+          charCount.textContent = count;
+          charCount.style.color = count > 500 ? '#d32f2f' : '#666';
+        });
+      </script>
+    <% } else if (page.slug === 'contact') { %>
       <!-- Champs spécifiques pour Contact -->
       <div class="form-group">
         <label for="email">Email :</label>

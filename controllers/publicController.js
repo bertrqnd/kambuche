@@ -12,11 +12,16 @@ exports.getProjects = async (req, res) => {
     image: p.cover_image_url || (p.images_url && p.images_url[0]) || '/images/default.jpg'
   }));
 
+  // Récupérer le texte de la slide d'intro
+  let introPage = await Page.findOne({ slug: 'intro' });
+  const introText = introPage ? introPage.content : 'Diplômée d\'architecture, je vous accompagne dans vos projets de construction, extension et rénovation';
+
   const baseUrl = process.env.SITE_URL || 'https://www.andrea-layton.com';
 
   res.render('public/projects', {
     projects,
     carouselProjects,
+    introText,
     meta: {
       title: 'Andrea Layton - Conception et maîtrise d\'œuvre',
       description: "Diplômée d'architecture, je vous accompagne dans vos projets de construction, d'extension ou de rénovation."
