@@ -600,44 +600,41 @@ body.content-fade-out main {
 
   .project-card--intro {
     background-color: #000;
-    margin-bottom: 50px;
-    border: 1px solid #333;
-    border-radius: 4px;
-    width: 90%;
-    margin-left: 15px;
-    margin-right: auto;
+    margin-bottom: 50px; /* Même espacement qu'entre les project-card */
+    border: none;
+    border-radius: 0;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .project-card__content--intro {
-    padding: 50px 40px;
+    padding: 0;
+    padding-left: 22px; /* Même que project-card__content */
+    padding-right: 22px;
+    padding-top: 5px; /* Très proche de la navbar */
+    padding-bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
-    min-height: 40vh;
+    justify-content: flex-start;
+    min-height: auto;
   }
 
   .project-card__intro-text {
-    font-size: 1.6rem;
+    font-size: 1.05rem; /* Légèrement plus petit que navbar */
     font-weight: 300;
     line-height: 1.5;
     color: #fff;
     text-align: left;
-    margin-bottom: 30px;
-    margin-left: -6px;
+    margin: 0;
+    margin-left: -6px; /* Même décalage que project-card__description */
+    letter-spacing: -0.5px;
+    max-width: 100%;
   }
 
   .intro-cta-btn--mobile {
-    font-size: 70%;
-    padding: 0.6em 1.4em;
-    background: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-  }
-
-  .intro-cta-btn--mobile:hover {
-    background: #fff;
-    color: #000;
+    display: none; /* Cacher le bouton */
   }
 
   .project-card__link {
