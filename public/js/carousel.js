@@ -1,3 +1,31 @@
+// Fonction helper pour gérer localStorage avec fallback
+function safeCheckIntroVisibility() {
+  try {
+    return localStorage.getItem('shouldHideIntroSlide') === 'true';
+  } catch (e) {
+    // Fallback: utiliser sessionStorage si localStorage est bloqué
+    try {
+      return sessionStorage.getItem('shouldHideIntroSlide') === 'true';
+    } catch {
+      // Si tout échoue, cacher l'intro par sécurité (meilleure UX)
+      return true;
+    }
+  }
+}
+
+// Détecter si la page est chargée depuis le cache (bouton retour)
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    // Page chargée depuis le bfcache (bouton retour)
+    // Vérifier si l'intro doit être cachée maintenant
+    const shouldHideIntro = safeCheckIntroVisibility();
+    if (shouldHideIntro) {
+      // Recharger la page pour reconstruire sans l'intro
+      window.location.reload();
+    }
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const dataElement = document.getElementById('carousel-data');
   const projectsData = JSON.parse(dataElement?.dataset.projects || '[]');
@@ -9,22 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnNext = document.querySelector('.carousel__btn--next');
   const btnPrev = document.querySelector('.carousel__btn--prev');
   const indicatorsContainer = document.querySelector('.carousel__indicators');
-
-  // Vérifier si on doit ajouter la slide d'intro
-  // Fonction helper pour gérer localStorage avec fallback
-  function safeCheckIntroVisibility() {
-    try {
-      return localStorage.getItem('shouldHideIntroSlide') === 'true';
-    } catch (e) {
-      // Fallback: utiliser sessionStorage si localStorage est bloqué
-      try {
-        return sessionStorage.getItem('shouldHideIntroSlide') === 'true';
-      } catch {
-        // Si tout échoue, cacher l'intro par sécurité (meilleure UX)
-        return true;
-      }
-    }
-  }
 
   const hasVisitedProject = safeCheckIntroVisibility();
 
