@@ -493,43 +493,37 @@ body.content-fade-out main {
   .project-card--intro {
     background-color: #000;
     margin-bottom: 50px;
-    border: 1px solid #333;
-    border-radius: 4px;
-    width: 90%;
-    margin-left: 15px;
-    margin-right: auto;
+    border: none; /* Pas de bordure */
+    border-radius: 0;
+    width: 100%; /* Pleine largeur */
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .project-card__content--intro {
-    padding: 40px 22px;
+    padding: 0; /* Pas de padding pour alignement avec navbar */
+    padding-left: 25px; /* Même padding que navbar (25px) */
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start; /* Alignement en haut */
     min-height: 40vh;
   }
 
   .project-card__intro-text {
-    font-size: 1.3rem;
-    font-weight: 300;
+    font-size: 1.2rem; /* Même taille que Andrea Layton (1.2rem) */
+    font-weight: 300; /* Même poids que .first-name */
     line-height: 1.5;
     color: #fff;
     text-align: left;
-    margin-bottom: 25px;
-    margin-left: -6px;
+    margin-bottom: 0;
+    margin-left: -10px; /* Même décalage que .nav-left */
+    letter-spacing: -0.5px; /* Même spacing que .nav-left */
   }
 
   .intro-cta-btn--mobile {
-    font-size: 70%;
-    padding: 0.6em 1.4em;
-    background: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-  }
-
-  .intro-cta-btn--mobile:hover {
-    background: #fff;
-    color: #000;
+    display: none; /* Cacher le bouton */
   }
 
   .project-card__link {

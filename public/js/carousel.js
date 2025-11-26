@@ -140,6 +140,18 @@ document.addEventListener('DOMContentLoaded', () => {
       slidesWrapper.style.transform = `translateX(-${index * 100}%)`;
       indicators.forEach((dot, i) => dot.classList.toggle('active', i === index));
       currentIndex = index;
+
+      // Cacher les contrôles (flèches + indicateurs) si on est sur la slide d'intro
+      const isOnIntro = !hasVisitedProject && index === 0;
+      if (isOnIntro) {
+        btnNext.style.display = 'none';
+        btnPrev.style.display = 'none';
+        indicatorsContainer.style.display = 'none';
+      } else {
+        btnNext.style.display = '';
+        btnPrev.style.display = '';
+        indicatorsContainer.style.display = '';
+      }
     }
 
     function nextSlide() {
@@ -296,22 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
     introTextPara.classList.add('project-card__intro-text');
     introTextPara.textContent = introText;
 
-    const introButtonMobile = document.createElement('button');
-    introButtonMobile.classList.add('intro-cta-btn', 'intro-cta-btn--mobile');
-    introButtonMobile.textContent = 'Voir mes projets';
-    introButtonMobile.addEventListener('click', () => {
-      // Scroll jusqu'au bord haut de la première carte projet
-      const firstProjectCard = document.getElementById('project-0');
-      if (firstProjectCard) {
-        const firstProjectImage = firstProjectCard.querySelector('.project-card__image');
-        if (firstProjectImage) {
-          firstProjectImage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-    });
-
+    // Pas de bouton "Voir mes projets" en mode mobile
     introContent.appendChild(introTextPara);
-    introContent.appendChild(introButtonMobile);
     introCard.appendChild(introContent);
 
     // Insérer la carte d'intro en première position
