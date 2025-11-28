@@ -491,13 +491,13 @@ body.content-fade-out main {
   }
 
   .project-card--intro {
-    background-color: #000;
+    background-color: #f5c518; /* Fond jaune du site */
     margin-bottom: 50px; /* Même espacement qu'entre les project-card */
     border: none;
-    border-radius: 0;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
+    border-radius: 4px; /* Même border-radius que les images de projets */
+    width: 90%; /* Même largeur que les images de projets */
+    margin-left: 15px; /* Même alignement que les images */
+    margin-right: auto;
   }
 
   .project-card__content--intro {
@@ -505,7 +505,7 @@ body.content-fade-out main {
     padding-left: 22px; /* Même que project-card__content */
     padding-right: 22px; /* Symétrique */
     padding-top: 5px; /* Très proche de la navbar (navbar = 60px de hauteur) */
-    padding-bottom: 0; /* Pas d'espacement en bas, le margin-bottom de la carte gère ça */
+    padding-bottom: 5px; /* Léger padding en bas pour équilibrer */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -517,7 +517,7 @@ body.content-fade-out main {
     font-size: 1.05rem; /* Légèrement plus petit que navbar (1.2rem) */
     font-weight: 300;
     line-height: 1.5;
-    color: #fff;
+    color: #000; /* Texte noir sur fond jaune */
     text-align: left;
     margin: 0;
     margin-left: -6px; /* Même décalage que project-card__description pour aligner avec navbar */

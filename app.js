@@ -45,6 +45,17 @@ app.use(
   })
 );
 
+// Redirection HTTP → HTTPS en production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(301, `https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
+
 // HSTS - Force HTTPS en production
 if (process.env.NODE_ENV === 'production') {
   app.use(helmet.hsts({
