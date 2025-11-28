@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "minify": "node minify.js",
-    "build": "node minify.js && node app.js"
+    "build": "node minify.js"
   },
   "dependencies": {
     "cloudinary": "^2.8.0",
