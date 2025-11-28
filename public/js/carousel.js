@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const introButton = document.createElement('button');
       introButton.classList.add('intro-cta-btn');
-      introButton.textContent = 'Voir mes projets';
+      introButton.textContent = 'Voir les projets';
       introButton.addEventListener('click', () => {
         nextSlide();
         resetAutoplay();
