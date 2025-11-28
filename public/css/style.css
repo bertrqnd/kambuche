@@ -491,7 +491,7 @@ body.content-fade-out main {
   }
 
   .project-card--intro {
-    background-color: #f5c518; /* Fond jaune du site */
+    background-color: transparent; /* Fond transparent */
     margin-bottom: 50px; /* Même espacement qu'entre les project-card */
     border: none;
     border-radius: 4px; /* Même border-radius que les images de projets */
@@ -501,11 +501,7 @@ body.content-fade-out main {
   }
 
   .project-card__content--intro {
-    padding: 0;
-    padding-left: 22px; /* Même que project-card__content */
-    padding-right: 22px; /* Symétrique */
-    padding-top: 5px; /* Très proche de la navbar (navbar = 60px de hauteur) */
-    padding-bottom: 5px; /* Léger padding en bas pour équilibrer */
+    padding: 0 22px; /* Même que project-card__content */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -517,10 +513,10 @@ body.content-fade-out main {
     font-size: 1.05rem; /* Légèrement plus petit que navbar (1.2rem) */
     font-weight: 300;
     line-height: 1.5;
-    color: #000; /* Texte noir sur fond jaune */
+    color: #fff; /* Texte blanc */
     text-align: left;
     margin: 0;
-    margin-left: -6px; /* Même décalage que project-card__description pour aligner avec navbar */
+    margin-left: -6px; /* Même décalage que les titres de projets */
     letter-spacing: -0.5px;
     max-width: 100%;
   }
