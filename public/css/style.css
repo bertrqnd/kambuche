@@ -330,8 +330,8 @@ body.content-fade-out main {
   font-size: 80%;
   display: inline-block;
   background: transparent;
-  color: #fff;
-  border: 1px solid #fff;
+  color: #f5c518;
+  border: 1px solid #f5c518;
   text-decoration: none;
   padding: 0.7em 1.6em;
   border-radius: 5px;
@@ -342,7 +342,7 @@ body.content-fade-out main {
 }
 
 .intro-cta-btn:hover {
-  background: #fff;
+  background: #f5c518;
   color: #000;
 }
 
