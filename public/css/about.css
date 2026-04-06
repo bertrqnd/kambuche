@@ -63,33 +63,19 @@ body {
 }
 
 .nav-left {
-  font-size: 1.4rem;
-  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
   margin-left: -10px;
-}
-
-.nav-left .first-name {
-  font-weight: 300;
-  color: #bbb;
-}
-
-.nav-left .last-name {
-  font-weight: 600;
-  color: #fff;
-}
-
-.nav-left a.andrea-link {
   text-decoration: none;
-  color: inherit;
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease;
 }
-
-.nav-left a.andrea-link:hover .last-name {
-  color: #f5c518;
+.nav-logo {
+  height: 1.4rem;
+  width: auto;
+  transition: filter 0.3s ease;
+}
+.nav-left:hover .nav-logo,
+.nav-left:active .nav-logo {
+  filter: brightness(0.5) sepia(1) saturate(8) hue-rotate(10deg);
 }
 
 .nav-links {
