@@ -61,19 +61,24 @@ body.content-fade-out main {
 }
 
 .nav-left {
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
   margin-left: -10px;
-  text-decoration: none;
+  cursor: pointer;
 }
-.nav-logo {
-  height: 1.4rem;
-  width: auto;
-  transition: filter 0.3s ease;
+.nav-left .first-name { font-weight: 300; color: #bbb; }
+.nav-left .last-name {
+  font-weight: 600;
+  color: #fff;
+  transition: color 0.3s ease;
 }
-.nav-left:hover .nav-logo,
-.nav-left:active .nav-logo {
-  filter: brightness(0.5) sepia(1) saturate(8) hue-rotate(10deg);
+.nav-left:hover .last-name {
+  color: #f5c518;
+}
+.nav-left:active .last-name {
+  color: #f5c518;
 }
 
 .nav-links {
